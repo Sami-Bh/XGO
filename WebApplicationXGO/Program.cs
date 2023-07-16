@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using XGORepository.Interfaces.RepositoriesInterfaces;
 using XGORepository.Models;
 using XGORepository.Models.Repositories;
@@ -15,9 +16,8 @@ builder.Services.AddDbContext<XGODbContext>(options =>
     options.UseSqlServer("Data Source=LAPTOP-3USAUU6I\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Encrypt=False;Trust Server Certificate=True");
 #else
     //options.UseSqlServer("Server=tcp:xgodbserver.database.windows.net,1433;Initial Catalog=xgodb;Persist Security Info=False;User ID=rsxgoadmin926;Password=AzureDb@92600;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-    options.UseSqlServer(Environment.GetEnvironmentVariable("SQLAZURECONNSTR_azuredbConnectionstring"));
+    options.UseSqlServer(builder.Configuration["SQLAZURECONNSTR_azuredbConnectionstring"]);
 #endif
-
 });
 
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
