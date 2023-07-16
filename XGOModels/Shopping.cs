@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace XGOModels
+{
+    public class Shopping : BaseModel
+    {
+        #region Fields
+
+        #endregion
+
+        #region Properties
+        public ObservableCollection<ShoppedProduct> ShoppingProducts { get; set; }
+        public ObservableCollection<ShoppedProduct> PurchasedProducts { get; set; }
+        #endregion
+
+        #region Constructors
+        public Shopping() { }
+        #endregion
+
+        #region Methods
+
+        #endregion
+    }
+}
