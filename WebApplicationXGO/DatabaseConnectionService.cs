@@ -3,7 +3,7 @@
     public class DatabaseConnectionService
     {
         #region Fields
-
+        IConfiguration _configuration;
         #endregion
 
         #region Properties
@@ -11,7 +11,11 @@
         #endregion
 
         #region Constructors
-        public DatabaseConnectionService() { }
+
+        public DatabaseConnectionService(IConfiguration configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
         #endregion
 
         #region Methods
