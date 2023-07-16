@@ -5,20 +5,20 @@ on:
     - main
 env:
   AZURE_WEBAPP_NAME: WebApplicationXGO20230716204126
-  AZURE_WEBAPP_PACKAGE_PATH: .\publish
+  AZURE_WEBAPP_PACKAGE_PATH: WebApplicationXGO\publish
   AZURE_APIM_RESOURCE_PATH: /XGO
   AZURE_APIM_RESOURCEGROUP: rp-xgo
   AZURE_APIM_SERVICENAME: xgoapimanagement
   AZURE_APIM_API_ID: xgo
   AZURE_APIM_APPSERVICEURL: https://webapplicationxgo20230716204126.azurewebsites.net
-  SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 5.6.3
+  SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 6.5.0
   SWASHBUCKLE_DOTNET_CORE_VERSION: 3.1.x
-  API_IMPORT_SPECIFICATION_PATH: .\publish\swagger.json
-  API_IMPORT_DLL: .\WebApplicationXGO\bin\Release\net6.0\WebApplicationXGO.dll
+  API_IMPORT_SPECIFICATION_PATH: WebApplicationXGO\publish\swagger.json
+  API_IMPORT_DLL: WebApplicationXGO\bin\Release\net6.0\WebApplicationXGO.dll
   API_IMPORT_VERSION: v1
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 6.0.x
-  WORKING_DIRECTORY: .
+  WORKING_DIRECTORY: WebApplicationXGO
 jobs:
   build:
     runs-on: windows-latest
@@ -64,7 +64,7 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        publish-profile: ${{ secrets.WebApplicationXGO20230716204126_968E }}
+        publish-profile: ${{ secrets.WebApplicationXGO20230716204126_4BF8 }}
     - name: Azure Login
       uses: azure/login@v1
       with:
