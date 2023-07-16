@@ -29,14 +29,22 @@ namespace WebApplicationXGO.Controllers
 
         // GET api/<CategoriesController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<string?>> Get(int id)
         {
-            return "value";
+            try
+            {
+                var cat = await _categoryRepository.FindByConditionAsync(x => x.Id == id);
+                return cat.Any() ? Ok(cat.First()) : NotFound();
+            }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
         }
 
         // POST api/<CategoriesController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Category category)
+        public async Task<ActionResult> Post([FromBody] Category category)
         {
             try
             {
