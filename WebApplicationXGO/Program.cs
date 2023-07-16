@@ -16,9 +16,9 @@ builder.Services.AddDbContext<XGODbContext>(options =>
 #if DEBUG
     options.UseSqlServer("Data Source=LAPTOP-3USAUU6I\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Encrypt=False;Trust Server Certificate=True");
 #else
-    //options.UseSqlServer("Server=tcp:xgodbserver.database.windows.net,1433;Initial Catalog=xgodb;Persist Security Info=False;User ID=rsxgoadmin926;Password=AzureDb@92600;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-        options.UseSqlServer(builder.Configuration["azuredbConnectionstring"]);
-        //SQLAZURECONNSTR_
+    options.UseSqlServer("Server=tcp:xgodbserver.database.windows.net,1433;Initial Catalog=xgodb;Persist Security Info=False;User ID=rsxgoadmin926;Password=AzureDb@92600;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+        //options.UseSqlServer(System.Environment.GetEnvironmentVariable("azuredbConnectionstring"));
+        ////SQLAZURECONNSTR_
 
 #endif
 
