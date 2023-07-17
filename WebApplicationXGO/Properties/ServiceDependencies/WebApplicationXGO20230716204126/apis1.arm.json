@@ -100,11 +100,11 @@
               "type": "Microsoft.ApiManagement/service/apis",
               "name": "xgoapimanagement/xgo",
               "properties": {
-                "displayName": "XGO",
+                "displayName": "WebApplicationXGO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "apiRevision": "1",
-                "description": "",
-                "subscriptionRequired": true,
-                "serviceUrl": null,
+                "description": null,
+                "subscriptionRequired": false,
+                "serviceUrl": "https://webapplicationxgo20230716204126.azurewebsites.net",
                 "path": "XGO",
                 "protocols": [
                   "https"

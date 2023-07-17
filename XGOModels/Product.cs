@@ -17,15 +17,15 @@ namespace XGOModels
         #endregion
 
         #region Properties
-        public string Category
+        public string? Category
         {
             get; set;
         }
-        public string Name
+        public string? Name
         {
             get; set;
         }
-        public string ExtraProperties
+        public string? ExtraProperties
         {
             get; set;
         }
@@ -39,7 +39,10 @@ namespace XGOModels
         #endregion
 
         #region Constructors
-        public Product() { }
+        public Product()
+        {
+            Pictures = new ObservableCollection<Picture>();
+        }
         #endregion
 
         #region Methods

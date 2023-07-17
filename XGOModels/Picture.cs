@@ -13,8 +13,8 @@ namespace XGOModels
         #endregion
 
         #region Properties
-        public string Description { get; set; }
-        public string Infos
+        public string? Description { get; set; }
+        public string? Infos
         {
             get; set;
         }

@@ -19,7 +19,10 @@ namespace XGOModels
         #endregion
 
         #region Constructors
-        public Shopping() { }
+        public Shopping() {
+            ShoppingProducts = new ObservableCollection<ShoppedProduct>();
+            PurchasedProducts = new ObservableCollection<ShoppedProduct>();
+        }
         #endregion
 
         #region Methods
