@@ -22,6 +22,8 @@ env:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      AZURE_SQL_CONNECTIONSTRING: ${{ secrets.AZURE_SQL_CONNECTIONSTRING }}
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET SDK
