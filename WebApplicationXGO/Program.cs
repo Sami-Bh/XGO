@@ -15,7 +15,9 @@ builder.Services.AddDbContext<XGODbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
 
 #else
-    options.UseSqlServer(Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING")));
+var connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+
+    options.UseSqlServer(Environment.GetEnvironmentVariable(connectionString)));
 
 #endif
 
