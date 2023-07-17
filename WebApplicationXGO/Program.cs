@@ -11,7 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<XGODbContext>(options =>
+#if DEBUG
     options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
+
+#else
+    options.UseSqlServer(Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING")));
+
+#endif
 
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 
