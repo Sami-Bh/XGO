@@ -19,11 +19,10 @@ env:
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 6.0.x
   WORKING_DIRECTORY: WebApplicationXGO
+  AZURE_SQL_CONNECTIONSTRING: ${{ secrets.AZURE_SQL_CONNECTIONSTRING }}
 jobs:
   build:
     runs-on: windows-latest
-    env:
-      AZURE_SQL_CONNECTIONSTRING: ${{ secrets.AZURE_SQL_CONNECTIONSTRING }}
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET SDK
