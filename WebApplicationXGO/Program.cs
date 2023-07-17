@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using XGORepository.Interfaces.RepositoriesInterfaces;
 using XGORepository.Models;
 using XGORepository.Models.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +18,8 @@ builder.Services.AddDbContext<XGODbContext>(options =>
     //options.UseSqlServer("Server=tcp:xgodbserver.database.windows.net,1433;Initial Catalog=xgodb;Persist Security Info=False;User ID=rsxgoadmin926;Password=AzureDb@92600;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         //options.UseSqlServer(System.Environment.GetEnvironmentVariable("azuredbConnectionstring"));
         ////SQLAZURECONNSTR_
-        options.UseSqlServer(builder.Configuration.GetConnectionString("SQLAZURECONNSTR_azuredbConnectionstring"));
+        //options.UseSqlServer(builder.Configuration.GetConnectionString("SQLAZURECONNSTR_azuredbConnectionstring"));
+    options.UseSqlServer(System.Configuration.ConfigurationManager.ConnectionStrings["azuredbConnectionstring"].ConnectionString);
 #endif
 
 });
