@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace XGORepository.Models
     public class XGODbContext : DbContext
     {
         #region Fields
+        private readonly IConfiguration _configuration;
 
         #endregion
 
@@ -21,16 +23,27 @@ namespace XGORepository.Models
         #endregion
 
         #region Constructors
-        public XGODbContext(DbContextOptions<XGODbContext> dbContextOptions) : base(dbContextOptions)
+        //public XGODbContext(DbContextOptions<XGODbContext> dbContextOptions) : base(dbContextOptions)
+        //{
+        //}
+        public XGODbContext(IConfiguration configuration)
         {
-        }
-        public XGODbContext() 
-        {
-            
+            _configuration = configuration;
         }
         #endregion
 
         #region Methods
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var connectionString = string.Empty;
+#if DEBUG
+            connectionString = "Data Source=LAPTOP-3USAUU6I\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Encrypt=False;Trust Server Certificate=True";
+#else
+            _configuration.GetConnectionString("azuredbConnectionstring");
+
+#endif
+            optionsBuilder.UseSqlServer(connectionString);
+        }
         #endregion
     }
 }
