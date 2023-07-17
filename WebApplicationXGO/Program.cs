@@ -13,11 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<XGODbContext>(options =>
 #if DEBUG
     options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
-
 #else
-var connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
-
-    options.UseSqlServer(Environment.GetEnvironmentVariable(connectionString)));
+options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
 
 #endif
 
