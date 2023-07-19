@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "apis1": {
-      "apiEndpoint": "https://xgoapimanagement.azure-api.net/XGO",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/xgoapimanagement/apis/xgo",
-      "type": "apis.azure"
-    }
-  }
-}

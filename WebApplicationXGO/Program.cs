@@ -17,9 +17,19 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<XGODbContext>(options =>
 #if DEBUG
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"), builder =>
+    {
+        builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+    })
 #else
-options.UseSqlServer(Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING"))
+//options.UseSqlServer(Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING"), builder =>
+        //{
+        //    builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+        //})
+options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"), builder =>
+        {
+            builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+        })
 
 #endif
     );
@@ -34,8 +44,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-app.UseSwagger();
-app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 //}
 
 app.UseHttpsRedirection();
@@ -44,8 +54,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using var scope = app.Services.CreateScope();
-await using var dbContext = scope.ServiceProvider.GetRequiredService<XGODbContext>();
-await dbContext.Database.MigrateAsync();
+//using var scope = app.Services.CreateScope();
+//await using var dbContext = scope.ServiceProvider.GetRequiredService<XGODbContext>();
+//await dbContext.Database.MigrateAsync();
 
 app.Run();

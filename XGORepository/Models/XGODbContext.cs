@@ -20,6 +20,10 @@ namespace XGORepository.Models
         #region Constructors
         public XGODbContext(DbContextOptions<XGODbContext> dbContextOptions) : base(dbContextOptions)
         {
+            if (Database.GetPendingMigrations().Any())
+            {
+                Database.Migrate();
+            }
         }
         //public XGODbContext(IConfiguration configuration)
         //{
