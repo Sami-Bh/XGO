@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 using XGORepository.Interfaces.RepositoriesInterfaces;
 using XGORepository.Models;
 using XGORepository.Models.Repositories;
@@ -6,6 +8,9 @@ using XGORepository.Models.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddMicrosoftIdentityWebApi(builder.Configuration);
+builder.Services.AddAuthorization();
 // Add services to the container.
 
 builder.Services.AddControllers();

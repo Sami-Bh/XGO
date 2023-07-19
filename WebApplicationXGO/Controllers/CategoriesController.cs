@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using XGOModels;
 using XGORepository.Interfaces.RepositoriesInterfaces;
 using XGORepository.Models.Repositories;
@@ -7,6 +8,7 @@ using XGORepository.Models.Repositories;
 
 namespace WebApplicationXGO.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
