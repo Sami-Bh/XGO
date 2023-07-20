@@ -1,4 +1,7 @@
-﻿namespace XGOMobile
+﻿using Microsoft.Maui.LifecycleEvents;
+using Microsoft.Identity.Client;
+
+namespace XGOMobile
 {
     public static class MauiProgram
     {
