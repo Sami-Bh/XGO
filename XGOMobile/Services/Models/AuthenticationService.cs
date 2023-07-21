@@ -27,23 +27,12 @@ namespace XGOMobile.Services.Models
         #region Constructors
         public AuthenticationService()
         {
+            _authenticationClient = PublicClientApplicationBuilder.Create(Constants.ApplicationId)
+            .WithRedirectUri($"msal{Constants.ApplicationId}://auth")
 #if ANDROID
-        _authenticationClient = PublicClientApplicationBuilder
-            .Create(Constants.ApplicationId)
-            .WithAuthority(AzureCloudInstance.AzurePublic, "common")
-            //.WithRedirectUri($"msal{Constants.ApplicationId}://auth")
-            .WithParentActivityOrWindow(() => Platform.CurrentActivity)
-            .Build();
-
-#else
-            _authenticationClient = PublicClientApplicationBuilder
-                .Create(Constants.ApplicationId)
-                                //.WithRedirectUri($"msal{Constants.ApplicationId}://auth")
-                                .WithRedirectUri("http://localhost")
-                                .Build();
-
-
+                        .WithParentActivityOrWindow(() => Platform.CurrentActivity)
 #endif
+            .Build();
         }
         #endregion
 
@@ -55,18 +44,11 @@ namespace XGOMobile.Services.Models
             try
             {
                 await _asyncLock.WaitAsync();
-                return await _authenticationClient
-                .AcquireTokenInteractive(Constants.Scopes)
-                .WithPrompt(Prompt.ForceLogin) //This is optional. If provided, on each execution, the username and the password must be entered.
-#if ANDROID
-
-                .WithParentActivityOrWindow(ParentWindow)
-#elif WINDOWS
-		.WithUseEmbeddedWebView(false)				
-#endif
-                .ExecuteAsync(cancellationToken);
-                //.GetAwaiter().GetResult();
-                //return result;
+                result = await _authenticationClient
+                    .AcquireTokenInteractive(Constants.Scopes)
+              .WithPrompt(Prompt.ForceLogin) //This is optional. If provided, on each execution, the username and the password must be entered.
+              .ExecuteAsync(cancellationToken);
+                return result;
             }
             finally
             {
@@ -75,6 +57,16 @@ namespace XGOMobile.Services.Models
             }
 
 
+        }
+
+        internal async Task<string> GetRefreshedTokenAsync()
+        {
+            var accounts = await _authenticationClient.GetAccountsAsync();
+            var result = await _authenticationClient
+                .AcquireTokenSilent(Constants.Scopes, accounts.FirstOrDefault())
+                .ExecuteAsync();
+
+            return result.AccessToken;
         }
         #endregion
     }
