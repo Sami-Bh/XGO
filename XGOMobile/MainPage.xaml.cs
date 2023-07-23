@@ -57,7 +57,7 @@ namespace XGOMobile
                 using (var webClient = new HttpClient())
                 {
                     webClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", newToken);
-                    var uri = "https://webapplicationxgo.azurewebsites.net/api/Categories/2";
+                    var uri = "https://webapplicationxgo.azurewebsites.net/api/Categories/1";
 
                     HttpResponseMessage response = await webClient.GetAsync(uri);
                     string responsestring = await response.Content.ReadAsStringAsync();

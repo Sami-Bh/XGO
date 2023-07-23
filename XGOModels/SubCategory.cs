@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace XGOModels
 {
-    public class Category : BaseModel
+    public class SubCategory : BaseModel
     {
         #region Fields
 
@@ -18,15 +17,10 @@ namespace XGOModels
         {
             get; set;
         }
-
-        public virtual ObservableCollection<SubCategory> SubCategories
-        {
-            get; set;
-        }
         #endregion
 
         #region Constructors
-        public Category() { }
+        public SubCategory() { }
         #endregion
 
         #region Methods

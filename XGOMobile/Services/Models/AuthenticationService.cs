@@ -28,9 +28,11 @@ namespace XGOMobile.Services.Models
         public AuthenticationService()
         {
             _authenticationClient = PublicClientApplicationBuilder.Create(Constants.ApplicationId)
-            .WithRedirectUri($"msal{Constants.ApplicationId}://auth")
 #if ANDROID
+            .WithRedirectUri($"msal{Constants.ApplicationId}://auth")
                         .WithParentActivityOrWindow(() => Platform.CurrentActivity)
+#elif WINDOWS
+.WithRedirectUri("http://localhost")
 #endif
             .Build();
         }

@@ -9,8 +9,8 @@ namespace XGORepository.Interfaces
 {
     public interface IRepositoryBase<T>
     {
-        Task<List<T>> FindAllAsync();
-        Task<IList<T>> FindByConditionAsync(Expression<Func<T, bool>> expression);
+        Task<List<T>> GetAllAsync();
+        Task<IList<T>> GetByConditionAsync(Expression<Func<T, bool>> expression);
         Task<T> CreateAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);

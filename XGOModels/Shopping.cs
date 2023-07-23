@@ -14,8 +14,8 @@ namespace XGOModels
         #endregion
 
         #region Properties
-        public ObservableCollection<ShoppedProduct> ShoppingProducts { get; set; }
-        public ObservableCollection<ShoppedProduct> PurchasedProducts { get; set; }
+        public virtual ObservableCollection<ShoppedProduct> ShoppingProducts { get; set; }
+        public virtual ObservableCollection<ShoppedProduct> PurchasedProducts { get; set; }
         #endregion
 
         #region Constructors

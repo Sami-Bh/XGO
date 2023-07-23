@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XGORepository.Models;
 
@@ -11,9 +12,11 @@ using XGORepository.Models;
 namespace XGORepository.Migrations
 {
     [DbContext(typeof(XGODbContext))]
-    partial class XGODbContextModelSnapshot : ModelSnapshot
+    [Migration("20230723134110_addPicturesTable")]
+    partial class addPicturesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +34,6 @@ namespace XGORepository.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -71,6 +73,9 @@ namespace XGORepository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ExtraProperties")
                         .HasColumnType("nvarchar(max)");
 
@@ -84,15 +89,9 @@ namespace XGORepository.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubCategoryId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SubCategoryId");
 
                     b.ToTable("Products");
                 });
@@ -141,44 +140,11 @@ namespace XGORepository.Migrations
                     b.ToTable("Shoppings");
                 });
 
-            modelBuilder.Entity("XGOModels.SubCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("SubCategory");
-                });
-
             modelBuilder.Entity("XGOModels.Picture", b =>
                 {
                     b.HasOne("XGOModels.Product", null)
                         .WithMany("Pictures")
                         .HasForeignKey("ProductId");
-                });
-
-            modelBuilder.Entity("XGOModels.Product", b =>
-                {
-                    b.HasOne("XGOModels.SubCategory", "SubCategory")
-                        .WithMany()
-                        .HasForeignKey("SubCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("XGOModels.ShoppedProduct", b =>
@@ -196,18 +162,6 @@ namespace XGORepository.Migrations
                         .HasForeignKey("ShoppingId1");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("XGOModels.SubCategory", b =>
-                {
-                    b.HasOne("XGOModels.Category", null)
-                        .WithMany("SubCategories")
-                        .HasForeignKey("CategoryId");
-                });
-
-            modelBuilder.Entity("XGOModels.Category", b =>
-                {
-                    b.Navigation("SubCategories");
                 });
 
             modelBuilder.Entity("XGOModels.Product", b =>

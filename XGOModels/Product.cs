@@ -17,11 +17,11 @@ namespace XGOModels
         #endregion
 
         #region Properties
-        public string? Category
+        public SubCategory SubCategory
         {
             get; set;
         }
-        public string? Name
+        public string Name
         {
             get; set;
         }
@@ -32,7 +32,7 @@ namespace XGOModels
         public bool IsProximity { get; set; }
         public bool IsHeavy { get; set; }
         public bool IsBulky { get; set; }
-        public ObservableCollection<Picture> Pictures
+        public virtual ObservableCollection<Picture> Pictures
         {
             get; set;
         }

@@ -1,0 +1,102 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using System.Text.Json;
+using XGOModels;
+using XGORepository.Interfaces;
+
+namespace WebApplicationXGO.Controllers
+{
+#if !DEBUG
+    [Authorize]
+#endif
+    [ApiController]
+    public class GenericController<T> : ControllerBase where T : BaseModel
+    {
+        protected IRepositoryBase<T> _repositoryService;
+
+        [HttpGet]
+        public async Task<T[]> Get()
+        {
+            var dbResult = await _repositoryService.GetAllAsync();
+            return dbResult.Any() ? dbResult.Select(x => x).ToArray() : Array.Empty<T>();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<string?>> Get(int id)
+        {
+            try
+            {
+                var cat = await _repositoryService.GetByConditionAsync(x => x.Id == id);
+                return cat.Any() ? Ok(cat.First()) : NotFound();
+            }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] T baseModel)
+        {
+            try
+            {
+                var cat = await _repositoryService.CreateAsync(baseModel);
+                return CreatedAtAction(nameof(Post), cat);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Put([FromBody] T baseModel)
+        {
+            try
+            {
+                var dbcategory = (await _repositoryService.GetByConditionAsync(x => x.Id == baseModel.Id)).FirstOrDefault();
+                if (dbcategory is null)
+                {
+                    return NoContent();
+                }
+                UpdatePropertiesExceptKey(dbcategory, baseModel);
+                await _repositoryService.UpdateAsync(dbcategory);
+                return Accepted();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        private void UpdatePropertiesExceptKey(T obj1, T obj2)
+        {
+            typeof(T).GetProperties().Where(x => !x.GetCustomAttributes().Any(ca => ca.GetType() == typeof(KeyAttribute)))
+                .ToList().ForEach(x =>
+                {
+                    x.SetValue(obj1, x.GetValue(obj2));
+                });
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                var category = (await _repositoryService.GetByConditionAsync(x => x.Id == id)).FirstOrDefault();
+                if (category is null)
+                {
+                    return NoContent();
+                }
+                await _repositoryService.DeleteAsync(category);
+                return Accepted();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+    }
+}

@@ -15,9 +15,12 @@ namespace XGORepository.Models
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Shopping> Shoppings { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
         #endregion
 
         #region Constructors
+        public XGODbContext() { }
+
         public XGODbContext(DbContextOptions<XGODbContext> dbContextOptions) : base(dbContextOptions)
         {
             if (Database.GetPendingMigrations().Any())
@@ -25,6 +28,7 @@ namespace XGORepository.Models
                 Database.Migrate();
             }
         }
+
         //public XGODbContext(IConfiguration configuration)
         //{
         //    _configuration = configuration;
@@ -32,17 +36,17 @@ namespace XGORepository.Models
         #endregion
 
         #region Methods
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            var connectionString = string.Empty;
-//#if DEBUG
-//            connectionString = "Data Source=LAPTOP-3USAUU6I\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Encrypt=False;Trust Server Certificate=True";
-//#else
-//            _configuration.GetConnectionString("azuredbConnectionstring");
+        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //        {
+        //            var connectionString = string.Empty;
+        //#if DEBUG
+        //            connectionString = "Data Source=LAPTOP-3USAUU6I\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Encrypt=False;Trust Server Certificate=True";
+        //#else
+        //            _configuration.GetConnectionString("azuredbConnectionstring");
 
-//#endif
-//            optionsBuilder.UseSqlServer(connectionString);
-//        }
+        //#endif
+        //            optionsBuilder.UseSqlServer(connectionString);
+        //        }
         #endregion
     }
 }

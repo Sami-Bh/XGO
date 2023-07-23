@@ -49,12 +49,12 @@ namespace XGORepository.Models
             await _xGODbContext.SaveChangesAsync();
         }
 
-        public async Task<List<T>> FindAllAsync()
+        public async Task<List<T>> GetAllAsync()
         {
             return await _xGODbContext.Set<T>().ToListAsync();
         }
 
-        public async Task<IList<T>> FindByConditionAsync(Expression<Func<T, bool>> expression)
+        public async Task<IList<T>> GetByConditionAsync(Expression<Func<T, bool>> expression)
         {
             return await _xGODbContext.Set<T>().Where(expression).ToListAsync();
         }
