@@ -14,8 +14,6 @@ namespace XGOMobile
     public partial class MainPage : ContentPage
     {
         int count = 0;
-        //public IPublicClientApplication IdentityClient { get; set; }
-        private readonly RemoteService _remoteService;
         private AuthenticationResult authenticationResult;
         AuthenticationService _authService;
 
@@ -31,53 +29,52 @@ namespace XGOMobile
             // _remoteService = new RemoteService(GetAuthenticationToken);
             Categorystring = "default text";
             InitializeComponent();
-            _authService.LoginAsync(CancellationToken.None)
-                .ContinueWith(result =>
-                {
-                    authenticationResult = result.Result;
+            //_authService.LoginAsync(CancellationToken.None)
+            //    .ContinueWith(result =>
+            //    {
+            //        authenticationResult = result.Result;
 
-                    AuthenticationToken = new AuthenticationToken
-                    {
-                        DisplayName = authenticationResult.Account.Username,
-                        ExpiresOn = authenticationResult.ExpiresOn,
-                        Token = authenticationResult.AccessToken,
-                        UserId = authenticationResult.TenantId
-                    };
+            //        AuthenticationToken = new AuthenticationToken
+            //        {
+            //            DisplayName = authenticationResult.Account.Username,
+            //            ExpiresOn = authenticationResult.ExpiresOn,
+            //            Token = authenticationResult.AccessToken,
+            //            UserId = authenticationResult.TenantId
+            //        };
 
 
-                });
+            //    });
         }
 
         private async void OnCounterClicked(object sender, EventArgs e)
         {
-            try
-            {
-                var newToken = await _authService.GetRefreshedTokenAsync();
+            //try
+            //{
+            //    var newToken = await _authService.GetRefreshedTokenAsync();
 
-                using (var webClient = new HttpClient())
-                {
-                    webClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", newToken);
-                    var uri = "https://webapplicationxgo.azurewebsites.net/api/Categories/1";
+            //    using (var webClient = new HttpClient())
+            //    {
+            //        webClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", newToken);
+            //        var uri = "https://webapplicationxgo.azurewebsites.net/api/Categories/1";
 
-                    HttpResponseMessage response = await webClient.GetAsync(uri);
-                    string responsestring = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string content = await response.Content.ReadAsStringAsync();
-                    }
-                    else
-                    {
+            //        HttpResponseMessage response = await webClient.GetAsync(uri);
+            //        string responsestring = await response.Content.ReadAsStringAsync();
+            //        if (response.IsSuccessStatusCode)
+            //        {
+            //            string content = await response.Content.ReadAsStringAsync();
+            //        }
+            //        else
+            //        {
 
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
 
-                throw;
-            }
-            //var token = GetAuthenticationToken().Result;
-            // _remoteService.GetCategory();
+            //    throw;
+            //}
+            
             count++;
 
             if (count == 1)

@@ -73,7 +73,7 @@ namespace WebApplicationXGO.Controllers
 
         private void UpdatePropertiesExceptKey(T obj1, T obj2)
         {
-            typeof(T).GetProperties().Where(x => !x.GetCustomAttributes().Any(ca => ca.GetType() == typeof(KeyAttribute)))
+            typeof(T).GetProperties().Where(x => !x.GetCustomAttributes().Any(ca => (ca is KeyAttribute)))
                 .ToList().ForEach(x =>
                 {
                     x.SetValue(obj1, x.GetValue(obj2));

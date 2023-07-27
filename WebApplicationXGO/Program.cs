@@ -17,24 +17,15 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<XGODbContext>(options =>
-#if DEBUG
     options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"), builder =>
     {
         builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-    })
-#else
-//options.UseSqlServer(Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING"), builder =>
-        //{
-        //    builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-        //})
-options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"), builder =>
-        {
-            builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-        })
+    }));
 
-#endif
-    );
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<ISubCategoryRepository, SubCategoryRepository>();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IPictureRepository, PictureRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

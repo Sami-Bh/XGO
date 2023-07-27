@@ -1,5 +1,9 @@
 ﻿using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Identity.Client;
+using Microsoft.Extensions.DependencyInjection;
+using XGOMobile.Services.Models;
+using XGOMobile.ViewModels;
+using XGOMobile.Views;
 
 namespace XGOMobile
 {
@@ -15,7 +19,11 @@ namespace XGOMobile
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
+            builder.Services.AddSingleton<AuthenticationService>();
+            builder.Services.AddSingleton<HttpUriBuilder>();
+            builder.Services.AddSingleton<HttpClientService>();
+            builder.Services.AddTransient<CategoriesViewModel>();
+            builder.Services.AddTransient<Categories>();
             return builder.Build();
         }
     }

@@ -4,11 +4,18 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:XGOMobile"
-    Shell.FlyoutBehavior="Disabled">
-
-    <ShellContent
+    xmlns:views="clr-namespace:XGOMobile.Views"
+    Shell.FlyoutItemIsVisible="False">
+    <!--  Shell.FlyoutBehavior="Disabled"  -->
+    <FlyoutItem Title="Configuration" FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Monkeys" ContentTemplate="{DataTemplate views:Categories}" />
+    </FlyoutItem>
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Cats" ContentTemplate="{DataTemplate local:MainPage}" />
+    </FlyoutItem>
+    <!--<ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="MainPage" />-->
 
 </Shell>

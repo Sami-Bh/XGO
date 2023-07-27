@@ -8,10 +8,7 @@ namespace XGOMobile.Data
 {
     public static class Constants
     {
-        /// <summary>
-        /// The base URI for the Datasync service.
-        /// </summary>
-        public const string ServiceUri = "https://webapplicationxgo.azurewebsites.net/";
+        
 
         /// <summary>
         /// The application (client) ID for the native app within Azure Active Directory
