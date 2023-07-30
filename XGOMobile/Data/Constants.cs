@@ -13,14 +13,14 @@ namespace XGOMobile.Data
         /// <summary>
         /// The application (client) ID for the native app within Azure Active Directory
         /// </summary>
-        public const string ApplicationId = "fdae8e39-c718-454b-83b6-e5a95c4a0d70";
+        public const string ApplicationId = "02dd389d-3eff-4921-b7ce-cf45c1c870b6";
 
         /// <summary>
         /// The list of scopes to request
         /// </summary>
         public static string[] Scopes = new[]
         {
-          "api://ad0ae6a9-7b4a-476f-ba32-83855d64f41d/access_as_user"
+          "api://402b4494-e045-4154-934c-ba2200a54dc0/access_as_user"
       };
     }
 }

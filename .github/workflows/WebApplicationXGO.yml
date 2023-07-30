@@ -19,8 +19,6 @@ env:
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 6.0.x
   WORKING_DIRECTORY: WebApplicationXGO
-  AZURE_SQL_CONNECTIONSTRING: ${{ secrets.AZURE_SQL_CONNECTIONSTRING }}
-
 jobs:
   build:
     runs-on: windows-latest
@@ -66,7 +64,7 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        publish-profile: ${{ secrets.WebApplicationXGO_E689 }}
+        publish-profile: ${{ secrets.WebApplicationXGO_1E1F }}
     - name: Azure Login
       uses: azure/login@v1
       with:
