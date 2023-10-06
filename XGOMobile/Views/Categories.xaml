@@ -3,15 +3,106 @@
     x:Class="XGOMobile.Views.Categories"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:XGOModels;assembly=XGOModels"
     xmlns:viewModels="clr-namespace:XGOMobile.ViewModels"
-    Title="Categories">
+    Title="Categories"
+    d:DataContext="viewModels:CategoriesViewModel"
+    mc:Ignorable="d">
+    <ContentPage.Resources />
+
     <!--<ContentPage.BindingContext>
         <viewModels:CategoriesViewModel />
     </ContentPage.BindingContext>-->
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ActivityIndicator
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsWorking}"
+            VerticalOptions="Fill" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Style="{StaticResource GroupTitle}" Text="Categories" />
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Entry
+                    Margin="5"
+                    Placeholder="category name"
+                    Text="{Binding NewCategoryName, Mode=TwoWay}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding AddCategoryCommand}"
+                    FontSize="Small"
+                    Text="Add Category" />
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding DeleteCategoryCommand}"
+                    FontSize="Small"
+                    Text="Delete Category" />
+            </Grid>
+
+            <ListView
+                Grid.Row="2"
+                ItemTemplate="{StaticResource CellDataTemplate}"
+                ItemsSource="{Binding Categories, Mode=TwoWay}"
+                SelectedItem="{Binding SelectedCategory}"
+                SelectionMode="Single" />
+        </Grid>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Style="{StaticResource GroupTitle}" Text="SubCategories" />
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Entry
+                    Margin="5"
+                    Placeholder="sub category name"
+                    Text="{Binding NewItemName, Mode=TwoWay}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding AddCategoryCommand}"
+                    FontSize="Small"
+                    Text="Add Category" />
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding DeleteCategoryCommand}"
+                    FontSize="Small"
+                    Text="Delete Category" />
+            </Grid>
+
+            <ListView
+                Grid.Row="2"
+                ItemTemplate="{StaticResource CellDataTemplate}"
+                ItemsSource="{Binding Categories, Mode=TwoWay}"
+                SelectedItem="{Binding SelectedCategory}"
+                SelectionMode="Single" />
+        </Grid>
+    </Grid>
 </ContentPage>

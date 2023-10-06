@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.Json;
 using XGOModels;
@@ -98,6 +99,11 @@ namespace WebApplicationXGO.Controllers
             {
                 return StatusCode(500);
             }
+        }
+
+        protected Task<IList<T>> GetByConditionAsync(Expression<Func<T,bool>> condition)
+        {
+            return _repositoryService.GetByConditionAsync(condition);
         }
     }
 }

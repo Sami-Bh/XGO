@@ -66,7 +66,11 @@ namespace XGOMobile.Services.Models
         }
 
         private string GetFinalUri() => _finalUri;
-        public string GetServiceURI(ApplicationModules applicationModules) => AddApiBaseUri().AddApi().AddSlash().AddControllerName(applicationModules).GetFinalUri();
+        public string GetServiceURI(ApplicationModules applicationModules)
+        {
+            _finalUri = string.Empty;
+            return AddApiBaseUri().AddApi().AddSlash().AddControllerName(applicationModules).GetFinalUri();
+        }
         #endregion
     }
 }

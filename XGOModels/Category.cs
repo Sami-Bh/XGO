@@ -26,7 +26,11 @@ namespace XGOModels
         #endregion
 
         #region Constructors
-        public Category() { }
+        public Category()
+        {
+            Name = string.Empty;
+            SubCategories = new ObservableCollection<SubCategory>();
+        }
         #endregion
 
         #region Methods

@@ -16,7 +16,7 @@ namespace XGORepository.Models
         #endregion
 
         #region Properties
-
+        protected XGODbContext dbContext => _xGODbContext;
         #endregion
 
         #region Constructors

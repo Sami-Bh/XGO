@@ -10,9 +10,26 @@ namespace WebApplicationXGO.Controllers
     [ApiController]
     public class SubCategoriesController : GenericController<SubCategory>
     {
-        public SubCategoriesController(ISubCategoryRepository subCategoriesRepository)
+        private readonly ICategoryRepository _categoryRepository;
+
+        public SubCategoriesController(ISubCategoryRepository subCategoriesRepository, ICategoryRepository categoryRepository)
         {
             _repositoryService = subCategoriesRepository;
+            _categoryRepository = categoryRepository;
+        }
+
+        [HttpGet("{categoryId}")]
+        public async Task<ActionResult> GetByCategoryIdAsync(int categoryId)
+        {
+            try
+            {
+                var aze = await _categoryRepository.GetSubCategories(categoryId);
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace XGOModels.Extras
         /// <summary>
         /// The base URI for the Datasync service.
         /// </summary>
-        public const string ServiceUri = "https://webapplicationxgo.azurewebsites.net/";
+        public const string ServiceUri = "https://xgoams.azure-api.net/";
         
         public const string Api = "api";
         public const string Categories = "Categories";

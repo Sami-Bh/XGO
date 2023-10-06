@@ -22,8 +22,10 @@ namespace XGOMobile
             builder.Services.AddSingleton<AuthenticationService>();
             builder.Services.AddSingleton<HttpUriBuilder>();
             builder.Services.AddSingleton<HttpClientService>();
+            builder.Services.AddSingleton<MessagingService>();
             builder.Services.AddTransient<CategoriesViewModel>();
-            builder.Services.AddTransient<Categories>();
+            builder.Services.AddScoped<Categories>();
+
             return builder.Build();
         }
     }
