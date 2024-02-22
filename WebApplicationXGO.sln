@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
@@ -9,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XGOModels", "XGOModels\XGOM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XGORepository", "XGORepository\XGORepository.csproj", "{19B659A8-45F6-415D-A74A-F92BB5E55138}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGOMobile", "XGOMobile\XGOMobile.csproj", "{8A93F9CF-6354-4011-BE53-89C8DA38FAB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XGOMobile", "XGOMobile\XGOMobile.csproj", "{8A93F9CF-6354-4011-BE53-89C8DA38FAB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

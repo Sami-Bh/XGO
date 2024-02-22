@@ -18,18 +18,18 @@ namespace WebApplicationXGO.Controllers
             _categoryRepository = categoryRepository;
         }
 
-        [HttpGet("{categoryId}")]
-        public async Task<ActionResult> GetByCategoryIdAsync(int categoryId)
-        {
-            try
-            {
-                var aze = await _categoryRepository.GetSubCategories(categoryId);
+        //[HttpGet("{categoryId}")]
+        //public async Task<ActionResult> GetByCategoryIdAsync(int categoryId)
+        //{
+        //    try
+        //    {
+        //        var aze = await _categoryRepository.GetSubCategories(categoryId);
 
-            }
-            catch (Exception)
-            {
-                return StatusCode(500);
-            }
-        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return StatusCode(500);
+        //    }
+        //}
     }
 }
