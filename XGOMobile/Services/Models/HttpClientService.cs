@@ -27,9 +27,15 @@ namespace XGOMobile.Services.Models
         #region Methods
         public async Task<HttpClient> GetWebClient()
         {
+#if AUTHENTICATIONREQUIRED
             var authentifactionToken = await _authenticationService.GetToken();
+
+#endif
             var httpClient = new HttpClient();
+#if AUTHENTICATIONREQUIRED
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authentifactionToken.Token);
+            
+#endif
             return httpClient;
         }
         #endregion

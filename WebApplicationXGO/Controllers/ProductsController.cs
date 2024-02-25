@@ -7,11 +7,7 @@ using XGORepository.Interfaces.RepositoriesInterfaces;
 namespace WebApplicationXGO.Controllers
 {
     [Route($"{ModulesConstants.Api} /{ModulesConstants.Products}")]
-    public class ProductsController : GenericController<Product>
+    public class ProductsController(IProductRepository productRepository) : GenericController<Product>(productRepository)
     {
-        public ProductsController(IProductRepository productRepository)
-        {
-            _repositoryService = productRepository;
-        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApplicationXGO.Services.Interfaces;
 using XGOModels;
 using XGOModels.Extras;
 using XGORepository.Interfaces.RepositoriesInterfaces;
@@ -8,28 +9,27 @@ namespace WebApplicationXGO.Controllers
 {
     [Route($"{ModulesConstants.Api}/{ModulesConstants.SubCategories}")]
     [ApiController]
-    public class SubCategoriesController : GenericController<SubCategory>
+    public class SubCategoriesController(ISubCategoryRepository subCategoriesRepository, ISubCategoryUnitOfWork subCategoryUnitOfWork) : GenericController<SubCategory>(subCategoriesRepository)
     {
-        private readonly ICategoryRepository _categoryRepository;
 
-        public SubCategoriesController(ISubCategoryRepository subCategoriesRepository, ICategoryRepository categoryRepository)
-        {
-            _repositoryService = subCategoriesRepository;
-            _categoryRepository = categoryRepository;
-        }
-
-        //[HttpGet("{categoryId}")]
-        //public async Task<ActionResult> GetByCategoryIdAsync(int categoryId)
+        //public SubCategoriesController(ISubCategoryRepository subCategoriesRepository)
         //{
-        //    try
-        //    {
-        //        var aze = await _categoryRepository.GetSubCategories(categoryId);
-
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return StatusCode(500);
-        //    }
+        //    _repositoryService = subCategoriesRepository;
         //}
+
+        [HttpGet("GetByCategoryId/{categoryId}")]
+        
+        public async Task<ActionResult<SubCategory[]>> GetByCategoryIdAsync(int categoryId)
+        {
+            try
+            {
+                return Ok(await subCategoryUnitOfWork.GetSubCategoriesByCategoryIdAsync(categoryId));
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
     }
 }

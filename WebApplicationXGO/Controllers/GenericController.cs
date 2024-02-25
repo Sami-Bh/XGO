@@ -13,14 +13,26 @@ namespace WebApplicationXGO.Controllers
     [Authorize]
 #endif
     [ApiController]
-    public class GenericController<T> : ControllerBase where T : BaseModel
+    public class GenericController<T>(IRepositoryBase<T> repositoryService) : ControllerBase where T : BaseModel
     {
-        protected IRepositoryBase<T> _repositoryService;
+        #region Fields
+        protected IRepositoryBase<T> RepositoryService => repositoryService;
 
+        #endregion
+
+        #region Properties
+
+        #endregion
+
+        #region Constructors
+        //public GenericController() { }
+        #endregion
+
+        #region Methods
         [HttpGet]
         public async Task<T[]> Get()
         {
-            var dbResult = await _repositoryService.GetAllAsync();
+            var dbResult = await RepositoryService.GetAllAsync();
             return dbResult.Any() ? dbResult.Select(x => x).ToArray() : Array.Empty<T>();
         }
 
@@ -29,7 +41,7 @@ namespace WebApplicationXGO.Controllers
         {
             try
             {
-                var cat = await _repositoryService.GetByConditionAsync(x => x.Id == id);
+                var cat = await RepositoryService.GetByConditionAsync(x => x.Id == id);
                 return cat.Any() ? Ok(cat.First()) : NotFound();
             }
             catch (Exception e)
@@ -43,7 +55,7 @@ namespace WebApplicationXGO.Controllers
         {
             try
             {
-                var cat = await _repositoryService.CreateAsync(baseModel);
+                var cat = await RepositoryService.CreateAsync(baseModel);
                 return CreatedAtAction(nameof(Post), cat);
             }
             catch (Exception e)
@@ -57,13 +69,13 @@ namespace WebApplicationXGO.Controllers
         {
             try
             {
-                var dbcategory = (await _repositoryService.GetByConditionAsync(x => x.Id == baseModel.Id)).FirstOrDefault();
+                var dbcategory = (await RepositoryService.GetByConditionAsync(x => x.Id == baseModel.Id)).FirstOrDefault();
                 if (dbcategory is null)
                 {
                     return NoContent();
                 }
                 UpdatePropertiesExceptKey(dbcategory, baseModel);
-                await _repositoryService.UpdateAsync(dbcategory);
+                await RepositoryService.UpdateAsync(dbcategory);
                 return Accepted();
             }
             catch (Exception e)
@@ -87,12 +99,12 @@ namespace WebApplicationXGO.Controllers
         {
             try
             {
-                var category = (await _repositoryService.GetByConditionAsync(x => x.Id == id)).FirstOrDefault();
+                var category = (await RepositoryService.GetByConditionAsync(x => x.Id == id)).FirstOrDefault();
                 if (category is null)
                 {
                     return NoContent();
                 }
-                await _repositoryService.DeleteAsync(category);
+                await RepositoryService.DeleteAsync(category);
                 return Accepted();
             }
             catch (Exception)
@@ -101,9 +113,10 @@ namespace WebApplicationXGO.Controllers
             }
         }
 
-        protected Task<IList<T>> GetByConditionAsync(Expression<Func<T,bool>> condition)
+        protected Task<IList<T>> GetByConditionAsync(Expression<Func<T, bool>> condition)
         {
-            return _repositoryService.GetByConditionAsync(condition);
+            return RepositoryService.GetByConditionAsync(condition);
         }
+        #endregion
     }
 }

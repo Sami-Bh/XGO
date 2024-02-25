@@ -11,6 +11,7 @@ namespace XGORepository.Interfaces
     {
         Task<List<T>> GetAllAsync();
         Task<IList<T>> GetByConditionAsync(Expression<Func<T, bool>> expression);
+        IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression);
         Task<T> CreateAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using WebApplicationXGO.Services.Implementations;
+using WebApplicationXGO.Services.Interfaces;
 using XGORepository.Interfaces.RepositoriesInterfaces;
 using XGORepository.Models;
 using XGORepository.Models.Repositories;
@@ -32,6 +34,7 @@ options.UseSqlServer(Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTR
 #endif
     );
 
+builder.Services.AddTransient<ISubCategoryUnitOfWork, SubCategoryUnitOfWork>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();

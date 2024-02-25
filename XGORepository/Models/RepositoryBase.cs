@@ -1,10 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using XGORepository.Interfaces;
 
 namespace XGORepository.Models
@@ -59,12 +54,15 @@ namespace XGORepository.Models
             return await _xGODbContext.Set<T>().Where(expression).ToListAsync();
         }
 
+        public IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression)
+        {
+            return _xGODbContext.Set<T>().Where(expression);
+        }
         public async Task UpdateAsync(T entity)
         {
             _xGODbContext.Set<T>().Update(entity);
             await _xGODbContext.SaveChangesAsync();
         }
-
         #endregion
 
     }

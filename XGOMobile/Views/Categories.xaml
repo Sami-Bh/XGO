@@ -20,6 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <ActivityIndicator
             Grid.Row="0"
@@ -27,7 +28,7 @@
             HorizontalOptions="Fill"
             IsRunning="{Binding IsWorking}"
             VerticalOptions="Fill" />
-        <Grid>
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -66,7 +67,7 @@
                 SelectionMode="Single" />
         </Grid>
 
-        <Grid>
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />

@@ -10,11 +10,8 @@ using XGORepository.Models.Repositories;
 namespace WebApplicationXGO.Controllers
 {
     [Route($"{ModulesConstants.Api}/{ModulesConstants.Categories}")]
-    public class CategoriesController : GenericController<Category>
+    public class CategoriesController(ICategoryRepository categoryRepository) : GenericController<Category>(categoryRepository)
     {
-        public CategoriesController(ICategoryRepository categoryRepository)
-        {
-            _repositoryService = categoryRepository;
-        }
+
     }
 }

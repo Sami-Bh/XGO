@@ -7,11 +7,8 @@ using XGORepository.Interfaces.RepositoriesInterfaces;
 namespace WebApplicationXGO.Controllers
 {
     [Route($"{ModulesConstants.Api}/{ModulesConstants.Pictures}")]
-    public class PicturesController : GenericController<Picture>
+    public class PicturesController(IPictureRepository picturesRepository) : GenericController<Picture>(picturesRepository)
     {
-        public PicturesController(IPictureRepository picturesRepository)
-        {
-            _repositoryService = picturesRepository;
-        }
+       
     }
 }
