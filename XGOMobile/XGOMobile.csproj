@@ -57,6 +57,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.2" />
 	  <PackageReference Include="Microsoft.Datasync.Client" Version="5.1.6" />
 	  <PackageReference Include="Microsoft.Identity.Client" Version="4.54.1" />
 	</ItemGroup>
@@ -86,6 +87,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\Categories.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Products.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

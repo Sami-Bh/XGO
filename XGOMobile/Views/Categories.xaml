@@ -9,6 +9,7 @@
     xmlns:viewModels="clr-namespace:XGOMobile.ViewModels"
     Title="Categories"
     d:DataContext="viewModels:CategoriesViewModel"
+    x:DataType="viewModels:CategoriesViewModel"
     mc:Ignorable="d">
     <ContentPage.Resources />
 
@@ -20,15 +21,13 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
         </Grid.RowDefinitions>
         <ActivityIndicator
-            Grid.Row="0"
             Grid.RowSpan="2"
-            HorizontalOptions="Fill"
+            HorizontalOptions="CenterAndExpand"
             IsRunning="{Binding IsWorking}"
-            VerticalOptions="Fill" />
-        <Grid Grid.Row="1">
+            VerticalOptions="CenterAndExpand" />
+        <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -67,7 +66,7 @@
                 SelectionMode="Single" />
         </Grid>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -85,15 +84,15 @@
                 <Entry
                     Margin="5"
                     Placeholder="sub category name"
-                    Text="{Binding NewItemName, Mode=TwoWay}" />
+                    Text="{Binding NewSubCategoryName, Mode=TwoWay}" />
                 <Button
                     Grid.Column="1"
-                    Command="{Binding AddCategoryCommand}"
+                    Command="{Binding AddSubCategoryCommand}"
                     FontSize="Small"
                     Text="Add Category" />
                 <Button
                     Grid.Column="2"
-                    Command="{Binding DeleteCategoryCommand}"
+                    Command="{Binding DeteSubCategoryCommand}"
                     FontSize="Small"
                     Text="Delete Category" />
             </Grid>
@@ -101,8 +100,8 @@
             <ListView
                 Grid.Row="2"
                 ItemTemplate="{StaticResource CellDataTemplate}"
-                ItemsSource="{Binding Categories, Mode=TwoWay}"
-                SelectedItem="{Binding SelectedCategory}"
+                ItemsSource="{Binding SubCategories, Mode=TwoWay}"
+                SelectedItem="{Binding SelectedSubCategory}"
                 SelectionMode="Single" />
         </Grid>
     </Grid>

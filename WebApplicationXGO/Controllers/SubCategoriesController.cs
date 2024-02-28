@@ -4,6 +4,7 @@ using WebApplicationXGO.Services.Interfaces;
 using XGOModels;
 using XGOModels.Extras;
 using XGORepository.Interfaces.RepositoriesInterfaces;
+using XGOUtilities.Extensions;
 
 namespace WebApplicationXGO.Controllers
 {
@@ -11,22 +12,33 @@ namespace WebApplicationXGO.Controllers
     [ApiController]
     public class SubCategoriesController(ISubCategoryRepository subCategoriesRepository, ISubCategoryUnitOfWork subCategoryUnitOfWork) : GenericController<SubCategory>(subCategoriesRepository)
     {
+        [HttpGet($"{ActionConstants.GetByCategoryId}")]
 
-        //public SubCategoriesController(ISubCategoryRepository subCategoriesRepository)
-        //{
-        //    _repositoryService = subCategoriesRepository;
-        //}
-
-        [HttpGet("GetByCategoryId/{categoryId}")]
-        
-        public async Task<ActionResult<SubCategory[]>> GetByCategoryIdAsync(int categoryId)
+        public async Task<ActionResult<SubCategory[]>> GetByCategoryIdAsync(int id)
         {
             try
             {
-                return Ok(await subCategoryUnitOfWork.GetSubCategoriesByCategoryIdAsync(categoryId));
+                return Ok(await subCategoryUnitOfWork.GetSubCategoriesByCategoryIdAsync(id));
 
             }
             catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPost($"{ActionConstants.Create}")]
+        public async Task<ActionResult<SubCategory>> Create(int categoryId, [FromBody] SubCategory subCategory)
+        {
+            try
+            {
+                if (categoryId <= 0 || subCategory is null)
+                {
+                    return BadRequest();
+                }
+                return CreatedAtAction(nameof(Create), await subCategoriesRepository.CreateAsync(categoryId, subCategory));
+            }
+            catch (Exception e)
             {
                 return StatusCode(500);
             }

@@ -8,9 +8,11 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.AspNetCore.WebUtilities;
 using XGOMobile.Services.Models;
 using XGOModels;
 using XGOModels.Extras;
+using XGOUtilities.Constants;
 
 namespace XGOMobile.ViewModels
 {
@@ -23,13 +25,17 @@ namespace XGOMobile.ViewModels
         private readonly MessagingService _messagingService;
         private List<Category> _Categories;
         private List<SubCategory> _SubCategories;
-        private string _NewItemName;
+        private string _NewCategoryName;
+        private string _NewSubCAtegoryName;
+
         private Category _SelectedCategory;
+        private SubCategory _SelectedSubCategory;
 
         private bool _isWorking;
         private ICommand _AddCategoryCommand;
         private ICommand _AddSubCategoryCommand;
         private ICommand _DeleteCategoryCommand;
+        private ICommand _DeteSubCategoryCommand;
 
         #endregion
 
@@ -45,11 +51,21 @@ namespace XGOMobile.ViewModels
         }
         public string NewCategoryName
         {
-            get { return _NewItemName; }
+            get { return _NewCategoryName; }
             set
             {
-                _NewItemName = value;
+                _NewCategoryName = value;
                 OnPropertyChanged(nameof(NewCategoryName));
+            }
+        }
+
+        public string NewSubCategoryName
+        {
+            get { return _NewSubCAtegoryName; }
+            set
+            {
+                _NewSubCAtegoryName = value;
+                OnPropertyChanged(nameof(NewSubCategoryName));
             }
         }
         public List<Category> Categories
@@ -69,6 +85,8 @@ namespace XGOMobile.ViewModels
             {
                 _SelectedCategory = value;
                 OnPropertyChanged(nameof(SelectedCategory));
+                if (value != null) { GetSubCategoriesByCategory(); }
+
             }
         }
         public List<SubCategory> SubCategories
@@ -81,19 +99,22 @@ namespace XGOMobile.ViewModels
             }
         }
 
-        public ICommand AddCategoryCommand { get { return _AddCategoryCommand ??= new Command(() => AddCategoryAsync(null));  } }
-        public ICommand DeleteCategoryCommand { get { return _DeleteCategoryCommand ??= new Command(() => DeleteCategoryAsync(null)); } }
-
-        public ICommand AddSubCategoryCommand { get { return _AddSubCategoryCommand ??= new Command(() => AddSubCategoryAsync(null)); } }
-        private async Task AddSubCategoryAsync(object obj)
+        public SubCategory SelectedSubCategory
         {
+            get { return _SelectedSubCategory; }
+            set
+            {
+                _SelectedSubCategory = value;
+                OnPropertyChanged(nameof(SelectedSubCategory));
+            }
         }
 
-        private ICommand _DeteSubCategoryCommand;
-        public ICommand DeteSubCategoryCommand { get { return _DeteSubCategoryCommand ??= new Command(() => DeteSubCategoryAsync(null)); } }
-        private async Task DeteSubCategoryAsync(object obj)
-        {
-        }
+        public ICommand AddCategoryCommand { get { return _AddCategoryCommand ??= new Command(async () => await AddCategoryAsync(null)); } }
+        public ICommand DeleteCategoryCommand { get { return _DeleteCategoryCommand ??= new Command(async () => await DeleteCategoryAsync(null)); } }
+
+        public ICommand AddSubCategoryCommand { get { return _AddSubCategoryCommand ??= new Command(async () => await AddSubCategoryAsync(null)); } }
+
+        public ICommand DeteSubCategoryCommand { get { return _DeteSubCategoryCommand ??= new Command(async () => await DeteSubCategoryAsync(null)); } }
 
         #endregion
 
@@ -113,24 +134,21 @@ namespace XGOMobile.ViewModels
         public async Task RefreshPageDataAsync()
         {
             NewCategoryName = string.Empty;
+            NewSubCategoryName = string.Empty;
+            Categories = [];
+            SubCategories = [];
+
             await GetCategoriesAsync().ContinueWith(res =>
             {
                 IsWorking = false;
                 Categories = new List<Category>(res.Result);
-            }); ;
+            });
         }
-        private async Task<List<Category>> GetCategoriesAsync()
+        private async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
             IsWorking = true;
             var categoriesUri = _httpUriBuilder.GetServiceURI(ApplicationModules.Categories);
-            using var httpClient = await _httpClientService.GetWebClient();
-            var httpResponseMessage = await httpClient.GetAsync(categoriesUri);
-            if (httpResponseMessage.IsSuccessStatusCode)
-            {
-                return (await httpResponseMessage.Content.ReadFromJsonAsync<Category[]>()).ToList();
-            }
-            await _messagingService.ShowMessage("An error occured");
-            return new List<Category>();
+            return await GetObjectAsync<Category>(categoriesUri);
         }
 
         private async Task AddCategoryAsync(object obj)
@@ -156,26 +174,113 @@ namespace XGOMobile.ViewModels
 
             await _messagingService.ShowMessage($"An error occured {httpResponseMessage.StatusCode}");
         }
-        private void AddSubCategory(object obj)
-        {
-        }
+
         private async Task DeleteCategoryAsync(object obj)
         {
-            IsWorking = true;
+            await Delete(ApplicationModules.Categories, SelectedCategory.Id);
 
-            var categoriesUri = _httpUriBuilder.GetServiceURI(ApplicationModules.Categories);
-            using var httpClient = await _httpClientService.GetWebClient();
-            var httpResponseMessage = await httpClient.DeleteAsync($"{categoriesUri}/{SelectedCategory.Id}");
-            if (httpResponseMessage.IsSuccessStatusCode)
-            {
-                await RefreshPageDataAsync();
-                return;
-            }
-            IsWorking = false;
-
-            await _messagingService.ShowMessage($"An error occured {httpResponseMessage.StatusCode}");
         }
 
+        private async Task DeteSubCategoryAsync(object obj)
+        {
+            await Delete(ApplicationModules.SubCategories, SelectedSubCategory.Id);
+        }
+
+        private async Task Delete(ApplicationModules applicationModules, int objectId)
+        {
+            try
+            {
+                IsWorking = true;
+                var categoriesUri = _httpUriBuilder.GetServiceURI(applicationModules, (ParametersConstants.Id, objectId.ToString()));
+
+                if (await DeleteObjectAsync(categoriesUri))
+                {
+                    await RefreshPageDataAsync();
+                }
+                else
+                {
+                    await _messagingService.ShowMessage($"An error occured");
+                }
+            }
+            finally
+            {
+                IsWorking = false;
+            }
+        }
+
+        private async Task AddSubCategoryAsync(object obj)
+        {
+
+            if (string.IsNullOrWhiteSpace(NewSubCategoryName))
+            {
+                await _messagingService.ShowMessage("Sub Category name cannot be empty");
+                return;
+            }
+            if (SelectedCategory is null)
+            {
+                await _messagingService.ShowMessage("Category name cannot be empty");
+                return;
+            }
+
+            try
+            {
+                IsWorking = true;
+
+                var newSubCategory = new SubCategory { Name = NewSubCategoryName };
+                var subCategoriesUri = _httpUriBuilder.GetServiceURI(ApplicationModules.SubCategories, ApplicationActions.Create, (ParametersConstants.CategoryId, SelectedCategory.Id.ToString()));
+
+
+                using var httpClient = await _httpClientService.GetWebClient();
+                var httpResponseMessage = await httpClient.PostAsJsonAsync(subCategoriesUri, newSubCategory);
+
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+
+                    await RefreshPageDataAsync();
+                    return;
+                }
+
+                await _messagingService.ShowMessage($"An error occured {httpResponseMessage.StatusCode}");
+            }
+            finally
+            {
+                IsWorking = false;
+
+            }
+        }
+
+        private async Task GetSubCategoriesByCategory()
+        {
+            IsWorking = true;
+            var categoriesUri = _httpUriBuilder.GetServiceURI(ApplicationModules.SubCategories, ApplicationActions.GetByCategoryId, (ParametersConstants.Id, SelectedCategory.Id.ToString()));
+
+            var subCategories = await GetObjectAsync<SubCategory>(categoriesUri);
+            SubCategories = subCategories.ToList();
+            IsWorking = false;
+        }
+
+
+        private async Task<IEnumerable<T>> GetObjectAsync<T>(string uri)
+        {
+            using var httpClient = await _httpClientService.GetWebClient();
+
+            var httpResponseMessage = await httpClient.GetAsync(uri);
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                return await httpResponseMessage.Content.ReadFromJsonAsync<T[]>();
+            }
+            await _messagingService.ShowMessage("An error occured");
+            return [];
+        }
+
+        private async Task<bool> DeleteObjectAsync(string uri)
+        {
+            using var httpClient = await _httpClientService.GetWebClient();
+
+            var httpResponseMessage = await httpClient.DeleteAsync(uri);
+
+            return httpResponseMessage.IsSuccessStatusCode;
+        }
         #endregion
     }
 }

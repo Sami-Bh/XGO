@@ -7,7 +7,8 @@ using XGOModels;
 
 namespace XGORepository.Interfaces.RepositoriesInterfaces
 {
-    public interface ISubCategoryRepository :  IRepositoryBase<SubCategory>
+    public interface ISubCategoryRepository : IRepositoryBase<SubCategory>
     {
+        Task<SubCategory> CreateAsync(int categoryId, SubCategory subCategory);
     }
 }

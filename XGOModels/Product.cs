@@ -41,7 +41,7 @@ namespace XGOModels
         #region Constructors
         public Product()
         {
-            Pictures = new ObservableCollection<Picture>();
+            Pictures = [];
         }
         #endregion
 

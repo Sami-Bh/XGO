@@ -9,17 +9,13 @@ using XGORepository.Interfaces.RepositoriesInterfaces;
 
 namespace XGORepository.Models.Repositories
 {
-    public class CategoryRepository : RepositoryBase<Category>, ICategoryRepository
+    public class CategoryRepository(XGODbContext xGODbContext) : RepositoryBase<Category>(xGODbContext), ICategoryRepository
     {
-        public CategoryRepository(XGODbContext xGODbContext) : base(xGODbContext)
-        {
-        }
-
         public async Task<IList<SubCategory>> GetSubCategories(int categoryId)
         {
-            var dbCategory = await dbContext.Categories.Include(x => x.SubCategories).FirstOrDefaultAsync(x => x.Id == categoryId);
+            var dbCategory = await DbContext.Categories.Include(x => x.SubCategories).FirstOrDefaultAsync(x => x.Id == categoryId);
 
-            return dbCategory is null ? new List<SubCategory>() { } : dbCategory.SubCategories.ToList();
+            return dbCategory is null ? [] : dbCategory.SubCategories.ToList();
         }
     }
 }

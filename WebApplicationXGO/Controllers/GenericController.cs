@@ -69,13 +69,13 @@ namespace WebApplicationXGO.Controllers
         {
             try
             {
-                var dbcategory = (await RepositoryService.GetByConditionAsync(x => x.Id == baseModel.Id)).FirstOrDefault();
-                if (dbcategory is null)
-                {
-                    return NoContent();
-                }
-                UpdatePropertiesExceptKey(dbcategory, baseModel);
-                await RepositoryService.UpdateAsync(dbcategory);
+                //var dbcategory = (await RepositoryService.GetByConditionAsync(x => x.Id == baseModel.Id)).FirstOrDefault();
+                //if (dbcategory is null)
+                //{
+                //    return NoContent();
+                //}
+                //UpdatePropertiesExceptKey(dbcategory, baseModel);
+                await RepositoryService.UpdateAsync(baseModel);
                 return Accepted();
             }
             catch (Exception e)
@@ -94,7 +94,7 @@ namespace WebApplicationXGO.Controllers
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
             try

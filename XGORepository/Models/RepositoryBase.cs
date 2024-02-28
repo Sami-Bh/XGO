@@ -11,7 +11,7 @@ namespace XGORepository.Models
         #endregion
 
         #region Properties
-        protected XGODbContext dbContext => _xGODbContext;
+        protected XGODbContext DbContext => _xGODbContext;
         #endregion
 
         #region Constructors
@@ -46,7 +46,7 @@ namespace XGORepository.Models
 
         public async Task<List<T>> GetAllAsync()
         {
-            return await _xGODbContext.Set<T>().ToListAsync();
+            return await _xGODbContext.Set<T>()/*.AsNoTracking()*/.ToListAsync();
         }
 
         public async Task<IList<T>> GetByConditionAsync(Expression<Func<T, bool>> expression)
@@ -60,6 +60,7 @@ namespace XGORepository.Models
         }
         public async Task UpdateAsync(T entity)
         {
+            //_xGODbContext.Entry(entity).State = EntityState.Modified;
             _xGODbContext.Set<T>().Update(entity);
             await _xGODbContext.SaveChangesAsync();
         }

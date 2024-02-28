@@ -5,7 +5,7 @@ using XGORepository.Interfaces.RepositoriesInterfaces;
 
 namespace WebApplicationXGO.Services.Implementations
 {
-    public class SubCategoryUnitOfWork(ICategoryRepository categoryRepository) : ISubCategoryUnitOfWork
+    public class SubCategoryUnitOfWork(ICategoryRepository categoryRepository,ISubCategoryRepository subCategoryRepository) : ISubCategoryUnitOfWork
     {
 
         public async Task<IEnumerable<SubCategory>> GetSubCategoriesByCategoryIdAsync(int categoryId)

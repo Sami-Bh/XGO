@@ -8,7 +8,7 @@
     Shell.FlyoutItemIsVisible="False">
     <!--  Shell.FlyoutBehavior="Disabled"  -->
     <FlyoutItem Title="Configuration" FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent Title="Monkeys" ContentTemplate="{DataTemplate views:Categories}" />
+        <ShellContent Title="Categories" ContentTemplate="{DataTemplate views:Categories}" />
     </FlyoutItem>
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Cats" ContentTemplate="{DataTemplate local:MainPage}" />
