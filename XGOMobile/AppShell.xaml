@@ -9,8 +9,10 @@
     <!--  Shell.FlyoutBehavior="Disabled"  -->
     <FlyoutItem Title="Configuration" FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Categories" ContentTemplate="{DataTemplate views:Categories}" />
+        <ShellContent Title="Products" ContentTemplate="{DataTemplate views:Products}" />
+
     </FlyoutItem>
-    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+    <FlyoutItem Title="Main page" FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Cats" ContentTemplate="{DataTemplate local:MainPage}" />
     </FlyoutItem>
     <!--<ShellContent

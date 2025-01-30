@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -18,7 +19,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x=>x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddDbContext<XGODbContext>(options =>
 #if DEBUG
@@ -35,12 +36,13 @@ options.UseSqlServer(Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTR
 #endif
     );
 
-builder.Services.AddTransient<ISubCategoryUnitOfWork, SubCategoryUnitOfWork>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IPictureRepository, PictureRepository>();
-
+builder.Services.AddTransient<ISubCategoryUnitOfWork, SubCategoryUnitOfWork>();
+builder.Services.AddTransient<ICategoryUnitOfWork, CategoryUnitOfWork>();
+builder.Services.AddTransient<IProductUnitOfWork, ProductUnitOfWork>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

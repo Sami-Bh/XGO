@@ -30,10 +30,10 @@ namespace WebApplicationXGO.Controllers
 
         #region Methods
         [HttpGet]
-        public async Task<T[]> Get()
+        public virtual async Task<ActionResult<T[]>> Get()
         {
             var dbResult = await RepositoryService.GetAllAsync();
-            return dbResult.Any() ? dbResult.Select(x => x).ToArray() : Array.Empty<T>();
+            return Ok(dbResult.Any() ? dbResult.Select(x => x).ToArray() : Array.Empty<T>());
         }
 
         [HttpGet("{id}")]

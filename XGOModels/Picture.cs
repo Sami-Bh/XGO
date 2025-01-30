@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace XGOModels
@@ -18,10 +19,19 @@ namespace XGOModels
         {
             get; set;
         }
+
+        public int ProductId { get; set; }
+
+        public Product? Product { get; set; } 
+
+
         #endregion
 
         #region Constructors
-        public Picture() { }
+        public Picture()
+        {
+            Product = null!;
+        }
         #endregion
 
         #region Methods

@@ -4,6 +4,7 @@ using WebApplicationXGO.Services.Interfaces;
 using XGOModels;
 using XGOModels.Extras;
 using XGORepository.Interfaces.RepositoriesInterfaces;
+using XGOUtilities.Constants;
 using XGOUtilities.Extensions;
 
 namespace WebApplicationXGO.Controllers
@@ -12,7 +13,7 @@ namespace WebApplicationXGO.Controllers
     [ApiController]
     public class SubCategoriesController(ISubCategoryRepository subCategoriesRepository, ISubCategoryUnitOfWork subCategoryUnitOfWork) : GenericController<SubCategory>(subCategoriesRepository)
     {
-        [HttpGet($"{ActionConstants.GetByCategoryId}")]
+        [HttpGet($"{ControllerActions.GetByCategoryId}")]
 
         public async Task<ActionResult<SubCategory[]>> GetByCategoryIdAsync(int id)
         {
@@ -27,7 +28,7 @@ namespace WebApplicationXGO.Controllers
             }
         }
 
-        [HttpPost($"{ActionConstants.Create}")]
+        [HttpPost($"{ControllerActions.Create}")]
         public async Task<ActionResult<SubCategory>> Create(int categoryId, [FromBody] SubCategory subCategory)
         {
             try
@@ -40,6 +41,24 @@ namespace WebApplicationXGO.Controllers
             }
             catch (Exception e)
             {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet($"{ControllerActions.GetProducts}")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync(int id)
+        {
+            try
+            {
+                if (id <= 0)
+                {
+                    return BadRequest();
+                }
+                return Ok(await subCategoryUnitOfWork.GetProducts(id));
+            }
+            catch (Exception)
+            {
+
                 return StatusCode(500);
             }
         }

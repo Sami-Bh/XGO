@@ -64,8 +64,10 @@ namespace XGOMobile.Services.Models
 
             var moduleStringToAdd = applicationAction switch
             {
-                ApplicationActions.GetByCategoryId => ActionConstants.GetByCategoryId,
-                ApplicationActions.Create => ActionConstants.Create,
+                ApplicationActions.GetByCategoryId => ControllerActions.GetByCategoryId,
+                ApplicationActions.Create => ControllerActions.Create,
+                ApplicationActions.GetProducts => ControllerActions.GetProducts,
+                ApplicationActions.GetCategoriesIncludeSubCategories => ControllerActions.GetCategoriesIncludeSubCategories,
                 _ => throw new InvalidDataException("unknown application module"),
             };
 

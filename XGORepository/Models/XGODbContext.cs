@@ -36,17 +36,17 @@ namespace XGORepository.Models
         #endregion
 
         #region Methods
-        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //        {
-        //            var connectionString = string.Empty;
-        //#if DEBUG
-        //            connectionString = "Data Source=LAPTOP-3USAUU6I\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Encrypt=False;Trust Server Certificate=True";
-        //#else
-        //            _configuration.GetConnectionString("azuredbConnectionstring");
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var connectionString = string.Empty;
+#if DEBUG
+            connectionString = "Data Source=PHP287\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True";
+#else
+                    _configuration.GetConnectionString("azuredbConnectionstring");
 
-        //#endif
-        //            optionsBuilder.UseSqlServer(connectionString);
-        //        }
+#endif
+            optionsBuilder.UseSqlServer(connectionString);
+        }
         #endregion
     }
 }

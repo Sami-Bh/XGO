@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace XGOModels
@@ -17,10 +18,6 @@ namespace XGOModels
         #endregion
 
         #region Properties
-        public SubCategory SubCategory
-        {
-            get; set;
-        }
         public string Name
         {
             get; set;
@@ -32,16 +29,23 @@ namespace XGOModels
         public bool IsProximity { get; set; }
         public bool IsHeavy { get; set; }
         public bool IsBulky { get; set; }
-        public virtual ObservableCollection<Picture> Pictures
+        public virtual ICollection<Picture> Pictures
         {
             get; set;
         }
+
+        public int SubCategoryId { get; set; } // Required foreign key property
+
+       
+        public SubCategory? SubCategory { get; set; } // Required reference navigation to principal
         #endregion
 
         #region Constructors
         public Product()
         {
+            Name = string.Empty;
             Pictures = [];
+            SubCategory = null!;
         }
         #endregion
 

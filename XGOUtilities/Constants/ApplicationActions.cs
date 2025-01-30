@@ -9,6 +9,8 @@ namespace XGOUtilities.Constants
     public enum ApplicationActions
     {
         GetByCategoryId,
-        Create
+        Create,
+        GetProducts,
+        GetCategoriesIncludeSubCategories,
     }
 }

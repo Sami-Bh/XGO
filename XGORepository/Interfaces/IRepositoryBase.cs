@@ -15,5 +15,6 @@ namespace XGORepository.Interfaces
         Task<T> CreateAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
+        IQueryable<T> Include<P>(Expression<Func<T, P>> navigationPropertyPath) where P : class;
     }
 }

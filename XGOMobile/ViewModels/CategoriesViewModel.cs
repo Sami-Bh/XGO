@@ -23,6 +23,7 @@ namespace XGOMobile.ViewModels
         private readonly HttpUriBuilder _httpUriBuilder;
         private readonly HttpClientService _httpClientService;
         private readonly MessagingService _messagingService;
+        private readonly HttpClientServiceHelper _httpClientServiceHelper;
         private List<Category> _Categories;
         private List<SubCategory> _SubCategories;
         private string _NewCategoryName;
@@ -119,12 +120,13 @@ namespace XGOMobile.ViewModels
         #endregion
 
         #region Constructors
-        public CategoriesViewModel(AuthenticationService authenticationService, HttpUriBuilder httpUriBuilder, HttpClientService httpClientService, MessagingService messagingService)
+        public CategoriesViewModel(AuthenticationService authenticationService, HttpUriBuilder httpUriBuilder, HttpClientService httpClientService, MessagingService messagingService, HttpClientServiceHelper httpClientServiceHelper)
         {
             _authenticationService = authenticationService;
             _httpUriBuilder = httpUriBuilder;
             _httpClientService = httpClientService;
             _messagingService = messagingService;
+            _httpClientServiceHelper = httpClientServiceHelper;
             RefreshPageDataAsync();
         }
         //public CategoriesViewModel() { }
@@ -148,7 +150,7 @@ namespace XGOMobile.ViewModels
         {
             IsWorking = true;
             var categoriesUri = _httpUriBuilder.GetServiceURI(ApplicationModules.Categories);
-            return await GetObjectAsync<Category>(categoriesUri);
+            return await _httpClientServiceHelper.GetObjectAsync<Category>(categoriesUri);
         }
 
         private async Task AddCategoryAsync(object obj)
@@ -193,7 +195,7 @@ namespace XGOMobile.ViewModels
                 IsWorking = true;
                 var categoriesUri = _httpUriBuilder.GetServiceURI(applicationModules, (ParametersConstants.Id, objectId.ToString()));
 
-                if (await DeleteObjectAsync(categoriesUri))
+                if (await _httpClientServiceHelper.DeleteObjectAsync(categoriesUri))
                 {
                     await RefreshPageDataAsync();
                 }
@@ -254,33 +256,13 @@ namespace XGOMobile.ViewModels
             IsWorking = true;
             var categoriesUri = _httpUriBuilder.GetServiceURI(ApplicationModules.SubCategories, ApplicationActions.GetByCategoryId, (ParametersConstants.Id, SelectedCategory.Id.ToString()));
 
-            var subCategories = await GetObjectAsync<SubCategory>(categoriesUri);
+            var subCategories = await _httpClientServiceHelper.GetObjectAsync<SubCategory>(categoriesUri);
             SubCategories = subCategories.ToList();
             IsWorking = false;
         }
 
 
-        private async Task<IEnumerable<T>> GetObjectAsync<T>(string uri)
-        {
-            using var httpClient = await _httpClientService.GetWebClient();
 
-            var httpResponseMessage = await httpClient.GetAsync(uri);
-            if (httpResponseMessage.IsSuccessStatusCode)
-            {
-                return await httpResponseMessage.Content.ReadFromJsonAsync<T[]>();
-            }
-            await _messagingService.ShowMessage("An error occured");
-            return [];
-        }
-
-        private async Task<bool> DeleteObjectAsync(string uri)
-        {
-            using var httpClient = await _httpClientService.GetWebClient();
-
-            var httpResponseMessage = await httpClient.DeleteAsync(uri);
-
-            return httpResponseMessage.IsSuccessStatusCode;
-        }
         #endregion
     }
 }

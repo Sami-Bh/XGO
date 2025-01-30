@@ -4,7 +4,7 @@ using XGORepository.Interfaces;
 
 namespace XGORepository.Models
 {
-    public class RepositoryBase<T> : IRepositoryBase<T> where T : class
+    public class RepositoryBase<T> : IRepositoryBase<T> where T : class 
     {
         #region Fields
         private readonly XGODbContext _xGODbContext;
@@ -24,17 +24,9 @@ namespace XGORepository.Models
         #region Methods
         public async Task<T> CreateAsync(T entity)
         {
-            try
-            {
                 var newEntity = await _xGODbContext.Set<T>().AddAsync(entity);
                 await _xGODbContext.SaveChangesAsync();
-                return entity;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+                return entity;           
 
         }
 
@@ -52,6 +44,11 @@ namespace XGORepository.Models
         public async Task<IList<T>> GetByConditionAsync(Expression<Func<T, bool>> expression)
         {
             return await _xGODbContext.Set<T>().Where(expression).ToListAsync();
+        }
+
+        public IQueryable<T> Include<P>(Expression<Func<T, P>> navigationPropertyPath) where P : class
+        {
+            return _xGODbContext.Set<T>().Include(navigationPropertyPath: navigationPropertyPath);
         }
 
         public IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression)

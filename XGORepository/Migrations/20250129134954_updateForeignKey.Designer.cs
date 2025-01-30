@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XGORepository.Models;
 
@@ -11,9 +12,11 @@ using XGORepository.Models;
 namespace XGORepository.Migrations
 {
     [DbContext(typeof(XGODbContext))]
-    partial class XGODbContextModelSnapshot : ModelSnapshot
+    [Migration("20250129134954_updateForeignKey")]
+    partial class updateForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

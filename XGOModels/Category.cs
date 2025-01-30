@@ -19,7 +19,7 @@ namespace XGOModels
             get; set;
         }
 
-        public virtual ObservableCollection<SubCategory> SubCategories
+        public virtual ICollection<SubCategory> SubCategories
         {
             get; set;
         }
@@ -29,7 +29,7 @@ namespace XGOModels
         public Category()
         {
             Name = string.Empty;
-            SubCategories = new ObservableCollection<SubCategory>();
+            SubCategories = [];
         }
         #endregion
 
