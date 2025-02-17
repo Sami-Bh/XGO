@@ -33,7 +33,7 @@
                 SelectedItem="{Binding SelectedCategory}" />
             <Picker
                 ItemDisplayBinding="{Binding Name}"
-                ItemsSource="{Binding SelectedCategory.SubCategories}"
+                ItemsSource="{Binding Subcategories}"
                 MinimumWidthRequest="150"
                 SelectedItem="{Binding SelectedSubcategory}" />
             <HorizontalStackLayout Margin="10">

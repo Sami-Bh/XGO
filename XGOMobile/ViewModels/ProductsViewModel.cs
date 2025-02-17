@@ -43,7 +43,8 @@ namespace XGOMobile.ViewModels
             {
                 _SelectedCategory = value;
                 OnPropertyChanged(nameof(SelectedCategory));
-                SelectedSubcategory = SelectedCategory.SubCategories.FirstOrDefault();
+                Subcategories = SelectedCategory.SubCategories.ToList();
+
             }
         }
         public List<Category> Categories
@@ -53,9 +54,12 @@ namespace XGOMobile.ViewModels
             {
                 _Categories = value;
                 OnPropertyChanged(nameof(Categories));
-                SelectedCategory = Categories.FirstOrDefault();
             }
         }
+
+        /// <summary>
+        /// this is used for create/update product 
+        /// </summary>
         public Product NewProduct
         {
             get { return _NewProduct; }
@@ -87,7 +91,9 @@ namespace XGOMobile.ViewModels
                 {
                     NewProduct = SelectedProduct;
                     SelectedCategory = Categories.FirstOrDefault(x => x.Id == SelectedProduct.SubCategory.CategoryId);
-                    SelectedSubcategory = SelectedCategory.SubCategories.FirstOrDefault(x => x.Id == SelectedProduct.SubCategory.Id);
+
+
+                    SelectedSubcategory = Subcategories.FirstOrDefault(x => x.Id == SelectedProduct.SubCategory.Id);
                 }
             }
         }
@@ -100,7 +106,6 @@ namespace XGOMobile.ViewModels
             {
                 _Subcategories = value;
                 OnPropertyChanged(nameof(Subcategories));
-                SelectedSubcategory = Subcategories.FirstOrDefault();
             }
         }
         public SubCategory SelectedSubcategory
