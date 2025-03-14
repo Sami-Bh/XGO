@@ -94,15 +94,15 @@ namespace WebApplicationXGO.Controllers
 
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete( int id)
         {
             try
             {
                 var category = (await RepositoryService.GetByConditionAsync(x => x.Id == id)).FirstOrDefault();
                 if (category is null)
                 {
-                    return NoContent();
+                    return NotFound();
                 }
                 await RepositoryService.DeleteAsync(category);
                 return Accepted();

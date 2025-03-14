@@ -20,7 +20,7 @@ builder.Services.AddAuthorization();
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(x=>x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
+builder.Services.AddCors();
 builder.Services.AddDbContext<XGODbContext>(options =>
 #if DEBUG
     options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"), builder =>
@@ -75,6 +75,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
