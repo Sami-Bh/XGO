@@ -13,6 +13,7 @@ namespace XGORepository.Models
 
         #region Properties
         public DbSet<Category> Categories { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Shopping> Shoppings { get; set; }
         public DbSet<Picture> Pictures { get; set; }
@@ -23,10 +24,7 @@ namespace XGORepository.Models
 
         public XGODbContext(DbContextOptions<XGODbContext> dbContextOptions) : base(dbContextOptions)
         {
-            if (Database.GetPendingMigrations().Any())
-            {
-                Database.Migrate();
-            }
+            
         }
 
         //public XGODbContext(IConfiguration configuration)

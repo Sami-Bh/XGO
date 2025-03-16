@@ -6,8 +6,6 @@ export default function CategoriesDashboard() {
     const navigate = useNavigate();
 
     const handleCreate = () => {
-        // categorystore.unselect();
-        // categorystore.setCreateOrEdit(true);
         navigate("/categories/new");
     }
     return (

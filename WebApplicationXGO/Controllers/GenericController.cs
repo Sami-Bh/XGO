@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Application.Core;
+using Application.CQRS.Generic.Commands;
+using Application.CQRS.Generic.Queries;
+using Application.DTOs;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
@@ -13,11 +18,14 @@ namespace WebApplicationXGO.Controllers
     [Authorize]
 #endif
     [ApiController]
-    public class GenericController<T>(IRepositoryBase<T> repositoryService) : ControllerBase where T : BaseModel
+    public class GenericController<dbT, dtoT>() : ControllerBase where dbT : BaseModel where dtoT : BaseDto
     {
         #region Fields
-        protected IRepositoryBase<T> RepositoryService => repositoryService;
+        private ILogger? _logger;
+        protected ILogger Logger => _logger ??= HttpContext.RequestServices.GetService<ILogger>() ?? throw new InvalidOperationException(nameof(Logger));
 
+        private IMediator? _mediator;
+        public IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>() ?? throw new InvalidOperationException(nameof(Mediator));
         #endregion
 
         #region Properties
@@ -25,98 +33,128 @@ namespace WebApplicationXGO.Controllers
         #endregion
 
         #region Constructors
-        //public GenericController() { }
         #endregion
 
         #region Methods
-        [HttpGet]
-        public virtual async Task<ActionResult<T[]>> Get()
+        protected ActionResult HandleResult<T>(Result<T> result)
         {
-            var dbResult = await RepositoryService.GetAllAsync();
-            return Ok(dbResult.Any() ? dbResult.Select(x => x).ToArray() : Array.Empty<T>());
+            if (result.IsValid && result.Value is not null)
+            {
+                return Ok(result.Value);
+            }
+
+            if (result.ErrorCode == 404) return NotFound();
+
+            return BadRequest(result.ErrorMessage);
+        }
+
+        [HttpGet]
+        public virtual async Task<ActionResult> Get()
+        {
+            var result = await Mediator.Send(new GetIList<dbT, dtoT>.Query());
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<string?>> Get(int id)
+        public virtual async Task<ActionResult> Get(int id)
         {
-            try
-            {
-                var cat = await RepositoryService.GetByConditionAsync(x => x.Id == id);
-                return cat.Any() ? Ok(cat.First()) : NotFound();
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
+
+            var result = await Mediator.Send(new GetItem<dbT, dtoT>.Query() { Id = id });
+            return HandleResult(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] T baseModel)
+        public virtual async Task<ActionResult> Post([FromBody] dtoT dto)
         {
-            try
-            {
-                var cat = await RepositoryService.CreateAsync(baseModel);
-                return CreatedAtAction(nameof(Post), cat);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500);
-            }
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> Put([FromBody] T baseModel)
-        {
-            try
-            {
-                //var dbcategory = (await RepositoryService.GetByConditionAsync(x => x.Id == baseModel.Id)).FirstOrDefault();
-                //if (dbcategory is null)
-                //{
-                //    return NoContent();
-                //}
-                //UpdatePropertiesExceptKey(dbcategory, baseModel);
-                await RepositoryService.UpdateAsync(baseModel);
-                return Accepted();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500);
-            }
-        }
-
-        private void UpdatePropertiesExceptKey(T obj1, T obj2)
-        {
-            typeof(T).GetProperties().Where(x => !x.GetCustomAttributes().Any(ca => (ca is KeyAttribute)))
-                .ToList().ForEach(x =>
-                {
-                    x.SetValue(obj1, x.GetValue(obj2));
-                });
-
+            return HandleResult(await Mediator.Send(new CreateItem<dbT, dtoT>.Command() { Dto = dto }));
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete( int id)
+        public virtual async Task<ActionResult> Delete(int id)
         {
-            try
-            {
-                var category = (await RepositoryService.GetByConditionAsync(x => x.Id == id)).FirstOrDefault();
-                if (category is null)
-                {
-                    return NotFound();
-                }
-                await RepositoryService.DeleteAsync(category);
-                return Accepted();
-            }
-            catch (Exception)
-            {
-                return StatusCode(500);
-            }
+
+            var result = await Mediator.Send(new DeleteItem<dbT, dtoT>.Command() { Id = id });
+            return HandleResult(result);
         }
 
-        protected Task<IList<T>> GetByConditionAsync(Expression<Func<T, bool>> condition)
+        [HttpPut]
+        public async Task<ActionResult> Put([FromBody] dtoT dto)
         {
-            return RepositoryService.GetByConditionAsync(condition);
+            var result = await Mediator.Send(new EditItem<dbT, dtoT>.Command() { Dto = dto });
+            return HandleResult(result);
         }
+
+        #region Old Code
+        //[HttpPost]
+        //public async Task<ActionResult<int>> Post([FromBody] T baseModel)
+        //{
+        //    try
+        //    {
+        //        var cat = await RepositoryService.CreateAsync(baseModel);
+        //        return Ok(cat.Id);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Logger.LogError(e, nameof(Post));
+
+        //        return StatusCode(500);
+        //    }
+        //}
+
+        //[HttpPut]
+        //public async Task<ActionResult> Put([FromBody] T baseModel)
+        //{
+        //    try
+        //    {
+        //        //var dbcategory = (await RepositoryService.GetByConditionAsync(x => x.Id == baseModel.Id)).FirstOrDefault();
+        //        //if (dbcategory is null)
+        //        //{
+        //        //    return NoContent();
+        //        //}
+        //        //UpdatePropertiesExceptKey(dbcategory, baseModel);
+        //        await RepositoryService.UpdateAsync(baseModel);
+        //        return Accepted();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(500);
+        //    }
+        //}
+
+        //private void UpdatePropertiesExceptKey(T obj1, T obj2)
+        //{
+        //    typeof(T).GetProperties().Where(x => !x.GetCustomAttributes().Any(ca => (ca is KeyAttribute)))
+        //        .ToList().ForEach(x =>
+        //        {
+        //            x.SetValue(obj1, x.GetValue(obj2));
+        //        });
+
+        //}
+
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult> Delete(int id)
+        //{
+        //    try
+        //    {
+        //        var category = (await RepositoryService.GetByConditionAsync(x => x.Id == id)).FirstOrDefault();
+        //        if (category is null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        await RepositoryService.DeleteAsync(category);
+        //        return Accepted();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return StatusCode(500);
+        //    }
+        //}
+
+        //protected Task<IList<T>> GetByConditionAsync(Expression<Func<T, bool>> condition)
+        //{
+        //    return RepositoryService.GetByConditionAsync(condition);
+        //}
+        #endregion
         #endregion
     }
 }

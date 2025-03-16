@@ -7,7 +7,7 @@ import Home from '../app/features/home/Home';
 function App() {
   const { pathname } = useLocation();
   return (
-    <Box sx={{ background: "lightgrey" }}>
+    <Box sx={{ background: "lightgrey", minHeight: "100vh" }}>
       <CssBaseline />
       {(pathname === '') ?
         <Home /> :

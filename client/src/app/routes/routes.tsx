@@ -3,6 +3,8 @@ import App from "../../assets/App";
 import { Home } from "@mui/icons-material";
 import CategoriesDashboard from "../features/categories/CategoriesDashboard";
 import CategoryDetails from "../features/categories/CategoryDetails";
+import SubCategoryDashboard from "../features/subcategories/SubCategoryDashboard";
+import SubCategoryDetails from "../features/subcategories/SubCategoryDetails";
 
 export const router = createBrowserRouter([
     {
@@ -27,11 +29,20 @@ export const router = createBrowserRouter([
                     },
                 ]
             },
-
-            // {
-            //     path: `/categories/:id`,
-            //     element: <CategoriesDashboard />,
-            // },
+            {
+                path: "/subcategories/:categoryId",
+                element: <SubCategoryDashboard />,
+                children: [
+                    {
+                        path: "new",
+                        element: <SubCategoryDetails key="create" />,
+                    },
+                    {
+                        path: ":id",
+                        element: <SubCategoryDetails key="edit" />,
+                    },
+                ]
+            },
         ]
     }
 ]);

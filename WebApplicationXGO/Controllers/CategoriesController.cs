@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Application.CQRS.Generic.Queries;
+using Application.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplicationXGO.Services.Interfaces;
 using XGOModels;
@@ -12,19 +14,12 @@ using XGOUtilities.Constants;
 namespace WebApplicationXGO.Controllers
 {
     [Route($"{ModulesConstants.Api}/{ModulesConstants.Categories}")]
-    public class CategoriesController(ICategoryRepository categoryRepository, ICategoryUnitOfWork categoryUnitOfWork) : GenericController<Category>(categoryRepository)
+    public class CategoriesController() : GenericController<Category, CategoryDto>()
     {
-        [HttpGet($"{ControllerActions.GetCategoriesIncludeSubCategories}")]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategoriesIncludeSubCategoriesAsync()
+        public async override Task<ActionResult> Get(int id)
         {
-            try
-            {
-                return Ok(await categoryUnitOfWork.GetCategoriesWithSubCategoriesAsync());
-            }
-            catch 
-            {
-                return StatusCode(500);
-            }
+            return HandleResult(await Mediator.Send(new GetCategoryDetails.Query { Id = id }));
         }
+
     }
 }

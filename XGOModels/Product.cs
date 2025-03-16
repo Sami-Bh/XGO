@@ -44,7 +44,7 @@ namespace XGOModels
         public Product()
         {
             Name = string.Empty;
-            Pictures = [];
+            Pictures = new List<Picture>();
             SubCategory = null!;
         }
         #endregion

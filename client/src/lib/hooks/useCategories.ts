@@ -33,7 +33,8 @@ function useCategories(id?: number) {
 
     const createCategory = useMutation({
         mutationFn: async (category: Category) => {
-            await agent.post("/Categories", category);
+            const response = await agent.post("/Categories", category);
+            return response.data;
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["GetCategories"] });

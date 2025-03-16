@@ -6,9 +6,9 @@ using XGORepository.Interfaces.RepositoriesInterfaces;
 
 namespace WebApplicationXGO.Controllers
 {
-    [Route($"{ModulesConstants.Api}/{ModulesConstants.Pictures}")]
-    public class PicturesController(IPictureRepository picturesRepository) : GenericController<Picture>(picturesRepository)
-    {
+    //[Route($"{ModulesConstants.Api}/{ModulesConstants.Pictures}")]
+    //public class PicturesController(IPictureRepository picturesRepository) : GenericController<Picture>(picturesRepository)
+    //{
        
-    }
+    //}
 }

@@ -30,20 +30,24 @@ const CategoryDetails = observer(function CategoryDetails() {
     const OnSubmitForm = async (data: CategorySchema) => {
         const dataToSend = { ...category, ...data, };
         if (selectedCategoryId) {
-            await updateCategory.mutateAsync(dataToSend as unknown as Category).then(() => {
+            await updateCategory.mutateAsync(dataToSend as unknown as Category, {
+                onSuccess: () => { goBackToDashBoard(); }
             });
 
         } else {
-            await createCategory.mutateAsync(dataToSend as unknown as Category).then(() => {
+            await createCategory.mutateAsync(dataToSend as unknown as Category, {
+                onSuccess: (id) => {
+                    navigate(`/categories/${id}`);
+
+                }
             });
         }
-        goBackToDashBoard();
     }
 
     const handleDelete = async () => {
 
-        await deleteCategory.mutateAsync(Number(selectedCategoryId)).then(() => {
-            goBackToDashBoard();
+        await deleteCategory.mutateAsync(Number(selectedCategoryId), {
+            onSuccess: () => { goBackToDashBoard(); }
         });
     }
 
@@ -66,7 +70,7 @@ const CategoryDetails = observer(function CategoryDetails() {
 
                     <CardContent>
                         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
-                            {!!category && <Button onClick={() => handleDelete()} variant="contained" size="small" color="error">Delete</Button>}
+                            {!!category && <Button disabled={category.hasChildren} onClick={() => handleDelete()} variant="contained" size="small" color="error">Delete</Button>}
                             {!category && <Button onClick={() => goBackToDashBoard()} variant="contained" size="small" color="inherit">Cancel</Button>}
                             <Button type='submit' variant="contained" size="small" color="primary">
                                 {buttonName}

@@ -1,12 +1,13 @@
 using System.Text.Json.Serialization;
+using Application.CQRS.Generic.Queries;
+using Application.MappingProfiles;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
-using Microsoft.OpenApi.Models;
-using WebApplicationXGO.Controllers;
 using WebApplicationXGO.Services.Implementations;
 using WebApplicationXGO.Services.Interfaces;
+using XGOModels;
+using XGORepository;
 using XGORepository.Interfaces.RepositoriesInterfaces;
 using XGORepository.Models;
 using XGORepository.Models.Repositories;
@@ -19,7 +20,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 // Add services to the container.
 
-builder.Services.AddControllers().AddJsonOptions(x=>x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddCors();
 builder.Services.AddDbContext<XGODbContext>(options =>
 #if DEBUG
@@ -44,6 +45,13 @@ builder.Services.AddTransient<ISubCategoryUnitOfWork, SubCategoryUnitOfWork>();
 builder.Services.AddTransient<ICategoryUnitOfWork, CategoryUnitOfWork>();
 builder.Services.AddTransient<IProductUnitOfWork, ProductUnitOfWork>();
 
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterGenericHandlers = true;
+    cfg.RegisterServicesFromAssemblies(typeof(GetIList<,>).Assembly, typeof(BaseModel).Assembly);
+});
+
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -79,11 +87,11 @@ var app = builder.Build();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-app.UseSwagger();
-app.UseSwaggerUI();
-//}
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 #if !DEBUG
@@ -93,9 +101,19 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+using var scope = app.Services.CreateScope();
+var serviceProvider = scope.ServiceProvider;
+try
+{
+    await using var dbContext = serviceProvider.GetRequiredService<XGODbContext>();
+    await dbContext.Database.MigrateAsync();
+    await DBInitializer.SeedDataAsync(dbContext);
+}
+catch (Exception e)
+{
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogError(e, "Error occured during migration");
+}
 
-//using var scope = app.Services.CreateScope();
-//await using var dbContext = scope.ServiceProvider.GetRequiredService<XGODbContext>();
-//await dbContext.Database.MigrateAsync();
 
 app.Run();
