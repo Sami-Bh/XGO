@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
+import { categoriesUri } from "../../app/routes/routesconsts";
 
 function useCategories(id?: number) {
     const queryClient = useQueryClient();
@@ -24,7 +25,7 @@ function useCategories(id?: number) {
 
     const updateCategory = useMutation({
         mutationFn: async (category: Category) => {
-            await agent.put("/Categories", category);
+            await agent.put(categoriesUri, category);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["GetCategories"] });
@@ -33,7 +34,7 @@ function useCategories(id?: number) {
 
     const createCategory = useMutation({
         mutationFn: async (category: Category) => {
-            const response = await agent.post("/Categories", category);
+            const response = await agent.post(categoriesUri, category);
             return response.data;
         },
         onSuccess: () => {
@@ -43,10 +44,10 @@ function useCategories(id?: number) {
 
     const deleteCategory = useMutation({
         mutationFn: async (id: number) => {
-            await agent.delete(`/Categories/${id}`);
+            await agent.delete(`${categoriesUri}/${id}`);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["GetCategories"] });
+            queryClient.invalidateQueries({ queryKey: ["GetCategories"], exact: true });
         },
         onError: (error) => {
             console.log(error);

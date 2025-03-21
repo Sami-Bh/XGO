@@ -19,7 +19,7 @@ namespace Application.CQRS.Generic.Queries
             public async Task<IList<dtoT>> Handle(Query request, CancellationToken cancellationToken)
             {
 
-                var dbResult = await dbContext.Set<dbT>().AsNoTracking().ToListAsync(cancellationToken);
+                var dbResult = await dbContext.Set<dbT>().AsNoTracking().OrderByDescending(x=>x.Id).ToListAsync(cancellationToken);
                 return dbResult.Select(x => mapper.Map<dtoT>(x)).ToList();
             }
         }

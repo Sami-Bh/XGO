@@ -2,6 +2,7 @@ import { AppBar, Box, Container, MenuItem, Toolbar, Typography } from "@mui/mate
 import MenuIcon from '@mui/icons-material/Menu';
 import StoreIcon from '@mui/icons-material/Store';
 import { NavLink } from "react-router";
+import { categoriesUri, productsUri } from "../routes/routesconsts";
 export default function Navbar() {
     return (
 
@@ -20,9 +21,11 @@ export default function Navbar() {
                             </MenuItem>
                         </Box>
                         <Box sx={{ display: "flex" }}>
-                            <MenuItem component={NavLink} to="/categories">Categories</MenuItem>
-                            <MenuItem component={NavLink} to="/categories">SubCategories</MenuItem>
-                            <MenuItem component={NavLink} to="/categories">Products</MenuItem>
+                            <MenuItem component={NavLink} to={categoriesUri}>Categories</MenuItem>
+
+                            <MenuItem component={NavLink} to={productsUri}>Products</MenuItem>
+                            {/* <MenuItem component={NavLink} to="/categories">SubCategories</MenuItem>
+                            <MenuItem component={NavLink} to="/categories">Products</MenuItem> */}
                         </Box>
                         <Box></Box>
                     </Toolbar>

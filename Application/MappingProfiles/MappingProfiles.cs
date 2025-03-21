@@ -15,6 +15,8 @@ namespace Application.MappingProfiles
                                 .ForMember(dest => dest.HasChildren, opt => opt.MapFrom(source => source.Products.Any()));
 
             CreateMap<SubCategoryDto, SubCategory>();
+            CreateMap<Product, ProductDto>();
+            CreateMap<ProductDto, Product>();
         }
     }
 }

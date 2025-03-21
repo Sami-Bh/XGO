@@ -10,7 +10,7 @@ export default function SubCategoryCard({ subCategory }: Props) {
         <Card elevation={1} >
             <CardContent>
                 <Typography variant="h4" component="div"><Link
-                    to={`/categories/${subCategory.categoryId}/${subCategory.id}`}>{subCategory.name}
+                    to={`/subcategories/${subCategory.categoryId}/${subCategory.id}`}>{subCategory.name}
                 </Link>
                 </Typography>
                 <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>

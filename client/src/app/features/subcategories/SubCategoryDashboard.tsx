@@ -24,7 +24,7 @@ export default function SubCategoryDashboard() {
             <Button
               sx={{ width: "fit-content", alignSelf: "end", mb: 2 }}
               color='success' variant='contained'
-              onClick={() => handleCreate()} ><AddIcon /> Create Category</Button>
+              onClick={() => handleCreate()} ><AddIcon /> Create Sub Category</Button>
             <Outlet />
           </Box>
         </Grid2>

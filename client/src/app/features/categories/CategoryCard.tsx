@@ -1,13 +1,14 @@
 import { Box, Button, Card, CardContent, Divider, Typography } from "@mui/material";
 
 import { Link, useNavigate } from "react-router";
+import { subcategoriesUri } from "../../routes/routesconsts";
 type Props = {
     category: Category
 }
 export default function CategoryCard({ category }: Props) {
     const navigate = useNavigate();
     const handleSeeSubCategories = () => {
-        navigate(`/subcategories/${category.id}`);
+        navigate(`${subcategoriesUri}/${category.id}`);
     }
     return (
         <Card elevation={1} >

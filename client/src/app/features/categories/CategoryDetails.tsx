@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardHeader, Paper, TextField, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, CardHeader, Paper, Typography } from '@mui/material'
 import useCategories from '../../../lib/hooks/useCategories'
 import { useEffect } from 'react';
 import { observer } from "mobx-react-lite"
@@ -6,11 +6,13 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CategorySchema, categorySchema } from '../../../lib/schemas/categorySchema';
+import { categoriesUri, } from '../../routes/routesconsts';
+import TextInput from '../../shared/components/TextInput';
 
 const CategoryDetails = observer(function CategoryDetails() {
     const { id: selectedCategoryId } = useParams();
     const navigate = useNavigate();
-    const { handleSubmit, register, reset, formState: { errors } } = useForm<CategorySchema>({
+    const { handleSubmit, reset, control } = useForm<CategorySchema>({
         mode: 'onTouched',
         resolver: zodResolver(categorySchema)
     });
@@ -19,7 +21,7 @@ const CategoryDetails = observer(function CategoryDetails() {
     const buttonName = selectedCategoryId ? "Edit" : "Create";
 
     const goBackToDashBoard = () => {
-        navigate("/categories");
+        navigate(categoriesUri);
 
     }
 
@@ -37,7 +39,7 @@ const CategoryDetails = observer(function CategoryDetails() {
         } else {
             await createCategory.mutateAsync(dataToSend as unknown as Category, {
                 onSuccess: (id) => {
-                    navigate(`/categories/${id}`);
+                    navigate(`${categoriesUri}/${id}`);
 
                 }
             });
@@ -64,7 +66,7 @@ const CategoryDetails = observer(function CategoryDetails() {
                         title: { fontWeight: "bold", fontSize: 20 }
                     }} />
                     <CardContent>
-                        <TextField error={!!errors?.name} helperText={errors?.name?.message} {...register("name")} label="Name" name='name' defaultValue={category?.name ?? ''} ></TextField>
+                        <TextInput label="Name" name='name' control={control} />
 
                     </CardContent>
 

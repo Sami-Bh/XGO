@@ -5,6 +5,9 @@ import CategoriesDashboard from "../features/categories/CategoriesDashboard";
 import CategoryDetails from "../features/categories/CategoryDetails";
 import SubCategoryDashboard from "../features/subcategories/SubCategoryDashboard";
 import SubCategoryDetails from "../features/subcategories/SubCategoryDetails";
+import NotFound from "../features/errors/NotFound";
+import { categoriesUri, productsUri, subcategoriesUri } from "./routesconsts";
+import ProductDashboard from "../features/products/ProductDashboard";
 
 export const router = createBrowserRouter([
     {
@@ -16,7 +19,7 @@ export const router = createBrowserRouter([
                 element: <Home />,
             },
             {
-                path: "/categories",
+                path: categoriesUri,
                 element: <CategoriesDashboard />,
                 children: [
                     {
@@ -30,7 +33,7 @@ export const router = createBrowserRouter([
                 ]
             },
             {
-                path: "/subcategories/:categoryId",
+                path: `${subcategoriesUri}/:categoryId`,
                 element: <SubCategoryDashboard />,
                 children: [
                     {
@@ -43,6 +46,24 @@ export const router = createBrowserRouter([
                     },
                 ]
             },
+            {
+                path: `${productsUri}`,
+                element: <ProductDashboard />,
+                // children: [
+                //     {
+                //         path: "new",
+                //         element: <SubCategoryDetails key="create" />,
+                //     },
+                //     {
+                //         path: ":id",
+                //         element: <SubCategoryDetails key="edit" />,
+                //     },
+                // ]
+            },
         ]
+    },
+    {
+        path: "*",
+        element: <NotFound />
     }
 ]);
