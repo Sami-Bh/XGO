@@ -4,13 +4,16 @@ import { subcategoriesUri } from "../../app/routes/routesconsts";
 
 function useSubCategory(categoryId?: number, subcategoryId?: number) {
     const queryClient = useQueryClient();
-    const { isPending: isGetSubCategoriesPending, data: subcategoriesFromServer } = useQuery({
+    const { isLoading: isGetSubCategoriesPending, data: subcategoriesFromServer } = useQuery({
         queryKey: ["getSubCategories"],
         queryFn: async () => {
+            console.log("get sub for id " + categoryId);
+
             const response = await agent.get<SubCategory[]>(`${subcategoriesUri}/GetSubcategoriesListByCategoryId/${categoryId}`);
             return response.data;
         },
-        enabled: !!categoryId
+        enabled: !!categoryId && categoryId > 0,
+
     });
 
 

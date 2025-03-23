@@ -10,3 +10,13 @@ type SubCategory = {
     categoryId: number,
     hasChildren: boolean,
 }
+
+type Product = {
+    name: string
+    extraProperties: string
+    isProximity: boolean
+    isHeavy: boolean
+    isBulky: boolean
+    subCategoryId: number
+    id: number
+}

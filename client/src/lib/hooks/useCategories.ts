@@ -4,7 +4,7 @@ import { categoriesUri } from "../../app/routes/routesconsts";
 
 function useCategories(id?: number) {
     const queryClient = useQueryClient();
-    const { data: categoriesFromServer, isPending: isGettingCategoriesPending } = useQuery({
+    const { data: categoriesFromServer, isLoading: isGettingCategoriesPending } = useQuery({
         queryKey: ["GetCategories"],
         queryFn: async () => {
             const response = await agent.get<Category[]>('/Categories');
