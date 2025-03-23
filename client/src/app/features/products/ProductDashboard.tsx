@@ -7,18 +7,20 @@ import SearchIcon from '@mui/icons-material/Search';
 import useCategories from "../../../lib/hooks/useCategories";
 import useSubCategory from "../../../lib/hooks/useSubCategory";
 import { useQueryClient } from "@tanstack/react-query";
+import SelectInput from "../../shared/components/SelectInput";
+import { All_Item } from "../../../lib/types/constants";
 export default function ProductDashboard() {
     const queryClient = useQueryClient();
 
     //Memos
-    const defaultCategory = useMemo(() => { return { id: 0, name: "---All---" } as Category }, []);
-    const defaultSubCategory = useMemo(() => { return { id: 0, name: "---All---" } as SubCategory }, []);
+    const defaultCategory = useMemo(() => { return [All_Item as Category] }, []);
+    const defaultSubCategory = useMemo(() => { return [All_Item as SubCategory] }, []);
 
     //use state
     const [Products, setProducts] = useState<Product[]>([]);
     const [SelectedCategoryId, setSelectedCategoryId] = useState<number>(0);
-    const [SelectedsubcategoryId, setSelectedsubcategoryId] = useState<number>(0)
-    const [IsFiltersLoading, setIsFiltersLetLoading] = useState(false);
+    const [SubcategoriesFilterItems, SetsubcategoriesFilterItems] = useState<SubCategory[]>(defaultSubCategory);
+    const [SelectedsubcategoryId, setSelectedsubcategoryId] = useState<number | "">("");
 
     const { productsFromServer, isGetProductsPending } = useProducts();
     const { isGettingCategoriesPending, categoriesFromServer } = useCategories();
@@ -26,44 +28,61 @@ export default function ProductDashboard() {
 
     const categoriesFilterSource = useMemo(() => {
         return isGettingCategoriesPending || !categoriesFromServer ?
-            [defaultCategory] :
-            [defaultCategory, ...categoriesFromServer.sort((c1, c2) => c1.name > c2.name ? 1 : -1)]
-    }, [isGettingCategoriesPending, defaultCategory, categoriesFromServer]);
+            defaultCategory :
+            [...defaultCategory, ...categoriesFromServer.sort((c1, c2) => c1.name > c2.name ? 1 : -1)]
+    }, [isGettingCategoriesPending, categoriesFromServer, defaultCategory]);
 
     // const subcategoriesFilterSource = useMemo(() => {
-    //     return isGetSubCategoriesPending || !subcategoriesFromServer || SelectedCategoryId == 0 ?
-    //         [defaultSubCategory] :
-    //         [defaultSubCategory, ...subcategoriesFromServer.sort((c1, c2) => c1.name > c2.name ? 1 : -1)]
+    //     return !subcategoriesFromServer ?
+    //         defaultSubCategory :
+    //         subcategoriesFromServer.length == 1 ?
+    //             subcategoriesFromServer :
+    //             [...defaultSubCategory, ...subcategoriesFromServer.sort((c1, c2) => c1.name > c2.name ? 1 : -1)];
+    // }, [defaultSubCategory, subcategoriesFromServer]);
 
-    // }, [isGetSubCategoriesPending, subcategoriesFromServer, defaultSubCategory, SelectedCategoryId])
-
-    const subcategoriesFilterSource = isGetSubCategoriesPending || !subcategoriesFromServer || SelectedCategoryId == 0 ?
-        [defaultSubCategory] :
-        [defaultSubCategory, ...subcategoriesFromServer.sort((c1, c2) => c1.name > c2.name ? 1 : -1)];
-
-    // const weightOptions = [{ id: 0, option: "All" }, { id: 1, option: "Heavy" }, { id: 2, option: "Light" }];
-
-    //use effects
+    //fill list with items from server
     useEffect(() => {
-        setIsFiltersLetLoading(isGetSubCategoriesPending || isGettingCategoriesPending);
-    }, [isGetSubCategoriesPending, isGettingCategoriesPending])
+        SetsubcategoriesFilterItems(!subcategoriesFromServer || isGetSubCategoriesPending ?
+            defaultSubCategory :
+            subcategoriesFromServer.length == 1 ?
+                subcategoriesFromServer :
+                [...defaultSubCategory, ...subcategoriesFromServer.sort((c1, c2) => c1.name > c2.name ? 1 : -1)]);
 
+    }, [defaultSubCategory, isGetSubCategoriesPending, subcategoriesFromServer]);
+
+
+
+    const IsFiltersLoading = isGetSubCategoriesPending || isGettingCategoriesPending;
+    const weightOptions = [All_Item, { id: 1, value: "Heavy" }, { id: 2, value: "Light" }];
 
     useEffect(() => {
         if (productsFromServer) {
             setProducts(productsFromServer);
         }
-
     }, [productsFromServer]);
 
+    // invalidate sub categories when category change
     useEffect(() => {
+        if (SelectedCategoryId) {
+            queryClient.invalidateQueries({ queryKey: ["getSubCategories"] });
+        } else {
+            SetsubcategoriesFilterItems(defaultSubCategory);
+        }
+    }, [queryClient, SelectedCategoryId, defaultSubCategory]);
 
-        queryClient.invalidateQueries({ queryKey: ["getSubCategories"] });
-        setSelectedsubcategoryId(0);
-    }, [queryClient, SelectedCategoryId]);
+    useEffect(() => {
+        if (SubcategoriesFilterItems) {
+
+            setSelectedsubcategoryId(SubcategoriesFilterItems[0].id);
+        }
+
+    }, [SubcategoriesFilterItems, isGetSubCategoriesPending]);
 
     const handleCategoryChange = (event: SelectChangeEvent<number>) => {
-        setSelectedCategoryId(Number(event.target.value));
+        setSelectedsubcategoryId("");
+        const selectedcategory = Number(event.target.value);
+
+        setSelectedCategoryId(selectedcategory);
 
     }
     const handleSubCategoryChange = (event: SelectChangeEvent<number>) => {
@@ -88,9 +107,10 @@ export default function ProductDashboard() {
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">Category</InputLabel>
                                 <Select
-                                    disabled={isGettingCategoriesPending}
+                                    disabled={IsFiltersLoading}
                                     value={SelectedCategoryId}
                                     labelId="demo-simple-select-label"
+
                                     onChange={handleCategoryChange}
                                     label="Category">
                                     {categoriesFilterSource?.map(category =>
@@ -102,12 +122,12 @@ export default function ProductDashboard() {
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">Sub Category</InputLabel>
                                 <Select
-                                    disabled={isGetSubCategoriesPending}
+                                    disabled={IsFiltersLoading}
                                     value={SelectedsubcategoryId}
                                     labelId="demo-simple-select-label"
                                     onChange={handleSubCategoryChange}
                                     label="Sub Category">
-                                    {subcategoriesFilterSource?.map(subcategory =>
+                                    {SubcategoriesFilterItems?.map(subcategory =>
                                         (<MenuItem key={subcategory.id} value={subcategory.id}>{subcategory.name}</MenuItem>)
                                     )}
                                 </Select>
@@ -127,6 +147,9 @@ export default function ProductDashboard() {
                                 }}
                                 variant="standard"
                             />
+
+                            {/* <SelectInput isDisabled={IsFiltersLoading} items={weightOptions} label={"Weight"} /> */}
+
                         </Box>
                     </Paper>
 

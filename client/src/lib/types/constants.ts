@@ -1,0 +1,1 @@
+export const All_Item = { id: 0, name: "---All---" };

@@ -7,12 +7,10 @@ function useSubCategory(categoryId?: number, subcategoryId?: number) {
     const { isLoading: isGetSubCategoriesPending, data: subcategoriesFromServer } = useQuery({
         queryKey: ["getSubCategories"],
         queryFn: async () => {
-            console.log("get sub for id " + categoryId);
-
             const response = await agent.get<SubCategory[]>(`${subcategoriesUri}/GetSubcategoriesListByCategoryId/${categoryId}`);
             return response.data;
         },
-        enabled: !!categoryId && categoryId > 0,
+        enabled: !!categoryId,
 
     });
 
