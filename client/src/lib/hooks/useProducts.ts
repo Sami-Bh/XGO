@@ -7,12 +7,14 @@ export default function useProducts(productsFilter: ProductsFilter) {
     const { data: filteredProductsFromServer, isPending: isGeFilteredtProductsPending } = useQuery({
         queryKey: ["getProducts", productsFilter],
         queryFn: async () => {
-            const response = await agent.get<Product[]>(`${productsUri}/GetProductsBySubCategoryId`,
+            const response = await agent.get<ListedItem<Product>>(`${productsUri}/GetProductsBySubCategoryId`,
                 {
                     params: {
                         categoryId: productsFilter.categoryId,
                         subcategoryId: productsFilter.subcategoryId,
-                        searchtext: productsFilter.textSearch ?? ""
+                        searchtext: productsFilter.textSearch ?? "",
+                        pageSize: productsFilter.pageSize,
+                        pageIndex: productsFilter.pageIndex,
                     }
                 });
             return response.data;

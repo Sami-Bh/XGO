@@ -7,39 +7,46 @@ using Application.DTOs;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using WebApplicationXGO.Models.Filters;
 using XGORepository.Models;
 
 namespace Application.CQRS.Product.Queries
 {
     public class GetFilteredProducts
     {
-        public class Query : IRequest<IList<ProductDto>>
+        public class Query : IRequest<ListedDto<ProductDto>>
         {
-            public int SubCategoryId { get; set; }
-            public int CategoryId { get; set; }
-            public string SearchText { get; set; } = "";
+            public required ProductsFilter Filter { get; set; }
         }
-        public class Handler(XGODbContext dbContext, IMapper mapper) : IRequestHandler<Query, IList<ProductDto>>
+        public class Handler(XGODbContext dbContext, IMapper mapper) : IRequestHandler<Query, ListedDto<ProductDto>>
         {
-            public async Task<IList<ProductDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<ListedDto<ProductDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var query = dbContext.Products.AsNoTracking().AsQueryable();
-                if (request.SubCategoryId > 0)
+                if (request.Filter.SubCategoryId > 0)
                 {
-                    query= query.Where(x => x.SubCategoryId == request.SubCategoryId);
+                    query= query.Where(x => x.SubCategoryId == request.Filter.SubCategoryId);
                 }
-                else if (request.CategoryId > 0)
+                else if (request.Filter.CategoryId > 0)
                 {
 
-                    var subIds = await dbContext.SubCategories.Where(x => x.CategoryId == request.CategoryId).Select(x => x.Id).ToListAsync(cancellationToken);
+                    var subIds = await dbContext.SubCategories.Where(x => x.CategoryId == request.Filter.CategoryId).Select(x => x.Id).ToListAsync(cancellationToken);
                     query = query.Where(x => subIds.Contains(x.SubCategoryId));
                 }
-                query=string.IsNullOrEmpty(request.SearchText)?
+                query=string.IsNullOrEmpty(request.Filter.SearchText)?
                     query: 
-                    query.Where(x=>x.Name.ToLower().Contains(request.SearchText.ToLower()));
+                    query.Where(x=>x.Name.ToLower().Contains(request.Filter.SearchText.ToLower()));
+
+                var count = await query.CountAsync(cancellationToken);
+                var pageCount = request.Filter.GetPageCount(count);
+
+                query = query.Skip(request.Filter.GetSkip()).Take(request.Filter.PageSize);
+                query = query.OrderBy(x => x.Name);
 
                 var dbProducts = await query.ToListAsync(cancellationToken);
-                return mapper.Map<IList<ProductDto>>(dbProducts);
+                var mappedDtos= mapper.Map<IList<ProductDto>>(dbProducts);
+
+                return new ListedDto<ProductDto> {Items= mappedDtos,PageCount= pageCount };
             }
         }
     }

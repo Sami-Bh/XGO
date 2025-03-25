@@ -1,5 +1,7 @@
 type ProductsFilter = {
     categoryId?: number,
     subcategoryId?: number,
-    textSearch?: string
+    textSearch?: string,
+    pageSize: number,
+    pageIndex: number,
 }
