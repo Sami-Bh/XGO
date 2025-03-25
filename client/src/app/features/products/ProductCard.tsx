@@ -11,7 +11,7 @@ export default function ProductCard({ product }: Props) {
                     <CardMedia
                         component="img"
                         height="140"
-                        image="https://images.pexels.com/photos/416160/pexels-photo-416160.jpeg"
+                        image={`https://picsum.photos/200/300?random=${product.id}`}
                         alt="green iguana"
                     />
                     <Box sx={{
