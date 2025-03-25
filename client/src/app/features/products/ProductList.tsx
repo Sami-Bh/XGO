@@ -3,9 +3,10 @@ import ProductCard from "./ProductCard";
 
 type Props = {
     products: Product[],
-    // isLoading: boolean,
+    isLoading: boolean,
 }
-export default function ProductList({ products }: Props) {
+export default function ProductList({ products, isLoading }: Props) {
+    if (isLoading) return <Typography>Loading...</Typography>
 
     if (!products || products.length === 0) return <Typography>Nothing found...</Typography>
 
