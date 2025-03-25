@@ -3,11 +3,11 @@ import ProductCard from "./ProductCard";
 
 type Props = {
     products: Product[],
-    isLoading: boolean,
+    // isLoading: boolean,
 }
-export default function ProductList({ products, isLoading }: Props) {
+export default function ProductList({ products }: Props) {
 
-    if (isLoading || !products) return <Typography>Loading ...</Typography>
+    if (!products || products.length === 0) return <Typography>Nothing found...</Typography>
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2, overflowY: "auto" }}>
