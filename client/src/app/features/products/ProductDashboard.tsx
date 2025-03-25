@@ -12,9 +12,7 @@ export default function ProductDashboard() {
 
     const { filteredProductsFromServer, isGeFilteredtProductsPending } = useProducts(ProductsFilter);
     const updatePageIndex = (newIndex: number) => {
-        const newFilter = { ...ProductsFilter, pageIndex: newIndex };
-        console.log(newFilter);
-        setProductsFilter(newFilter);
+        setProductsFilter({ ...ProductsFilter, pageIndex: newIndex });
     }
     return (
 
@@ -24,7 +22,8 @@ export default function ProductDashboard() {
                     <ProductList products={filteredProductsFromServer?.items ?? []} isLoading={isGeFilteredtProductsPending} />
                     <Pagination sx={{ alignSelf: "center", py: 1 }}
                         count={filteredProductsFromServer?.pageCount || 1} color="primary"
-                        onChange={(e, value) => updatePageIndex(value)}
+                        page={ProductsFilter.pageIndex || 1}
+                        onChange={(_, value) => updatePageIndex(value)}
                     />
 
                 </Box>

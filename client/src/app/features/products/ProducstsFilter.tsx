@@ -48,7 +48,7 @@ export default function ProducstsFilter({ setFilter }: Props) {
     }, [isGetSubCategoriesPending, isGettingCategoriesPending, setIsFiltersLoading])
 
     const SetFilter = () => {
-        setFilter({ categoryId: SelectedCategoryId, subcategoryId: SelectedSubcategoryId, textSearch: SearchValue } as ProductsFilter)
+        setFilter({ categoryId: SelectedCategoryId, subcategoryId: SelectedSubcategoryId, textSearch: SearchValue, pageIndex: 1 } as ProductsFilter)
     }
     return (
         <Paper>
