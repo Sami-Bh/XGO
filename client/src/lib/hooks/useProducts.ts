@@ -53,7 +53,7 @@ export default function useProducts(productsFilter?: ProductsFilter, productId?:
     const createProduct = useMutation({
         mutationKey: ["getProducts"],
         mutationFn: async (product: Product) => {
-            const response = await agent.post<Product>(`${productsUri}`, product);
+            const response = await agent.post(`${productsUri}`, product);
             return response.data;
         },
         onSuccess: () => {

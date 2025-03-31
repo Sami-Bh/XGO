@@ -9,7 +9,7 @@ type SelectInputProps<T> = Omit<SelectProps<T>, "onChange"> & {
     isDisabled?: boolean;
 }
 
-export default function SelectInput<T extends number>({
+export default function SelectInput<T extends number | "">({
     label,
     value,
     options,
