@@ -8,6 +8,7 @@ import SubCategoryDetails from "../features/subcategories/SubCategoryDetails";
 import NotFound from "../features/errors/NotFound";
 import { categoriesUri, productsUri, subcategoriesUri } from "./routesconsts";
 import ProductDashboard from "../features/products/ProductDashboard";
+import ProductDetails from "../features/products/ProductDetails";
 
 export const router = createBrowserRouter([
     {
@@ -48,17 +49,15 @@ export const router = createBrowserRouter([
             },
             {
                 path: `${productsUri}`,
-                element: <ProductDashboard />,
-                // children: [
-                //     {
-                //         path: "new",
-                //         element: <SubCategoryDetails key="create" />,
-                //     },
-                //     {
-                //         path: ":id",
-                //         element: <SubCategoryDetails key="edit" />,
-                //     },
-                // ]
+                element: <ProductDashboard />
+            },
+            {
+                path: `${productsUri}/:id`,
+                element: <ProductDetails key="create" />,
+            },
+            {
+                path: `${productsUri}/new`,
+                element: <ProductDetails key="edit" />,
             },
         ]
     },

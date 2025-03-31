@@ -63,9 +63,9 @@ export default function ProducstsFilter({ setFilter }: Props) {
                 <SelectInput
                     name="categorySelect"
                     label="Category"
-                    value={SelectedCategoryId !== null ? SelectedCategoryId : "-1"}
-                    options={[{ id: "-1", name: "---All---" }, ...(categoriesFromServer ?? []).sort((a, b) => a.name.localeCompare(b.name))]}
-                    onChange={(value) => setSelectedCategoryId(value === "-1" ? null : Number(value))}
+                    value={SelectedCategoryId !== null ? SelectedCategoryId : -1}
+                    options={[{ id: -1, name: "---All---" }, ...(categoriesFromServer ?? []).sort((a, b) => a.name.localeCompare(b.name))]}
+                    onChange={(value) => setSelectedCategoryId(value === -1 ? null : Number(value))}
                 />
 
                 <SelectInput

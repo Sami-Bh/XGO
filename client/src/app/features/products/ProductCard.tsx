@@ -1,4 +1,6 @@
 import { Box, Card, CardContent, CardMedia, Chip, Typography } from "@mui/material";
+import { Link } from "react-router";
+import { productsUri } from "../../routes/routesconsts";
 type Props = {
     product: Product
 }
@@ -24,7 +26,7 @@ export default function ProductCard({ product }: Props) {
                     </Box>
 
                 </Box>
-                <Typography variant="h5">{product.name}</Typography>
+                <Typography component={Link} to={`${productsUri}/${product.id}`} variant="h5">{product.name}</Typography>
             </CardContent>
         </Card>
     )

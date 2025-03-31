@@ -8,7 +8,7 @@ export default function ProductDashboard() {
 
 
     //use state
-    const [ProductsFilter, setProductsFilter] = useState({ categoryId: -1, subcategoryId: -1, textSearch: "" } as ProductsFilter)
+    const [ProductsFilter, setProductsFilter] = useState({ categoryId: -1, subcategoryId: -1, textSearch: "", pageIndex: 1 } as ProductsFilter)
 
     const { filteredProductsFromServer, isGeFilteredtProductsPending } = useProducts(ProductsFilter);
     const updatePageIndex = (newIndex: number) => {
@@ -22,7 +22,7 @@ export default function ProductDashboard() {
                     <ProductList products={filteredProductsFromServer?.items ?? []} isLoading={isGeFilteredtProductsPending} />
                     <Pagination sx={{ alignSelf: "center", py: 1 }}
                         count={filteredProductsFromServer?.pageCount || 1} color="primary"
-                        page={ProductsFilter.pageIndex || 1}
+                        page={ProductsFilter.pageIndex}
                         onChange={(_, value) => updatePageIndex(value)}
                     />
 

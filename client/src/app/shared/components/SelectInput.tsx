@@ -1,43 +1,19 @@
-// import { FormControl, InputLabel, Select, MenuItem, SelectProps, SelectChangeEvent } from '@mui/material'
-
-// type Props<T extends { id: number | ""; name: string }> = Omit<SelectProps<T["id"]>, "onChange" | "value"> & {
-//     items: T[],
-//     label: string,
-//     value: number | "",
-//     onChange: (event: SelectChangeEvent<T["id"]>) => void
-// }
-// export default function SelectInput<T extends { id: number | ""; name: string }>(
-//     { items, label, onChange, value, ...rest }: Props<T>) {
-//     return (
-//         <FormControl fullWidth>
-//             <InputLabel >{label}</InputLabel>
-//             <Select
-//                 value={value}
-//                 onChange={onChange}
-//                 label={label} {...rest}>
-//                 {items?.map(item =>
-//                     (<MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)
-//                 )}
-//             </Select>
-//         </FormControl>
-//     )
-// }
-
-import { FormControl, InputLabel, MenuItem, Select, SelectProps } from "@mui/material";
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectProps } from "@mui/material";
 
 type SelectInputProps<T> = Omit<SelectProps<T>, "onChange"> & {
     label: string;
     value: T;
-    options: { id: number | string; name: string }[];
+    options: { id: T; name: string }[];
     onChange: (value: T) => void;
-
+    errorMessage?: string
     isDisabled?: boolean;
 }
 
-export default function SelectInput<T extends number | string>({
+export default function SelectInput<T extends number>({
     label,
     value,
     options,
+    errorMessage,
     onChange,
     isDisabled = false,
     ...rest
@@ -48,6 +24,7 @@ export default function SelectInput<T extends number | string>({
             <Select
                 {...rest}
                 value={value}
+
                 onChange={(e) => onChange(e.target.value as T)} label={label}
             >
                 {
@@ -58,6 +35,8 @@ export default function SelectInput<T extends number | string>({
                     ))
                 }
             </Select>
+            <FormHelperText>{errorMessage}</FormHelperText>
+
         </FormControl>
     );
 }
