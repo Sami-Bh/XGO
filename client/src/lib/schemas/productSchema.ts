@@ -3,7 +3,7 @@ import { RequiredString } from "./schemaUtils";
 
 export const productSchema = z.object({
     name: RequiredString("name"),
-    extraProperties: z.string().optional(),
+    extraProperties: z.string().nullish(),
     isProximity: z.boolean(),
     isHeavy: z.boolean(),
     isBulky: z.boolean(),

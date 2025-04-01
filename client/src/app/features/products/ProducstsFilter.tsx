@@ -55,7 +55,7 @@ export default function ProducstsFilter({ setFilter }: Props) {
 
             <Box sx={{ display: "flex", flexDirection: "column", mx: 5, pb: 5, gap: 2 }}>
 
-                <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+                <Box sx={{ display: "flex", flexDirection: "row", gap: 1, justifyContent: "center" }}>
                     {IsFiltersLoading && <CircularProgress />}
                     <Typography color="primary" sx={{ alignSelf: "center" }} variant="h5"><FilterListIcon /> Filters</Typography>
                 </Box>

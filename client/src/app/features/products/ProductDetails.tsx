@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form"
 import { productSchema, ProductSchema } from "../../../lib/schemas/productSchema"
-import { Box, Button, Card, CardActions, CardContent, CircularProgress, Divider, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, CircularProgress, Paper, Typography } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Navigate, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import useProducts from "../../../lib/hooks/useProducts";
 import { useEffect, useState } from "react";
 import TextInput from "../../shared/components/TextInput";
@@ -14,11 +14,11 @@ import { GetNumberOrUndefined } from "../../../lib/Utils/NumberUtils";
 import { productsUri } from "../../routes/routesconsts";
 
 export default function ProductDetails() {
-    const { handleSubmit, control, reset, register, formState: { errors } } = useForm<ProductSchema>({
+    const { handleSubmit, control, reset } = useForm<ProductSchema>({
         resolver: zodResolver(productSchema),
-        mode: "onTouched"
+        mode: "onTouched",
+        defaultValues: { isProximity: false, isBulky: false, isHeavy: false, extraProperties: "" }
     });
-    console.log(errors);
     const { id } = useParams();
     const navigate = useNavigate();
     const { IsGetProductPending, ProductFromServer, createProduct, updateProduct, deleteProduct } = useProducts(undefined, Number(id));
@@ -47,7 +47,7 @@ export default function ProductDetails() {
             return;
         }
 
-        setCategoryId("");
+        ResetSubCategoriesSelection();
 
     }, [categoriesFromServer]);
 
@@ -58,40 +58,45 @@ export default function ProductDetails() {
             setSubCategoryId(subcategoriesFromServer[0].id);
             return;
         }
-        setSubCategoryId("");
+        ResetSubCategoriesSelection();
     }, [subcategoriesFromServer]);
 
     //in case of an existing product, this will update the category and subcategory ids with the ones coming from the product
     useEffect(() => {
         if (subcategoryFromServer) {
             setCategoryId(subcategoryFromServer.categoryId);
-            setSubCategoryId("");
+            ResetSubCategoriesSelection();
+            setSubCategoryId(subcategoryFromServer.id)
         }
     }, [subcategoryFromServer]);
 
+    const ResetSubCategoriesSelection = () => {
+        setSubCategoryId("");
+    }
 
     const OnSumbit = async (productSchema: ProductSchema) => {
         const productToSend = { ...ProductFromServer, ...productSchema, subCategoryId: SubCategoryId } as Product;
         if (ProductFromServer) {
             await updateProduct.mutateAsync(productToSend, {
                 onSuccess: () => {
-                    navigate(-1);
+                    navigate(`${productsUri}`);
                 }
             });
             return;
         }
-        console.log(productToSend);
 
         const newid = await createProduct.mutateAsync(productToSend);
-        console.log(newid);
         navigate(`${productsUri}/${newid}`);
     }
+
     const OnDelete = async () => {
         if (!ProductFromServer) return;
 
         await deleteProduct.mutateAsync(ProductFromServer.id, { onSuccess: () => navigate(productsUri) })
     }
+
     if (id && IsGetProductPending) return <Typography>Loading...</Typography>
+
     return (
         <Box component={"form"} onSubmit={handleSubmit(OnSumbit)}>
             <Paper>
@@ -113,11 +118,11 @@ export default function ProductDetails() {
 
                             <TextInput label="Name" control={control} name="name" />
                             <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
-                                <LabeledCheckbox control={control} Label="Heavy" name="isHeavy" />
-                                <LabeledCheckbox control={control} Label="Proximity" name="isProximity" />
-                                <LabeledCheckbox control={control} Label="Bulky" name="isBulky" />
+                                <LabeledCheckbox control={control} label="Heavy" name="isHeavy" />
+                                <LabeledCheckbox control={control} label="Proximity" name="isProximity" />
+                                <LabeledCheckbox control={control} label="Bulky" name="isBulky" />
                             </Box>
-                            <TextField label="Description" {...register("extraProperties")} name="extraProperties" multiline />
+                            <TextInput label="Description" control={control} name="extraProperties" multiline />
                             <Box sx={{ display: "flex", justifyContent: "end", gap: 2, mt: 2 }}>
                                 {ProductFromServer &&
                                     <Button variant="contained" size="medium" color="error" onClick={OnDelete} >

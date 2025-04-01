@@ -46,7 +46,7 @@ export default function useProducts(productsFilter?: ProductsFilter, productId?:
             await agent.delete<Product>(`${productsUri}/${id}`);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["getProducts"] });
+            queryClient.invalidateQueries({ queryKey: ["getProducts", productsFilter] });
         }
     });
 
