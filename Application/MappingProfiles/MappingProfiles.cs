@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using AutoMapper;
+using XGO.Store.Models;
 using XGOModels;
 
 namespace Application.MappingProfiles

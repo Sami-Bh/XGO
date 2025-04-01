@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using XGO.Store.Models;
 using XGOModels;
 using XGORepository.Models;
 

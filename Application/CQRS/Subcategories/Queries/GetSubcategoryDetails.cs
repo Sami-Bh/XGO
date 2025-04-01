@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Core;
-using Application.DTOs;
+﻿using Application.DTOs;
 using AutoMapper;
+using BuildingBlocks.Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using XGORepository.Models;

@@ -1,16 +1,10 @@
-﻿using Application.Core;
-using Application.CQRS.Generic.Commands;
-using Application.CQRS.Generic.Queries;
-using Application.DTOs;
+﻿using BuildingBlocks.Core;
+using BuildingBlocks.CQRS.Generic.Commands;
+using BuildingBlocks.CQRS.Generic.Queries;
+using BuildingBlocks.DTOs;
+using BuildingBlocks.Models;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text.Json;
-using XGOModels;
-using XGORepository.Interfaces;
 
 namespace WebApplicationXGO.Controllers
 {
@@ -46,6 +40,12 @@ namespace WebApplicationXGO.Controllers
             if (result.ErrorCode == 404) return NotFound();
 
             return BadRequest(result.ErrorMessage);
+        }
+
+        [HttpGet("test")]
+        public async Task<ActionResult<string>> Test()
+        {
+            return await Mediator.Send(new TestQuery.Query());
         }
 
         [HttpGet]

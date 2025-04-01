@@ -1,4 +1,6 @@
-﻿namespace Application.DTOs
+﻿using BuildingBlocks.DTOs;
+
+namespace Application.DTOs
 {
     public class SubCategoryDto : BaseDto
     {

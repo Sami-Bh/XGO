@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using XGO.Store.Models;
 using XGOModels;
 
 namespace XGORepository.Models

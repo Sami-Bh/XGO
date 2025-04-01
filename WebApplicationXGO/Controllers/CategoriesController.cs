@@ -1,7 +1,7 @@
-﻿using Application.CQRS.Generic.Queries;
-using Application.DTOs;
+﻿using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using XGOModels;
+using XGO.Store.Application.CQRS.Category.Queries;
+using XGO.Store.Models;
 using XGOModels.Extras;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

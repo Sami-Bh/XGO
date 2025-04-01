@@ -1,16 +1,13 @@
 using System.Text.Json.Serialization;
-using Application.CQRS.Generic.Queries;
+using Application.CQRS.Product.Queries;
 using Application.MappingProfiles;
+using BuildingBlocks.CQRS.Generic.Queries;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
-using WebApplicationXGO.Services.Implementations;
-using WebApplicationXGO.Services.Interfaces;
-using XGOModels;
+using XGO.Store.Models;
 using XGORepository;
-using XGORepository.Interfaces.RepositoriesInterfaces;
 using XGORepository.Models;
-using XGORepository.Models.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,19 +33,16 @@ options.UseSqlServer(Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTR
 
 #endif
     );
+builder.Services.AddTransient<DbContext, XGODbContext>();//this servers for mediatr, if absent dbcontext cannot be injected
 
-builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
-builder.Services.AddTransient<ISubCategoryRepository, SubCategoryRepository>();
-builder.Services.AddTransient<IProductRepository, ProductRepository>();
-builder.Services.AddTransient<IPictureRepository, PictureRepository>();
-builder.Services.AddTransient<ISubCategoryUnitOfWork, SubCategoryUnitOfWork>();
-builder.Services.AddTransient<ICategoryUnitOfWork, CategoryUnitOfWork>();
-builder.Services.AddTransient<IProductUnitOfWork, ProductUnitOfWork>();
 
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterGenericHandlers = true;
-    cfg.RegisterServicesFromAssemblies(typeof(GetIList<,>).Assembly, typeof(BaseModel).Assembly);
+    cfg.RegisterServicesFromAssemblyContaining(typeof(GetIList<,>));
+    cfg.RegisterServicesFromAssemblyContaining(typeof(GetFilteredProducts));
+    cfg.RegisterServicesFromAssemblyContaining(typeof(Category));// this line is for mediatr, if absent types cannot be injected
+
 });
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);

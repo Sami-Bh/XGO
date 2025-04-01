@@ -1,4 +1,5 @@
-﻿using XGOModels;
+﻿using XGO.Store.Models;
+using XGOModels;
 
 namespace XGORepository.Interfaces.RepositoriesInterfaces
 {

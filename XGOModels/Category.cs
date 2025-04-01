@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BuildingBlocks.Models;
+using XGOModels;
 
-namespace XGOModels
+namespace XGO.Store.Models
 {
     public class Category : BaseModel
     {
