@@ -1,14 +1,14 @@
 import axios from "axios";
 import { router } from "../../app/routes/routes";
-const agent = axios.create({
-    baseURL: import.meta.env.VITE_API_URL
+const storeAgent = axios.create({
+    baseURL: import.meta.env.VITE_API_URL + import.meta.env.VITE_STORE_URI
 });
 
-agent.interceptors.request.use((conf) => {
+storeAgent.interceptors.request.use((conf) => {
     return conf;
 })
 
-agent.interceptors.response.use(
+storeAgent.interceptors.response.use(
     (response) => {
         return response
     },
@@ -22,4 +22,4 @@ agent.interceptors.response.use(
         }
     }
 );
-export default agent;
+export default storeAgent;

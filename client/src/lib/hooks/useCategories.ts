@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import agent from "../api/agent";
+import storeAgent from "../api/agent";
 import { categoriesUri } from "../../app/routes/routesconsts";
 
 function useCategories(id?: number) {
@@ -7,7 +7,7 @@ function useCategories(id?: number) {
     const { data: categoriesFromServer, isLoading: isGettingCategoriesPending } = useQuery({
         queryKey: ["GetCategories"],
         queryFn: async () => {
-            const response = await agent.get<Category[]>('/Categories');
+            const response = await storeAgent.get<Category[]>('/Categories');
             return response.data;
         },
     });
@@ -15,7 +15,7 @@ function useCategories(id?: number) {
     const { data: categoryFromServer, isLoading: isGettingCategoryLoading } = useQuery({
         queryKey: ["GetCategories", id],
         queryFn: async () => {
-            const response = await agent.get<Category>(`/Categories/${id}`);
+            const response = await storeAgent.get<Category>(`/Categories/${id}`);
 
             return response.data;
         },
@@ -25,7 +25,7 @@ function useCategories(id?: number) {
 
     const updateCategory = useMutation({
         mutationFn: async (category: Category) => {
-            await agent.put(categoriesUri, category);
+            await storeAgent.put(categoriesUri, category);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["GetCategories"] });
@@ -34,7 +34,7 @@ function useCategories(id?: number) {
 
     const createCategory = useMutation({
         mutationFn: async (category: Category) => {
-            const response = await agent.post(categoriesUri, category);
+            const response = await storeAgent.post(categoriesUri, category);
             return response.data;
         },
         onSuccess: () => {
@@ -44,7 +44,7 @@ function useCategories(id?: number) {
 
     const deleteCategory = useMutation({
         mutationFn: async (id: number) => {
-            await agent.delete(`${categoriesUri}/${id}`);
+            await storeAgent.delete(`${categoriesUri}/${id}`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["GetCategories"], exact: true });

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import agent from "../api/agent";
+import storeAgent from "../api/agent";
 import { subcategoriesUri } from "../../app/routes/routesconsts";
 
 function useSubCategory(categoryId?: number, subcategoryId?: number) {
@@ -7,7 +7,7 @@ function useSubCategory(categoryId?: number, subcategoryId?: number) {
     const { isLoading: isGetSubCategoriesPending, data: subcategoriesFromServer } = useQuery({
         queryKey: ["getSubCategories", categoryId],
         queryFn: async () => {
-            const response = await agent.get<SubCategory[]>(`${subcategoriesUri}/GetSubcategoriesListByCategoryId/${categoryId}`);
+            const response = await storeAgent.get<SubCategory[]>(`${subcategoriesUri}/GetSubcategoriesListByCategoryId/${categoryId}`);
             return response.data;
         },
         enabled: !!categoryId,
@@ -18,7 +18,7 @@ function useSubCategory(categoryId?: number, subcategoryId?: number) {
     const { data: subcategoryFromServer, isLoading: isGetSubCategoryLoading } = useQuery({
         queryKey: ["getSubCategories", { id: subcategoryId }],
         queryFn: async () => {
-            const repsponse = await agent.get<SubCategory>(`${subcategoriesUri}/${subcategoryId}`);
+            const repsponse = await storeAgent.get<SubCategory>(`${subcategoriesUri}/${subcategoryId}`);
             return repsponse.data;
         },
         enabled: !!subcategoryId,
@@ -27,7 +27,7 @@ function useSubCategory(categoryId?: number, subcategoryId?: number) {
 
     const createNewSubCategory = useMutation({
         mutationFn: async (subcategory: SubCategory) => {
-            const response = await agent.post<SubCategory>(subcategoriesUri, subcategory);
+            const response = await storeAgent.post<SubCategory>(subcategoriesUri, subcategory);
             return response.data;
         },
         onSuccess: () => {
@@ -36,7 +36,7 @@ function useSubCategory(categoryId?: number, subcategoryId?: number) {
     })
     const updateSubCategory = useMutation({
         mutationFn: async (subcategory: SubCategory) => {
-            await agent.put(subcategoriesUri, subcategory);
+            await storeAgent.put(subcategoriesUri, subcategory);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["getSubCategories"], exact: true });
@@ -45,7 +45,7 @@ function useSubCategory(categoryId?: number, subcategoryId?: number) {
 
     const deleteSubCategory = useMutation({
         mutationFn: async (id: number) => {
-            await agent.delete(`${subcategoriesUri}/${id}`);
+            await storeAgent.delete(`${subcategoriesUri}/${id}`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["getSubCategories"], exact: true });
