@@ -1,6 +1,0 @@
-@XGO.Store.api_HostAddress = http://localhost:5248
-
-GET {{XGO.Store.api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
