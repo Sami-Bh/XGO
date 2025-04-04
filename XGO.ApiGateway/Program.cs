@@ -1,4 +1,7 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
+
 namespace XGO.ApiGateway
 {
     public class Program
@@ -6,9 +9,15 @@ namespace XGO.ApiGateway
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddCors();
 
             // Add services to the container.
+            builder.Services.AddCors();
+
+            //builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(builder.Configuration);
+            builder.Services.AddAuthorizationBuilder()
+                .AddPolicy("customPolicy", policy => policy.RequireAuthenticatedUser());
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -25,7 +34,7 @@ namespace XGO.ApiGateway
 
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

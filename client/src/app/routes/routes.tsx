@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
 import App from "../../assets/App";
-import { Home } from "@mui/icons-material";
 import CategoriesDashboard from "../features/categories/CategoriesDashboard";
 import CategoryDetails from "../features/categories/CategoryDetails";
 import SubCategoryDashboard from "../features/subcategories/SubCategoryDashboard";
@@ -9,6 +8,7 @@ import NotFound from "../features/errors/NotFound";
 import { categoriesUri, productsUri, subcategoriesUri } from "./routesconsts";
 import ProductDashboard from "../features/products/ProductDashboard";
 import ProductDetails from "../features/products/ProductDetails";
+import Home from "../features/home/Home";
 
 export const router = createBrowserRouter([
     {

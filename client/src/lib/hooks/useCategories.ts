@@ -3,6 +3,7 @@ import storeAgent from "../api/agent";
 import { categoriesUri } from "../../app/routes/routesconsts";
 
 function useCategories(id?: number) {
+
     const queryClient = useQueryClient();
     const { data: categoriesFromServer, isLoading: isGettingCategoriesPending } = useQuery({
         queryKey: ["GetCategories"],

@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Core;
+﻿using BuildingBlocks.Controllers;
+using BuildingBlocks.Core;
 using BuildingBlocks.CQRS.Generic.Commands;
 using BuildingBlocks.CQRS.Generic.Queries;
 using BuildingBlocks.DTOs;
@@ -8,11 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplicationXGO.Controllers
 {
-#if !DEBUG
-    [Authorize]
-#endif
+
     [ApiController]
-    public class GenericController<dbT, dtoT>() : ControllerBase where dbT : BaseModel where dtoT : BaseDto
+    public class GenericController<dbT, dtoT>() : AuthorizedControllerBase where dbT : BaseModel where dtoT : BaseDto
     {
         #region Fields
         private ILogger? _logger;

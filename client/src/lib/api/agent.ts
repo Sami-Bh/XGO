@@ -1,10 +1,17 @@
 import axios from "axios";
 import { router } from "../../app/routes/routes";
+import { PUBLIC_CLIENT_APPLICATION, TOKEN_REQUEST } from "../../msalConfig";
+
 const storeAgent = axios.create({
-    baseURL: import.meta.env.VITE_API_URL + import.meta.env.VITE_STORE_URI
+    baseURL: import.meta.env.VITE_API_URL + import.meta.env.VITE_STORE_URI,
 });
 
-storeAgent.interceptors.request.use((conf) => {
+storeAgent.interceptors.request.use(async (conf) => {
+
+    const token = (await PUBLIC_CLIENT_APPLICATION.acquireTokenSilent(TOKEN_REQUEST)).accessToken;
+
+    conf.headers.Authorization = `Bearer ${token}`;
+
     return conf;
 })
 
