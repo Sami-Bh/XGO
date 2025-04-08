@@ -5,7 +5,8 @@ import { useAccount, useMsal } from "@azure/msal-react";
 function useAuthentication() {
     const { instance, accounts } = useMsal();
     const [Token, setToken] = useState("");
-    const LoggedInUser = useAccount(accounts[0])
+    const LoggedInUser = useAccount(accounts[0]);
+
     const handleSignIn = async () => {
         const loginResponse = await instance.loginPopup(LOGIN_REQUEST);
         if (loginResponse.account) {

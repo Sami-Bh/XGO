@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BuildingBlocks.Controllers
 {
-    //[Authorize]
+#if !DEBUG
+[Authorize]
+#endif
     public class AuthorizedControllerBase: ControllerBase
     {
     }

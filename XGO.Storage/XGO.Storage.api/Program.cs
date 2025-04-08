@@ -1,12 +1,19 @@
 
+using Microsoft.EntityFrameworkCore;
+using XGO.Storage.Api.Storage.Persistence;
+
 namespace XGO.Storage.api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddDbContext<XgoStorageDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"));
+            });
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -29,6 +36,19 @@ namespace XGO.Storage.api
 
 
             app.MapControllers();
+
+            using var scope = app.Services.CreateScope();
+            try
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<XgoStorageDbContext>();
+                await dbContext.Database.MigrateAsync();
+                await XgoStorageDbInitializer.SeedDataAsync(dbContext);
+            }
+            catch (Exception e)
+            {
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+                logger.LogError(e, "Error while migrating database");
+            }
 
             app.Run();
         }
