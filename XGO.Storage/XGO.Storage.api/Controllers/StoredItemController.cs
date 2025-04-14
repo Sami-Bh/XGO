@@ -17,7 +17,7 @@ namespace XGO.Storage.Api.Controllers
             return await Task.Run(NoContent);
         }
 
-        [HttpGet("GetFilteredStoredItem")]
+        [HttpGet("GetFilteredStoredItems")]
         public async Task<ActionResult> GetFilteredStoredItem([FromQuery] ProductsFilter productsFilter)
         {
             return Ok(await Mediator.Send(new GetFilteredStorageItems.Query { ProductsFilter = productsFilter }));

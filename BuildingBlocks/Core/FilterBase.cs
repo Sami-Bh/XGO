@@ -13,7 +13,7 @@ namespace BuildingBlocks.Core
 
         public virtual int GetSkip()
         {
-            var pageSize = PageSize <= 0 || PageSize > 5 ? 5 : PageSize;
+            var pageSize = PageSize <= 0 || PageSize < 5 ? 5 : PageSize;
             var pageIndex = PageIndex > 0 ? PageIndex - 1 : 1;
             return pageSize * pageIndex;
         }

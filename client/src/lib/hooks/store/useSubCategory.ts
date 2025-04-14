@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import storeAgent from "../api/agent";
-import { subcategoriesUri } from "../../app/routes/routesconsts";
+import stores from "../../api/agent";
+import { subcategoriesUri } from "../../../app/routes/routesconsts";
 
 function useSubCategory(categoryId?: number, subcategoryId?: number) {
+    const storeAgent = stores.storeAgent;
+
     const queryClient = useQueryClient();
     const { isLoading: isGetSubCategoriesPending, data: subcategoriesFromServer } = useQuery({
         queryKey: ["getSubCategories", categoryId],

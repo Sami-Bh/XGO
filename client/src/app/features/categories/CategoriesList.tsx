@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import useCategories from "../../../lib/hooks/useCategories"
 import CategoryCard from "./CategoryCard";
+import useCategories from "../../../lib/hooks/store/useCategories";
 
 export default function CategoriesList() {
     const { categoriesFromServer, isGettingCategoriesPending } = useCategories();

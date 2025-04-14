@@ -1,7 +1,7 @@
 import { useParams } from 'react-router';
-import useSubCategory from '../../../lib/hooks/useSubCategory'
 import SubCategoryCard from './SubCategoryCard';
 import { Typography, Box } from '@mui/material';
+import useSubCategory from '../../../lib/hooks/store/useSubCategory';
 
 export default function SubCategoryList() {
   const { categoryId } = useParams();

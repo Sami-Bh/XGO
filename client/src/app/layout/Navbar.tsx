@@ -2,9 +2,9 @@ import { AppBar, Box, Button, Container, MenuItem, Toolbar, Typography } from "@
 import MenuIcon from '@mui/icons-material/Menu';
 import StoreIcon from '@mui/icons-material/Store';
 import { NavLink } from "react-router";
-import { categoriesUri, productsUri } from "../routes/routesconsts";
-import useAuthentication from "../../lib/hooks/useAuthentication";
+import { categoriesUri, productsUri, storageUri } from "../routes/routesconsts";
 import LogoutIcon from '@mui/icons-material/Logout';
+import useAuthentication from "../../lib/hooks/authentication/useAuthentication";
 
 export default function Navbar() {
     const { LoggedInUser, handleSignOut } = useAuthentication();
@@ -28,6 +28,7 @@ export default function Navbar() {
                             <MenuItem component={NavLink} to={categoriesUri}>Categories</MenuItem>
 
                             <MenuItem component={NavLink} to={productsUri}>Products</MenuItem>
+                            <MenuItem component={NavLink} to={storageUri}>Storage</MenuItem>
                             {/* <MenuItem component={NavLink} to="/categories">SubCategories</MenuItem>
                             <MenuItem component={NavLink} to="/categories">Products</MenuItem> */}
                         </Box>

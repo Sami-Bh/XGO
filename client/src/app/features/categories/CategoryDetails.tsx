@@ -1,5 +1,4 @@
 import { Box, Button, Card, CardContent, CardHeader, Paper, Typography } from '@mui/material'
-import useCategories from '../../../lib/hooks/useCategories'
 import { useEffect } from 'react';
 import { observer } from "mobx-react-lite"
 import { useForm } from 'react-hook-form';
@@ -8,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { CategorySchema, categorySchema } from '../../../lib/schemas/categorySchema';
 import { categoriesUri, } from '../../routes/routesconsts';
 import TextInput from '../../shared/components/TextInput';
+import useCategories from '../../../lib/hooks/store/useCategories';
 
 const CategoryDetails = observer(function CategoryDetails() {
     const { id: selectedCategoryId } = useParams();

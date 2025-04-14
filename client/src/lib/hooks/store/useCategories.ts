@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import storeAgent from "../api/agent";
-import { categoriesUri } from "../../app/routes/routesconsts";
+import stores from "../../api/agent";
+import { categoriesUri } from "../../../app/routes/routesconsts";
 
 function useCategories(id?: number) {
-
+    const storeAgent = stores.storeAgent;
     const queryClient = useQueryClient();
     const { data: categoriesFromServer, isLoading: isGettingCategoriesPending } = useQuery({
         queryKey: ["GetCategories"],

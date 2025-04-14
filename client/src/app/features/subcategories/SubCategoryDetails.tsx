@@ -1,19 +1,21 @@
 import { Box, Paper, Card, CardHeader, CardContent, Button, Typography } from '@mui/material'
 import { useNavigate, useParams } from 'react-router'
-import useSubCategory from '../../../lib/hooks/useSubCategory';
 import { useForm } from 'react-hook-form';
 import { subcategorySchema, SubcategorySchema } from '../../../lib/schemas/subcategorySchema';
 import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextInput from '../../shared/components/TextInput';
 import { subcategoriesUri } from '../../routes/routesconsts';
+import useSubCategory from '../../../lib/hooks/store/useSubCategory';
 
 export default function SubCategoryDetails() {
     const { categoryId, id } = useParams();
+
     const { isGetSubCategoryLoading, subcategoryFromServer,
         createNewSubCategory, updateSubCategory,
         deleteSubCategory
     } = useSubCategory(Number(categoryId), Number(id));
+
     const navigate = useNavigate();
     const { handleSubmit, reset, control } = useForm<SubcategorySchema>({
         mode: 'onTouched',

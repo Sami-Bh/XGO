@@ -1,6 +1,6 @@
-import { LOGIN_REQUEST, TOKEN_REQUEST } from "../../msalConfig";
 import { useState } from "react";
 import { useAccount, useMsal } from "@azure/msal-react";
+import { LOGIN_REQUEST, TOKEN_REQUEST } from "../../../msalConfig";
 
 function useAuthentication() {
     const { instance, accounts } = useMsal();

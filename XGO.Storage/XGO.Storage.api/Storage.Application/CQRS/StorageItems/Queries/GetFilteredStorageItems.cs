@@ -22,9 +22,11 @@ namespace XGO.Storage.Api.Storage.Application.CQRS.StorageItems.Queries
                 var query = dbContext.StoredItems.AsNoTracking().AsQueryable();
 
                 query = string.IsNullOrEmpty(filter.ProductNameSearchText) ? query : query.Where(x => x.ProductName.Contains(filter.ProductNameSearchText.ToLower()));
-                query = query.OrderBy(x => x.ProductName);
+                query = query.OrderBy(x => x.Id);
 
-                var pageCount = await query.CountAsync(cancellationToken);
+                var count = await query.CountAsync(cancellationToken);
+                var pageCount = filter.GetPageCount(count);
+
                 query = query.Skip(filter.GetSkip()).Take(filter.PageSize);
 
                 var data = await query.ToListAsync(cancellationToken);

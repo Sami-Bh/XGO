@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import storeAgent from "../api/agent";
-import { productsUri } from "../../app/routes/routesconsts";
+import stores from "../../api/agent";
+import { productsUri } from "../../../app/routes/routesconsts";
 
 export default function useProducts(productsFilter?: ProductsFilter, productId?: number) {
+    const storeAgent = stores.storeAgent;
     const queryClient = useQueryClient();
     const { data: filteredProductsFromServer, isPending: isGeFilteredtProductsPending } = useQuery({
         queryKey: ["getProducts", productsFilter],

@@ -1,14 +1,11 @@
 import { Box, Container, Grid2, Pagination } from "@mui/material";
 import ProductList from "./ProductList";
 import { useState } from "react";
-import useProducts from "../../../lib/hooks/useProducts";
 import ProducstsFilter from "./ProducstsFilter";
 import ProductsActions from "./ProductsActions";
+import useProducts from "../../../lib/hooks/store/useProducts";
+
 export default function ProductDashboard() {
-
-
-
-
     //use state
     const [ProductsFilter, setProductsFilter] = useState({ categoryId: -1, subcategoryId: -1, textSearch: "", pageIndex: 1 } as ProductsFilter)
 

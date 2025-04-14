@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import useCategories from '../../../lib/hooks/useCategories';
-import useSubCategory from '../../../lib/hooks/useSubCategory';
 import { Paper, Box, CircularProgress, Typography, TextField, Button } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
 import SelectInput from '../../shared/components/SelectInput';
+import useCategories from '../../../lib/hooks/store/useCategories';
+import useSubCategory from '../../../lib/hooks/store/useSubCategory';
 
 type Props = {
     setFilter: (productsFilter: ProductsFilter) => void
@@ -35,7 +35,7 @@ export default function ProducstsFilter({ setFilter }: Props) {
             return;
         }
 
-        const newValue = [...defaultSubCategory, ...subcategoriesFromServer.sort((a, b) => a.name.localeCompare(b.name))];
+        const newValue = [...defaultSubCategory, ...subcategoriesFromServer.sort((a: SubCategory, b: SubCategory) => a.name.localeCompare(b.name))];
         if (JSON.stringify(newValue) != JSON.stringify(SubCategoriesFilterItemsSource)) {
             setSubCategoriesFilterItemsSource(newValue);
             setSelectedSubcategoryId(-1);
@@ -64,7 +64,7 @@ export default function ProducstsFilter({ setFilter }: Props) {
                     name="categorySelect"
                     label="Category"
                     value={SelectedCategoryId !== null ? SelectedCategoryId : -1}
-                    options={[{ id: -1, name: "---All---" }, ...(categoriesFromServer ?? []).sort((a, b) => a.name.localeCompare(b.name))]}
+                    options={[{ id: -1, name: "---All---" }, ...(categoriesFromServer ?? []).sort((a: Category, b: Category) => a.name.localeCompare(b.name))]}
                     onChange={(value) => {
                         setSelectedCategoryId(value === -1 ? null : Number(value));
                     }}

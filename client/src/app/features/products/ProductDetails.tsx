@@ -3,15 +3,15 @@ import { productSchema, ProductSchema } from "../../../lib/schemas/productSchema
 import { Box, Button, Card, CardContent, CircularProgress, Paper, Typography } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router";
-import useProducts from "../../../lib/hooks/useProducts";
 import { useEffect, useState } from "react";
 import TextInput from "../../shared/components/TextInput";
 import LabeledCheckbox from "../../shared/components/LabeledCheckbox";
-import useCategories from "../../../lib/hooks/useCategories";
-import useSubCategory from "../../../lib/hooks/useSubCategory";
 import SelectInput from "../../shared/components/SelectInput";
 import { GetNumberOrUndefined } from "../../../lib/Utils/NumberUtils";
 import { productsUri } from "../../routes/routesconsts";
+import useCategories from "../../../lib/hooks/store/useCategories";
+import useProducts from "../../../lib/hooks/store/useProducts";
+import useSubCategory from "../../../lib/hooks/store/useSubCategory";
 
 export default function ProductDetails() {
     const { handleSubmit, control, reset } = useForm<ProductSchema>({
@@ -108,13 +108,13 @@ export default function ProductDetails() {
                     <CardContent>
                         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                             <SelectInput value={CategoryId} label={"Categories"} name="categoriesList"
-                                options={categoriesFromServer?.sort((a, b) => a.name.localeCompare(b.name)) || []} onChange={(value) => {
+                                options={categoriesFromServer?.sort((a: Category, b: Category) => a.name.localeCompare(b.name)) || []} onChange={(value) => {
                                     setCategoryId(value);
                                     setSubCategoryId("");
                                 }} />
 
                             <SelectInput value={SubCategoryId} label={"Sub Categories"} name="subCategoryId"
-                                options={subcategoriesFromServer?.sort((a, b) => a.name.localeCompare(b.name)) || []} onChange={(value) => setSubCategoryId(value)} />
+                                options={subcategoriesFromServer?.sort((a: SubCategory, b: SubCategory) => a.name.localeCompare(b.name)) || []} onChange={(value) => setSubCategoryId(value)} />
 
                             <TextInput label="Name" control={control} name="name" />
                             <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>

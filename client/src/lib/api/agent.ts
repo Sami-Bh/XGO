@@ -1,32 +1,48 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { router } from "../../app/routes/routes";
 import { PUBLIC_CLIENT_APPLICATION, TOKEN_REQUEST } from "../../msalConfig";
 
 const storeAgent = axios.create({
     baseURL: import.meta.env.VITE_API_URL + import.meta.env.VITE_STORE_URI,
 });
+const storageAgent = axios.create({
+    baseURL: import.meta.env.VITE_API_URL + import.meta.env.VITE_STORAGE_URI,
+});
+UpdateInterceptors([storeAgent, storageAgent]);
 
-storeAgent.interceptors.request.use(async (conf) => {
+export default { storeAgent, storageAgent };
 
-    const token = (await PUBLIC_CLIENT_APPLICATION.acquireTokenSilent(TOKEN_REQUEST)).accessToken;
+function UpdateInterceptors(axiosInstances: AxiosInstance[]) {
+    axiosInstances.forEach(axiosInstance => {
+        AddAuthenticationHeaderToAxiosInstance(axiosInstance);
+        AddRedirectToNotFoundPage(axiosInstance);
+    });
+}
 
-    conf.headers.Authorization = `Bearer ${token}`;
+function AddAuthenticationHeaderToAxiosInstance(axiosInstance: AxiosInstance) {
+    axiosInstance.interceptors.request.use(async (conf) => {
 
-    return conf;
-})
+        const token = (await PUBLIC_CLIENT_APPLICATION.acquireTokenSilent(TOKEN_REQUEST)).accessToken;
 
-storeAgent.interceptors.response.use(
-    (response) => {
-        return response
-    },
-    (error) => {
-        console.log(error);
+        conf.headers.Authorization = `Bearer ${token}`;
 
-        if (error.response.status === 404) {
-            router.navigate("/not-found");
-        } else {
-            return Promise.reject(error)
+        return conf;
+    });
+}
+
+function AddRedirectToNotFoundPage(axionsInstance: AxiosInstance) {
+    axionsInstance.interceptors.response.use(
+        (response) => {
+            return response
+        },
+        (error) => {
+            console.log(error);
+
+            if (error.response.status === 404) {
+                router.navigate("/not-found");
+            } else {
+                return Promise.reject(error)
+            }
         }
-    }
-);
-export default storeAgent;
+    );
+}

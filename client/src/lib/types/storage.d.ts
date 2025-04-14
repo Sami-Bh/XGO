@@ -7,7 +7,9 @@ export type StoredItem = {
 }
 
 export type StorageFilter = {
-    StorageId: number,
+    categoryId?: number,
+    subcategoryId?: number,
+    StorageId?: number,
     pageSize: number,
     pageIndex: number,
     orderby: string,

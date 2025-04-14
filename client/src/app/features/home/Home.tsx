@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import useAuthentication from "../../../lib/hooks/useAuthentication";
+import useAuthentication from "../../../lib/hooks/authentication/useAuthentication";
 
 export default function Home() {
     const { instance } = useAuthentication();

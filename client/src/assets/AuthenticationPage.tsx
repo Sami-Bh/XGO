@@ -1,6 +1,6 @@
 import { Box, Button, Paper, Typography } from '@mui/material'
-import useAuthentication from '../lib/hooks/useAuthentication'
 import MicrosoftIcon from '@mui/icons-material/Microsoft';
+import useAuthentication from '../lib/hooks/authentication/useAuthentication';
 export default function AuthenticationPage() {
 
     const { handleSignIn } = useAuthentication();
