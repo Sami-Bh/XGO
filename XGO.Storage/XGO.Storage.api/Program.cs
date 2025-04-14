@@ -1,5 +1,8 @@
 
+using BuildingBlocks.CQRS.Generic.Queries;
 using Microsoft.EntityFrameworkCore;
+using XGO.Storage.Api.Storage.Application.MappingProfiles;
+using XGO.Storage.Api.Storage.Domain;
 using XGO.Storage.Api.Storage.Persistence;
 
 namespace XGO.Storage.api
@@ -16,10 +19,23 @@ namespace XGO.Storage.api
             });
             // Add services to the container.
 
+            builder.Services.AddScoped<DbContext, XgoStorageDbContext>();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddMediatR(cfg =>
+            {
+                cfg.RegisterGenericHandlers = true;
+                cfg.RegisterServicesFromAssemblyContaining(typeof(GetIList<,>));
+                cfg.RegisterServicesFromAssemblyContaining(typeof(StorageLocation));// this line is for mediatr, if absent types cannot be injected
+
+            });
+
+            builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
 
             var app = builder.Build();
 

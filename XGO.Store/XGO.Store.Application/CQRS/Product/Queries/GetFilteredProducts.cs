@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using BuildingBlocks.Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using XGO.Store.Application.DTOs;
@@ -40,8 +41,9 @@ namespace XGO.Store.Application.CQRS.Product.Queries
                 var count = await query.CountAsync(cancellationToken);
                 var pageCount = request.Filter.GetPageCount(count);
 
-                query = query.Skip(request.Filter.GetSkip()).Take(request.Filter.PageSize);
                 query = query.OrderBy(x => x.Name);
+
+                query = query.Skip(request.Filter.GetSkip()).Take(request.Filter.PageSize);
 
                 var dbProducts = await query.ToListAsync(cancellationToken);
                 var mappedDtos = mapper.Map<IList<ProductDto>>(dbProducts);

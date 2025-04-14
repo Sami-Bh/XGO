@@ -11,6 +11,7 @@ namespace BuildingBlocks.Controllers
 #if !DEBUG
 [Authorize]
 #endif
+    [ApiController]
     public class AuthorizedControllerBase: ControllerBase
     {
     }

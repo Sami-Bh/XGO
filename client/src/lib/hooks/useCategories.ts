@@ -8,7 +8,7 @@ function useCategories(id?: number) {
     const { data: categoriesFromServer, isLoading: isGettingCategoriesPending } = useQuery({
         queryKey: ["GetCategories"],
         queryFn: async () => {
-            const response = await storeAgent.get<Category[]>('/Categories');
+            const response = await storeAgent.get<Category[]>(categoriesUri);
             return response.data;
         },
     });

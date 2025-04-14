@@ -5,10 +5,11 @@ import CategoryDetails from "../features/categories/CategoryDetails";
 import SubCategoryDashboard from "../features/subcategories/SubCategoryDashboard";
 import SubCategoryDetails from "../features/subcategories/SubCategoryDetails";
 import NotFound from "../features/errors/NotFound";
-import { categoriesUri, productsUri, subcategoriesUri } from "./routesconsts";
+import { categoriesUri, productsUri, storageUri, subcategoriesUri } from "./routesconsts";
 import ProductDashboard from "../features/products/ProductDashboard";
 import ProductDetails from "../features/products/ProductDetails";
 import Home from "../features/home/Home";
+import StorageDashboard from "../features/storage/StorageDashboard";
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
             {
                 path: "",
                 element: <Home />,
+            },
+            {
+                path: storageUri,
+                element: <StorageDashboard />
             },
             {
                 path: categoriesUri,

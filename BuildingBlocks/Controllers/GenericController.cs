@@ -1,16 +1,15 @@
-﻿using BuildingBlocks.Controllers;
-using BuildingBlocks.Core;
+﻿using BuildingBlocks.Core;
 using BuildingBlocks.CQRS.Generic.Commands;
 using BuildingBlocks.CQRS.Generic.Queries;
 using BuildingBlocks.DTOs;
 using BuildingBlocks.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
-namespace XGO.Store.Api.Controllers
+namespace BuildingBlocks.Controllers
 {
-
-    [ApiController]
     public class GenericController<dbT, dtoT>() : AuthorizedControllerBase where dbT : BaseModel where dtoT : BaseDto
     {
         #region Fields

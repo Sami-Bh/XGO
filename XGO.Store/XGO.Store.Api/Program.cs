@@ -21,7 +21,7 @@ builder.Services.AddDbContext<XGODbContext>(options =>
         builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
     })
     );
-builder.Services.AddTransient<DbContext, XGODbContext>();//this servers for mediatr, if absent dbcontext cannot be injected
+builder.Services.AddScoped<DbContext, XGODbContext>();//this servers for mediatr, if absent dbcontext cannot be injected
 
 
 builder.Services.AddMediatR(cfg =>

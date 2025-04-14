@@ -9,9 +9,15 @@ namespace XGO.Storage.Api.Storage.Application.MappingProfiles
         public MappingProfiles()
         {
             CreateMap<StorageLocation, StorageLocationDto>().
-                ForMember(destination => destination.HasChildren, opt => opt.MapFrom(x => x.StoredItems.Count != 0));
+                ForMember(destination => destination.HasChildren, opt => opt.MapFrom(x => x.StoredItems.Count != 0))
+                .ForMember(destination => destination.Name, opts => opts.MapFrom(source => source.Location));
 
-            CreateMap<StorageLocationDto, StorageLocation>();
+            CreateMap<StorageLocationDto, StorageLocation>()
+                .ForMember(destination => destination.Location, opts => opts.MapFrom(source => source.Name));
+
+
+            CreateMap<StoredItem, StoredItemDto>();
+            CreateMap<StoredItemDto, StoredItem>();
         }
     }
 }

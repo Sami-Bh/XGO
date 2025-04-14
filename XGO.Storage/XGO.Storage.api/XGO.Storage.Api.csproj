@@ -15,12 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Storage.Application\" />
-    <Folder Include="Storage\Persistence\Migrations\" />
+    <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
+    <Folder Include="Storage.Application\CQRS\StorageItems\Commands\" />
+    <Folder Include="Storage.Application\CQRS\StorageLocation\Commands\" />
   </ItemGroup>
 
 </Project>

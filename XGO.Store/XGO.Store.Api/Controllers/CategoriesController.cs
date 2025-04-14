@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BuildingBlocks.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using XGO.Store.Application.CQRS.Category.Queries;
 using XGO.Store.Application.DTOs;
 using XGO.Store.Domain;

@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.DTOs;
 
-namespace XGO.Store.Application.DTOs
+namespace BuildingBlocks.Core
 {
     public class ListedDto<T> where T : BaseDto
     {
