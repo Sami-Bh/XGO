@@ -10,7 +10,7 @@ using XGO.Storage.Api.Storage.Domain;
 namespace XGO.Storage.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class StoredItemController : GenericController<StoredItem, StoredItemDto>
+    public class StoredItemsController : GenericController<StoredItem, StoredItemDto>
     {
         public async override Task<ActionResult> Get()
         {
@@ -21,6 +21,12 @@ namespace XGO.Storage.Api.Controllers
         public async Task<ActionResult> GetFilteredStoredItem([FromQuery] ProductsFilter productsFilter)
         {
             return Ok(await Mediator.Send(new GetFilteredStorageItems.Query { ProductsFilter = productsFilter }));
+        }
+
+        [HttpGet("GetStoredItemsNames")]
+        public async Task<ActionResult> GetStoredItemsNames([FromQuery] string searchText)
+        {
+            return Ok(await Mediator.Send(new GetProductNames.Query { SearchText = searchText }));
         }
     }
 }

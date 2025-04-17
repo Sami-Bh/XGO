@@ -16,3 +16,13 @@ export type StorageFilter = {
     oderDirection: string,
     productNameSearchText: string,
 }
+
+type StorageLocation = {
+    name: string,
+    id: number,
+}
+
+type StoredItemName = {
+    name: string,
+    id: number,
+}

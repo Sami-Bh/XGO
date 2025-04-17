@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import stores from "../../api/agent";
 import { StorageFilter, StoredItem } from "../../types/storage";
+import { storageUri } from "../../../app/routes/routesconsts";
 
 function useStorageItems(storageFilter?: StorageFilter) {
     const storageAgent = stores.storageAgent;
 
     const { data: StoredItemsFromServer, isPending: IsStoredItemsFromServerPending } = useQuery({
         queryFn: async () => {
-            const response = await storageAgent.get<ListedItem<StoredItem>>("/StoredItem/GetFilteredStoredItems", {
+            const response = await storageAgent.get<ListedItem<StoredItem>>(`${storageUri}/GetFilteredStoredItems`, {
                 params: {
                     orderby: storageFilter?.orderby,
                     oderDirection: storageFilter?.oderDirection,

@@ -20,9 +20,9 @@ export default function StorageTable() {
     // Define columns explicitly for each property of StoredItem
     const columns: { id: keyof StoredItem; label: string; minWidth: number; align: "left" | "right" | "center" | "inherit" | "justify" }[] = [
         // { id: 'productId', label: 'Product ID', minWidth: 100, align: 'left' },
-        { id: 'productName', label: 'Product Name', minWidth: 150, align: 'left' },
-        { id: 'productExpiryDate', label: 'Expiry Date', minWidth: 150, align: 'left' },
-        { id: 'quantity', label: 'Quantity', minWidth: 100, align: 'right' },
+        { id: 'productName', label: 'Product Name', minWidth: 200, align: 'left' },
+        { id: 'productExpiryDate', label: 'Expiry Date', minWidth: 150, align: 'center' },
+        { id: 'quantity', label: 'Quantity', minWidth: 100, align: 'center' },
         // { id: 'id', label: 'ID', minWidth: 100, align: 'right' },
     ];
 

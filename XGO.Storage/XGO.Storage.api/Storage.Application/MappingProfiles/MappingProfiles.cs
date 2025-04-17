@@ -18,6 +18,9 @@ namespace XGO.Storage.Api.Storage.Application.MappingProfiles
 
             CreateMap<StoredItem, StoredItemDto>();
             CreateMap<StoredItemDto, StoredItem>();
+
+            CreateMap<StoredItem, StoredItemNameDto>()
+                .ForMember(destination => destination.Name, opts => opts.MapFrom(source => source.ProductName));
         }
     }
 }
