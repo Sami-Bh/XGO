@@ -1,8 +1,9 @@
 import { Autocomplete, CircularProgress, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import useSearchStoredItemsNames from '../../../lib/hooks/storage/useSearchStoredItemsNames';
 import { useDebounce } from 'use-debounce';
 import { StoredItemName } from '../../../lib/types/storage';
+import { StoreContext } from '../../../lib/stores/store';
 
 export default function StoredItemsNameFilter() {
     const [SeatchText, setSeatchText] = useState("");
@@ -10,7 +11,13 @@ export default function StoredItemsNameFilter() {
     const [SelectedStoredItemName, setSelectedStoredItemName] = useState<StoredItemName | null>(null);
     const { ProductNames, isPending: isProductNamesPeding } = useSearchStoredItemsNames(DebouncedSeatchText);
     const IsLoading = !!ProductNames && isProductNamesPeding;
+    const store = useContext(StoreContext);
 
+    const updateStore = (input: StoredItemName | null) => {
+        store.storedItemsFilterStore.setSelectedStoredItemName(input?.name ?? "");
+    }
+
+    //TODO initialize filter from useContext 
 
     // if ((!!SeatchText && isProductNamesPeding)) return <>Loading...</>
     return (
@@ -25,7 +32,10 @@ export default function StoredItemsNameFilter() {
             loading={isProductNamesPeding}
             noOptionsText="No products"
             value={SelectedStoredItemName}
-            onChange={(_, value) => { setSelectedStoredItemName(value); }}
+            onChange={(_, value) => {
+                setSelectedStoredItemName(value);
+                updateStore(value);
+            }}
             renderInput={(params) => (
                 <TextField
                     {...params}

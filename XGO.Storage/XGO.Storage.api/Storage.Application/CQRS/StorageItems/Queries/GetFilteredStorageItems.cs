@@ -19,9 +19,10 @@ namespace XGO.Storage.Api.Storage.Application.CQRS.StorageItems.Queries
             public async Task<ListedDto<StoredItemDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var filter = request.ProductsFilter;
-                var query = dbContext.StoredItems.AsNoTracking().AsQueryable();
+                var query = dbContext.StoredItems.Include(x => x.StorageLocation).AsNoTracking().AsQueryable();
 
                 query = string.IsNullOrEmpty(filter.ProductNameSearchText) ? query : query.Where(x => x.ProductName.Contains(filter.ProductNameSearchText.ToLower()));
+                query = filter.StorageId is null ? query : query.Where(x => x.StorageLocation != null && x.StorageLocation.Id == filter.StorageId);
                 query = query.OrderBy(x => x.Id);
 
                 var count = await query.CountAsync(cancellationToken);

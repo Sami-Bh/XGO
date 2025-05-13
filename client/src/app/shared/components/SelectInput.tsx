@@ -5,9 +5,10 @@ type SelectInputProps<T> = Omit<SelectProps<T>, "onChange"> & {
     value: T;
     options: { id: T; name: string }[];
     onChange: (value: T) => void;
-    errorMessage?: string
+    errorMessage?: string;
     isDisabled?: boolean;
-}
+    showDeleteOption?: boolean; // New prop to toggle the delete option
+};
 
 export default function SelectInput<T extends number | "">({
     label,
@@ -16,6 +17,7 @@ export default function SelectInput<T extends number | "">({
     errorMessage,
     onChange,
     isDisabled = false,
+    showDeleteOption = false, // Default to false
     ...rest
 }: SelectInputProps<T>) {
     return (
@@ -24,19 +26,21 @@ export default function SelectInput<T extends number | "">({
             <Select
                 {...rest}
                 value={value}
-
-                onChange={(e) => onChange(e.target.value as T)} label={label}
+                onChange={(e) => onChange(e.target.value as T)}
+                label={label}
             >
-                {
-                    options.map((option) => (
-                        <MenuItem key={option.id} value={option.id}>
-                            {option.name}
-                        </MenuItem>
-                    ))
-                }
+                {showDeleteOption && (
+                    <MenuItem value="">
+                        <em>None</em> {/* This represents the "Delete" or "Clear" option */}
+                    </MenuItem>
+                )}
+                {options.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {option.name}
+                    </MenuItem>
+                ))}
             </Select>
             <FormHelperText>{errorMessage}</FormHelperText>
-
         </FormControl>
     );
 }
