@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { StorageFilter, StoredItem } from "../../../lib/types/storage"
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, Pagination, TableRow, TextField } from "@mui/material";
 import useStorageItems from "../../../lib/hooks/storage/useStorageItems";
@@ -6,6 +6,8 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import { StoreContext } from "../../../lib/stores/store";
+import { reaction } from "mobx";
 
 
 export default function StorageTable() {
@@ -16,6 +18,21 @@ export default function StorageTable() {
     const updatePageIndex = (value: number) => {
         setFilter((prevFilter) => ({ ...prevFilter, pageIndex: value }));
     };
+
+    const store = useContext(StoreContext);
+
+    reaction(() => store.storedItemsFilterStore.getPageFilter,
+        newValue => {
+            console.log(newValue);
+            setFilter((prevFilter) => ({
+                ...prevFilter,
+                productNameSearchText: newValue.selectedStoredItemName ?? "",
+                StorageId: newValue.selectedStorageId
+            }));
+
+        }
+    )
+
 
     // Define columns explicitly for each property of StoredItem
     const columns: { id: keyof StoredItem; label: string; minWidth: number; align: "left" | "right" | "center" | "inherit" | "justify" }[] = [
@@ -31,7 +48,7 @@ export default function StorageTable() {
     if (IsStoredItemsFromServerPending) return <>Loading...</>;
 
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden', display: "flex", flexDirection: "column", height: 650 }}>
+        <Paper sx={{ width: '100%', p: 2, overflow: 'hidden', display: "flex", flexDirection: "column", height: 650 }}>
             <TableContainer sx={{ maxHeight: 600 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
