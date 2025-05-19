@@ -349,3 +349,10 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /XGO.ApiGateway/appsettings.Development.json
+IAC/terraform.tfstate
+IAC/.terraform/providers/registry.terraform.io/hashicorp/azuread/3.4.0/windows_amd64/LICENSE.txt
+IAC/.terraform/providers/registry.terraform.io/hashicorp/azuread/3.4.0/windows_amd64/terraform-provider-azuread_v3.4.0_x5.exe
+IAC/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.0.2/windows_amd64/terraform-provider-azurerm_v3.0.2_x5.exe
+IAC/terraform.tfstate.1747666523.backup
+IAC/terraform.tfstate.backup
+IAC/.terraform.lock.hcl
