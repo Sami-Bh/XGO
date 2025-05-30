@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import { StoreContext } from "../../../lib/stores/store";
 import { reaction } from "mobx";
 
-
 export default function StorageTable() {
     const getDefaultFilter = (): StorageFilter => { return { oderDirection: "asc", orderby: "name", pageIndex: 1, pageSize: 10, productNameSearchText: "", StorageId: 1 } };
     const [Filter, setFilter] = useState<StorageFilter>(getDefaultFilter());
@@ -23,16 +22,18 @@ export default function StorageTable() {
 
     reaction(() => store.storedItemsFilterStore.getPageFilter,
         newValue => {
-            console.log(newValue);
             setFilter((prevFilter) => ({
                 ...prevFilter,
                 productNameSearchText: newValue.selectedStoredItemName ?? "",
                 StorageId: newValue.selectedStorageId
             }));
-
         }
-    )
+    );
 
+    const handleItemUpdate = (item: StoredItem, field: keyof StoredItem, value: any) => {
+        const updatedItem = { ...item, [field]: value };
+        store.updatedStorageItemsStore.addOrUpdateItem(updatedItem);
+    };
 
     // Define columns explicitly for each property of StoredItem
     const columns: { id: keyof StoredItem; label: string; minWidth: number; align: "left" | "right" | "center" | "inherit" | "justify" }[] = [
@@ -69,10 +70,9 @@ export default function StorageTable() {
                             .map((storedItem: StoredItem, rowIndex) => (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={rowIndex}>
                                     {columns.map((column) => {
-                                        const value = storedItem[column.id as keyof StoredItem];
+                                        const value = storedItem[column.id];
                                         switch (column.id) {
                                             case 'productExpiryDate':
-
                                                 return (
                                                     <TableCell key={column.id} align={column.align}>
                                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -82,6 +82,9 @@ export default function StorageTable() {
                                                                 slotProps={{
                                                                     field: { clearable: true, },
                                                                 }}
+                                                                onChange={(newValue) => {
+                                                                    handleItemUpdate(storedItem, 'productExpiryDate', newValue?.toDate());
+                                                                }}
                                                             />
                                                         </LocalizationProvider>
                                                     </TableCell>
@@ -89,9 +92,15 @@ export default function StorageTable() {
                                             case 'quantity':
                                                 return (
                                                     <TableCell key={column.id} align={column.align}>
-                                                        <TextField defaultValue={value} slotProps={{ input: { type: "number" } }} />
+                                                        <TextField
+                                                            defaultValue={value}
+                                                            slotProps={{ input: { type: "number" } }}
+                                                            onChange={(e) => {
+                                                                handleItemUpdate(storedItem, 'quantity', parseInt(e.target.value));
+                                                            }}
+                                                        />
                                                     </TableCell>
-                                                );
+                                                )
                                             default:
                                                 return (<TableCell key={column.id} align={column.align}>
                                                     {String(value ?? '')}

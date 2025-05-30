@@ -10,6 +10,7 @@ import ProductDashboard from "../features/products/ProductDashboard";
 import ProductDetails from "../features/products/ProductDetails";
 import Home from "../features/home/Home";
 import StorageDashboard from "../features/storage/StorageDashboard";
+import AddStorageItem from "../features/storage/AddStorageItem";
 
 export const router = createBrowserRouter([
     {
@@ -22,7 +23,13 @@ export const router = createBrowserRouter([
             },
             {
                 path: storageUri,
-                element: <StorageDashboard />
+                element: <StorageDashboard />,
+                children: [
+                    {
+                        path: "new",
+                        element: <AddStorageItem />
+                    }
+                ]
             },
             {
                 path: categoriesUri,

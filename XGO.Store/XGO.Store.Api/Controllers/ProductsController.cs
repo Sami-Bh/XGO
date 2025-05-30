@@ -18,5 +18,14 @@ namespace XGO.Store.Api.Controllers
                 Filter = productsFilter
             }));
         }
+
+        [HttpGet("GetProductNamesBySubCategory/{subCategoryId}")]
+        public async Task<ActionResult<List<string>>> GetProductNamesBySubCategory(int subCategoryId)
+        {
+            return Ok(await Mediator.Send(new Application.CQRS.Product.Queries.GetProductNamesBySubCategory.Query
+            {
+                SubCategoryId = subCategoryId
+            }));
+        }
     }
 }

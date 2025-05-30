@@ -2,9 +2,19 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import stores from "../../api/agent";
 import { productsUri } from "../../../app/routes/routesconsts";
 
-export default function useProducts(productsFilter?: ProductsFilter, productId?: number) {
+export default function useProducts(productsFilter?: ProductsFilter, productId?: number, subCategoryId?: number) {
     const storeAgent = stores.storeAgent;
     const queryClient = useQueryClient();
+
+    const { data: productNamesFromServer, isPending: isGetProductNamesPending } = useQuery({
+        queryKey: ["getProductNames", subCategoryId],
+        queryFn: async () => {
+            const response = await storeAgent.get<string[]>(`${productsUri}/GetProductNamesBySubCategory/${subCategoryId}`);
+            return response.data;
+        },
+        enabled: !!subCategoryId
+    });
+
     const { data: filteredProductsFromServer, isPending: isGeFilteredtProductsPending } = useQuery({
         queryKey: ["getProducts", productsFilter],
         queryFn: async () => {
@@ -12,7 +22,7 @@ export default function useProducts(productsFilter?: ProductsFilter, productId?:
                 {
                     params: {
                         categoryId: productsFilter!.categoryId,
-                        subcategoryId: productsFilter!.subcategoryId,
+                        subcategoryid: productsFilter!.subcategoryId,
                         searchtext: productsFilter!.textSearch ?? "",
                         pageSize: productsFilter!.pageSize,
                         pageIndex: productsFilter!.pageIndex,
@@ -62,7 +72,7 @@ export default function useProducts(productsFilter?: ProductsFilter, productId?:
         }
     })
     return {
-
+        productNamesFromServer, isGetProductNamesPending,
         filteredProductsFromServer, isGeFilteredtProductsPending,
         ProductFromServer, IsGetProductPending,
         createProduct,
