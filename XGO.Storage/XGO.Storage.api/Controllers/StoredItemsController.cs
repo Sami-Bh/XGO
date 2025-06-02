@@ -2,6 +2,7 @@
 using BuildingBlocks.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using XGO.Storage.Api.Storage.Application.CQRS.StorageItems.Commands;
 using XGO.Storage.Api.Storage.Application.CQRS.StorageItems.Queries;
 using XGO.Storage.Api.Storage.Application.DTOs;
 using XGO.Storage.Api.Storage.Application.Models;
@@ -27,6 +28,12 @@ namespace XGO.Storage.Api.Controllers
         public async Task<ActionResult> GetStoredItemsNames([FromQuery] string searchText)
         {
             return Ok(await Mediator.Send(new GetProductNames.Query { SearchText = searchText }));
+        }
+
+        [HttpPost("Create")]
+        public async Task<ActionResult<StoredItemDto>> Create([FromBody] StoredItemDto storedItem)
+        {
+            return Ok(await Mediator.Send(new Create.Command { StoredItem = storedItem }));
         }
     }
 }

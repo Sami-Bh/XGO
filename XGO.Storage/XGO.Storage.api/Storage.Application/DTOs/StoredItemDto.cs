@@ -8,5 +8,6 @@ namespace XGO.Storage.Api.Storage.Application.DTOs
         public required string ProductName { get; set; }
         public DateTime? ProductExpiryDate { get; set; }
         public int Quantity { get; set; }
+        public int StorageLocationId { get; set; }
     }
 }

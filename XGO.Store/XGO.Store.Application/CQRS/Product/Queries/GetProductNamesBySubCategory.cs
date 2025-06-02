@@ -6,22 +6,25 @@ namespace XGO.Store.Application.CQRS.Product.Queries
 {
     public class GetProductNamesBySubCategory
     {
-        public class Query : IRequest<List<string>>
+        public record ProductInfo(int Id, string Name);
+
+        public class Query : IRequest<List<ProductInfo>>
         {
             public required int SubCategoryId { get; set; }
         }
 
-        public class Handler(XGODbContext dbContext) : IRequestHandler<Query, List<string>>
+        public class Handler(XGODbContext dbContext) : IRequestHandler<Query, List<ProductInfo>>
         {
-            public async Task<List<string>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<ProductInfo>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await dbContext.Products
-                    .AsNoTracking()
-                    .Where(x => x.SubCategoryId == request.SubCategoryId)
-                    .Select(x => x.Name)
-                    .OrderBy(x => x)
-                    .ToListAsync(cancellationToken);
+                var dbitems = await dbContext.Products
+                   .AsNoTracking()
+                   .Where(x => x.SubCategoryId == request.SubCategoryId)
+                   .OrderBy(x => x.Name)
+                   .ToListAsync(cancellationToken);
+                return dbitems.Select(x => new ProductInfo(x.Id, x.Name)).ToList();
+
             }
         }
     }
-} 
+}

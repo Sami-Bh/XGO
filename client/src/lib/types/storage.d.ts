@@ -4,6 +4,7 @@ export type StoredItem = {
     productExpiryDate?: Date
     quantity: number
     id: number
+    storageLocationId: number
 }
 
 export type StorageFilter = {

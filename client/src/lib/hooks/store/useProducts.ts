@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import stores from "../../api/agent";
 import { productsUri } from "../../../app/routes/routesconsts";
+import { Product, ProductInfo, ListedItem, ProductsFilter } from "../../../types/product.types";
 
 export default function useProducts(productsFilter?: ProductsFilter, productId?: number, subCategoryId?: number) {
     const storeAgent = stores.storeAgent;
@@ -9,25 +10,24 @@ export default function useProducts(productsFilter?: ProductsFilter, productId?:
     const { data: productNamesFromServer, isPending: isGetProductNamesPending } = useQuery({
         queryKey: ["getProductNames", subCategoryId],
         queryFn: async () => {
-            const response = await storeAgent.get<string[]>(`${productsUri}/GetProductNamesBySubCategory/${subCategoryId}`);
+            const response = await storeAgent.get<ProductInfo[]>(`${productsUri}/GetProductNamesBySubCategory/${subCategoryId}`);
             return response.data;
         },
         enabled: !!subCategoryId
     });
 
-    const { data: filteredProductsFromServer, isPending: isGeFilteredtProductsPending } = useQuery({
-        queryKey: ["getProducts", productsFilter],
+    const { data: filteredProductsFromServer, isPending: isGetFilteredProductsPending } = useQuery({
+        queryKey: ["getFilteredProducts", productsFilter],
         queryFn: async () => {
-            const response = await storeAgent.get<ListedItem<Product>>(`${productsUri}/GetProductsBySubCategoryId`,
-                {
-                    params: {
-                        categoryId: productsFilter!.categoryId,
-                        subcategoryid: productsFilter!.subcategoryId,
-                        searchtext: productsFilter!.textSearch ?? "",
-                        pageSize: productsFilter!.pageSize,
-                        pageIndex: productsFilter!.pageIndex,
-                    }
-                });
+            const response = await storeAgent.get<ListedItem<Product>>(`${productsUri}/GetProductsBySubCategoryId`, {
+                params: {
+                    pageIndex: productsFilter?.pageIndex,
+                    pageSize: productsFilter?.pageSize,
+                    searchText: productsFilter?.textSearch,
+                    categoryId: productsFilter?.categoryId,
+                    subcategoryId: productsFilter?.subcategoryId
+                }
+            });
             return response.data;
         },
         enabled: !!productsFilter
@@ -73,7 +73,7 @@ export default function useProducts(productsFilter?: ProductsFilter, productId?:
     })
     return {
         productNamesFromServer, isGetProductNamesPending,
-        filteredProductsFromServer, isGeFilteredtProductsPending,
+        filteredProductsFromServer, isGetFilteredProductsPending,
         ProductFromServer, IsGetProductPending,
         createProduct,
         updateProduct,
