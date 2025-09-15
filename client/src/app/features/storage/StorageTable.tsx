@@ -10,7 +10,7 @@ import { StoreContext } from "../../../lib/stores/store";
 import { reaction } from "mobx";
 
 export default function StorageTable() {
-    const getDefaultFilter = (): StorageFilter => { return { oderDirection: "asc", orderby: "name", pageIndex: 1, pageSize: 10, productNameSearchText: "", StorageId: 1 } };
+    const getDefaultFilter = (): StorageFilter => { return { oderDirection: "asc", orderby: "name", pageIndex: 1, pageSize: 10, productNameSearchText: "", StorageId: undefined } };
     const [Filter, setFilter] = useState<StorageFilter>(getDefaultFilter());
     const { StoredItemsFromServer, IsStoredItemsFromServerPending } = useStorageItems(Filter);
 
@@ -30,9 +30,12 @@ export default function StorageTable() {
         }
     );
 
-    const handleItemUpdate = (item: StoredItem, field: keyof StoredItem, value: any) => {
-        const updatedItem = { ...item, [field]: value };
-        store.updatedStorageItemsStore.addOrUpdateItem(updatedItem);
+    const handleItemUpdate = (item: StoredItem, field: keyof StoredItem, value: unknown) => {
+        console.log(value);
+        const tempitem = { ...item, [field]: value };
+        console.log(item);
+
+        store.updatedStorageItemsStore.addOrUpdateItem(tempitem);
     };
 
     // Define columns explicitly for each property of StoredItem
@@ -94,7 +97,7 @@ export default function StorageTable() {
                                                     <TableCell key={column.id} align={column.align}>
                                                         <TextField
                                                             defaultValue={value}
-                                                            slotProps={{ input: { type: "number" } }}
+                                                            slotProps={{ input: { type: "number" }, htmlInput: { min: 0 } }}
                                                             onChange={(e) => {
                                                                 handleItemUpdate(storedItem, 'quantity', parseInt(e.target.value));
                                                             }}

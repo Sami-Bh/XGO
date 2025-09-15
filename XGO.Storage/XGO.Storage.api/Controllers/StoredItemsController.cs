@@ -35,5 +35,11 @@ namespace XGO.Storage.Api.Controllers
         {
             return Ok(await Mediator.Send(new Create.Command { StoredItem = storedItem }));
         }
+
+        [HttpPut("UpdateBatch")]
+        public async Task<ActionResult<List<StoredItemDto>>> UpdateBatch([FromBody] List<StoredItemDto> storedItems)
+        {
+            return Ok(await Mediator.Send(new UpdateBatch.Command { StoredItems = storedItems }));
+        }
     }
 }

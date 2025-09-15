@@ -27,7 +27,17 @@ function useStorageItems(storageFilter?: StorageFilter) {
 
     const createStoredItem = useMutation({
         mutationFn: async (item: Omit<StoredItem, "id">) => {
-            const response = await storageAgent.post<StoredItem>(storageUri, item);
+            const response = await storageAgent.post<StoredItem>(`${storageUri}`, item);
+            return response.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["getStoredItems"] });
+        }
+    });
+
+    const updateStoredItems = useMutation({
+        mutationFn: async (items: StoredItem[]) => {
+            const response = await storageAgent.put<StoredItem[]>(`${storageUri}/UpdateBatch`, items);
             return response.data;
         },
         onSuccess: () => {
@@ -38,7 +48,8 @@ function useStorageItems(storageFilter?: StorageFilter) {
     return {
         StoredItemsFromServer,
         IsStoredItemsFromServerPending,
-        createStoredItem
+        createStoredItem,
+        updateStoredItems
     }
 }
 
