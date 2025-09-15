@@ -5,3 +5,8 @@ variable "resources_region" {
 variable "grp_name" {
   default = "gr-xgo"
 }
+
+variable "appRegistrationApi" {
+  type    = string
+  default = "XGOApi"
+}
