@@ -30,7 +30,18 @@ resource "random_uuid" "pictures_Storage_scope_uuid" {}
 resource "azurerm_storage_account" "pictures_Storage" {
   account_replication_type = "LRS"
   account_tier             = "Standard"
-  location                 = azurerm_resource_group.rg-xgo.location
-  resource_group_name      = azurerm_resource_group.rg-xgo.name
-  name                     = module.unique_name_or_id_generator_1.unique_id_string
+  location                 = var.resources_region
+  resource_group_name      = local.main_resource_group_name
+  name                     = module.unique_pictures_storage_accountName.unique_id_string
+}
+
+resource "azurerm_cognitive_account" "pictures_Recognizer" {
+  name                = module.unique_pictures_computer_vision_name.unique_id_string
+  location            = var.resources_region
+  resource_group_name = local.main_resource_group_name
+  kind                = "ComputerVision"
+  sku_name            = "F0"
+  identity {
+    type = "SystemAssigned"
+  }
 }

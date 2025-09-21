@@ -15,3 +15,8 @@ variable "picturesStorageAccountName" {
   type    = string
   default = "sapictures"
 }
+
+variable "picturesComputerVisionName" {
+  type    = string
+  default = "picturescomputervision"
+}
