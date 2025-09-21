@@ -23,3 +23,14 @@ resource "azuread_application_permission_scope" "XGOApi_scope" {
   admin_consent_description  = "api.access"
   admin_consent_display_name = "api.access"
 }
+
+resource "random_uuid" "pictures_Storage_scope_uuid" {}
+
+
+resource "azurerm_storage_account" "pictures_Storage" {
+  account_replication_type = "LRS"
+  account_tier             = "Standard"
+  location                 = azurerm_resource_group.rg-xgo.location
+  resource_group_name      = azurerm_resource_group.rg-xgo.name
+  name                     = module.unique_name_or_id_generator_1.unique_id_string
+}

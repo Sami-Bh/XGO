@@ -3,10 +3,15 @@ variable "resources_region" {
   default = "France Central"
 }
 variable "grp_name" {
-  default = "gr-xgo"
+  default = "rg-xgo"
 }
 
 variable "appRegistrationApi" {
   type    = string
   default = "XGOApi"
+}
+
+variable "picturesStorageAccountName" {
+  type    = string
+  default = "sapictures"
 }
