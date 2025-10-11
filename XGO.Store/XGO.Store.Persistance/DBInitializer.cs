@@ -25,9 +25,9 @@ namespace XGO.Store.Persistance
         private static List<Category> GenerateData()
         {
             var categories = new List<Category>
-{
-    new Category
-    {
+            {
+                new Category
+                {
         Name = "Electronics",
         SubCategories = new List<SubCategory>
         {

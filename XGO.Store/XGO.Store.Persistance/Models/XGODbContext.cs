@@ -35,14 +35,18 @@ namespace XGO.Store.Persistance.Models
         #region Methods
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = string.Empty;
+            // Only configure if no options have been set (e.g., in tests)
+            if (!optionsBuilder.IsConfigured)
+            {
+                var connectionString = string.Empty;
 #if DEBUG
-            connectionString = "Data Source=PHP287\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True";
+                connectionString = "Data Source=PHP287\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True";
 #else
-                    _configuration.GetConnectionString("azuredbConnectionstring");
+                        _configuration.GetConnectionString("azuredbConnectionstring");
 
 #endif
-            optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
         #endregion
     }
