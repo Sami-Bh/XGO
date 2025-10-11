@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
     <ProjectReference Include="..\XGO.Store.Application\XGO.Store.Application.csproj" />
     <ProjectReference Include="..\XGO.Store.Persistance\XGO.Store.Persistance.csproj" />
+    <ProjectReference Include="..\XGO.Store.Utilities\XGO.Store.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
