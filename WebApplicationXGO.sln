@@ -10,11 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XGO.Storage", "XGO.Storage"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGO.ApiGateway", "XGO.ApiGateway\XGO.ApiGateway.csproj", "{015CD76A-30CC-46EB-8001-070BF5DD1A54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGO.Store.Api", "XGO.Store\XGO.Store.api\XGO.Store.Api.csproj", "{3B84CF15-B024-44EA-AF21-F46C1BCFA4D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGO.Store.Api", "XGO.Store\XGO.Store.Api\XGO.Store.Api.csproj", "{3B84CF15-B024-44EA-AF21-F46C1BCFA4D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGO.Store.Application", "XGO.Store\XGO.Store.Application\XGO.Store.Application.csproj", "{EAC2D545-5DB9-4EE5-A8DA-3C6AF0494D67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGO.Storage.Api", "XGO.Storage\XGO.Storage.api\XGO.Storage.Api.csproj", "{51BD3C1A-3E6D-4B30-A494-5CF04BDBF88C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGO.Storage.Api", "XGO.Storage\XGO.Storage.Api\XGO.Storage.Api.csproj", "{51BD3C1A-3E6D-4B30-A494-5CF04BDBF88C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGO.Store.Domain", "XGO.Store\XGO.Store.Domain\XGO.Store.Domain.csproj", "{4AB5F2D4-47EB-4B93-B352-FF12D19D983D}"
 EndProject
