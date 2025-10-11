@@ -8,11 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TestsBuildingBlocks\TestsBuildingBlocks.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <!--<Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />-->
   </ItemGroup>
 
 </Project>
