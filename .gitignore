@@ -353,3 +353,9 @@ IAC/terraform.tfstate
 IAC/terraform.tfstate.1747666523.backup
 IAC/terraform.tfstate.backup
 IAC/.terraform
+IAC/01_ApplicationLayer/.terraform/providers/registry.terraform.io/hashicorp/azuread/3.4.0/windows_amd64/terraform-provider-azuread_v3.4.0_x5.exe
+IAC/01_ApplicationLayer/.terraform/providers/registry.terraform.io/hashicorp/azuread/3.5.0/windows_amd64/terraform-provider-azuread_v3.5.0_x5.exe
+IAC/01_ApplicationLayer/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.0.2/windows_amd64/terraform-provider-azurerm_v3.0.2_x5.exe
+*.exe
+*.backup
+*.tfstate
