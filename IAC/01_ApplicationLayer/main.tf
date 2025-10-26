@@ -1,7 +1,6 @@
 // main resource group
-resource "azurerm_resource_group" "rg-xgo" {
-  location = var.resources_region
-  name     = var.grp_name
+data "azurerm_resource_group" "rg-xgo" {
+  name = var.grp_name
 }
 
 // application registration for the backend api

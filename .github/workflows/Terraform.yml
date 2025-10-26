@@ -1,0 +1,55 @@
+name: Run terraform
+
+defaults:
+    run:
+        working-directory: IAC\01_ApplicationLayer
+
+on:
+    push:
+        branches:
+            - "main"
+    workflow_dispatch:
+
+# Special permissions required for OIDC authentication
+permissions:
+    id-token: write
+    contents: read
+    pull-requests: write
+
+# These environment variables are used by the terraform azure provider to setup OIDC authenticate
+env:
+    ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+    ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+    ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+
+jobs:
+    terraform:
+        environment: Personal_Azure
+
+        name: "Terraform Unit Tests"
+        runs-on: ubuntu-latest
+
+        steps:
+            # Checkout the repository to the GitHub Actions runner
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+            - name: Terraform Init
+              run: terraform init
+
+            # Validate terraform files
+            - name: Terraform Validate
+              run: terraform validate
+
+            # Checks that all Terraform configuration files adhere to a canonical format
+            - name: Terraform Format
+              run: terraform fmt -check -recursive
+
+            - name: Terraform Plan
+              id: tf-plan
+              run: terraform plan -detailed-exitcode -no-color
