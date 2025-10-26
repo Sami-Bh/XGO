@@ -25,6 +25,15 @@ resource "azurerm_user_assigned_identity" "GithubManagedIdentity" {
   resource_group_name = azurerm_resource_group.rg-xgo.name
 }
 
+resource "azurerm_federated_identity_credential" "PullRequestFederatedIdentity" {
+  name                = "xgo_federated_identity"
+  resource_group_name = azurerm_resource_group.rg-xgo.name
+  audience            = ["api://AzureADTokenExchange"]
+  issuer              = "https://token.actions.githubusercontent.com"
+  parent_id           = azurerm_user_assigned_identity.GithubManagedIdentity.id
+  subject             = "repo:Sami-Bh/XGO:pull_request"
+}
+
 data "azurerm_subscription" "primary" {
 }
 
