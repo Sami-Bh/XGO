@@ -2,7 +2,7 @@ name: Run terraform
 
 defaults:
     run:
-        working-directory: IAC\01_ApplicationLayer
+        working-directory: IAC/01_ApplicationLayer
 
 on:
     push:
