@@ -366,3 +366,4 @@ IAC/01_ApplicationLayer/.terraform/providers/registry.terraform.io/hashicorp/azu
 IAC/01_ApplicationLayer/.terraform/providers/registry.terraform.io/hashicorp/random/3.7.2/windows_amd64/LICENSE.txt
 IAC/01_ApplicationLayer/.terraform/providers/registry.terraform.io/hashicorp/random/3.7.2/windows_amd64/LICENSE.txt
 IAC/00_GithubSetupLayer/.terraform/providers/registry.terraform.io/hashicorp/azurerm/4.0.0/windows_amd64/LICENSE.txt
+IAC/00_GithubSetupLayer/emails.tf
