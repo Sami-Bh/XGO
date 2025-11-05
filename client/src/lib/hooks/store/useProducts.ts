@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import stores from "../../api/agent";
 import { productsUri } from "../../../app/routes/routesconsts";
-import { Product, ProductInfo, ListedItem, ProductsFilter } from "../../../types/product.types";
 
 export default function useProducts(productsFilter?: ProductsFilter, productId?: number, subCategoryId?: number) {
     const storeAgent = stores.storeAgent;
