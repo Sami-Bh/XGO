@@ -10,6 +10,10 @@ variable "appRegistrationApi" {
   type    = string
   default = "XGOApi"
 }
+variable "appRegistrationReact" {
+  type    = string
+  default = "XGOReact"
+}
 
 variable "picturesStorageAccountName" {
   type    = string

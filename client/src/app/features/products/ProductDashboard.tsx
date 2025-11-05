@@ -9,7 +9,7 @@ export default function ProductDashboard() {
     //use state
     const [ProductsFilter, setProductsFilter] = useState({ categoryId: -1, subcategoryId: -1, textSearch: "", pageIndex: 1 } as ProductsFilter)
 
-    const { filteredProductsFromServer, isGeFilteredtProductsPending } = useProducts(ProductsFilter);
+    const { filteredProductsFromServer, isGetFilteredProductsPending } = useProducts(ProductsFilter);
     const updatePageIndex = (newIndex: number) => {
         setProductsFilter({ ...ProductsFilter, pageIndex: newIndex });
     }
@@ -19,7 +19,7 @@ export default function ProductDashboard() {
             <Grid2 size={8}>
                 <Container >
                     <Box sx={{ display: "flex", flexDirection: "column", overflowY: "auto", Height: 700 }}>
-                        <ProductList products={filteredProductsFromServer?.items ?? []} isLoading={isGeFilteredtProductsPending} />
+                        <ProductList products={filteredProductsFromServer?.items ?? []} isLoading={isGetFilteredProductsPending} />
                         <Pagination sx={{ alignSelf: "center", py: 1 }}
                             count={filteredProductsFromServer?.pageCount || 1} color="primary"
                             page={ProductsFilter.pageIndex}
