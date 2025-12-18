@@ -368,3 +368,5 @@ IAC/01_ApplicationLayer/.terraform/providers/registry.terraform.io/hashicorp/ran
 IAC/00_GithubSetupLayer/.terraform/providers/registry.terraform.io/hashicorp/azurerm/4.0.0/windows_amd64/LICENSE.txt
 IAC/00_GithubSetupLayer/emails.tf
 XGO.ApiGateway/wwwroot
+/IAC/01_ApplicationLayer/.terraform
+IAC/01_ApplicationLayer/terraform.tfvars
