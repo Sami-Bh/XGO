@@ -20,10 +20,14 @@ namespace XGO.ApiGateway
                 .AddPolicy("customPolicy", policy => policy.RequireAuthenticatedUser());
 
             builder.Services.AddControllers();
+
+#if DEBUG
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+#endif
             builder.Services.AddReverseProxy()
                 .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 

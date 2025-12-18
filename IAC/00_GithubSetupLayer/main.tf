@@ -2,6 +2,9 @@
 resource "azurerm_resource_group" "rg-xgo" {
   location = var.resources_region
   name     = var.grp_name
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "azurerm_storage_account" "pictures_Storage" {
