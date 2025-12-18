@@ -49,7 +49,6 @@ resource "azurerm_windows_web_app" "ProxyWebApp" {
     application_stack {
       dotnet_version = "v8.0"
     }
-    # cors { allowed_origins = ["https://${azurerm_windows_web_app.ProxyWebApp.default_hostname}"] }
   }
   app_settings = {
     ReverseProxy = jsonencode({
@@ -88,12 +87,12 @@ resource "azurerm_windows_web_app" "ProxyWebApp" {
   }
 }
 
-
+// add cors so storage and store can only be accessed with proxy
 resource "azapi_update_resource" "WebApps" {
   type        = "Microsoft.Web/sites@2024-11-01"
   for_each    = local.web_apps
-  depends_on  = [azurerm_windows_web_app.ProxyWebApp]
-  resource_id = azurerm_windows_web_app.ProxyWebApp.id
+  depends_on  = [azurerm_windows_web_app.WebApps, azurerm_windows_web_app.ProxyWebApp]
+  resource_id = azurerm_windows_web_app.WebApps[each.key].id
   body = {
     properties = {
       siteConfig = {
@@ -103,36 +102,17 @@ resource "azapi_update_resource" "WebApps" {
       }
     }
   }
+  # Capture the response
+  response_export_values = ["*"]
 }
-
-# the block below is useless
-
-# // add cors so storage and store can only be accessed with proxy
-# resource "azapi_update_resource" "WebApps" {
-#   type        = "Microsoft.Web/sites@2024-11-01"
-#   for_each    = local.web_apps
-#   depends_on  = [azurerm_windows_web_app.WebApps, azurerm_windows_web_app.ProxyWebApp]
-#   resource_id = azurerm_windows_web_app.WebApps[each.key].id
-#   body = {
-#     properties = {
-#       siteConfig = {
-#         cors = {
-#           allowedOrigins = ["https://${azurerm_windows_web_app.ProxyWebApp.default_hostname}"]
-#         }
-#       }
-#     }
-#   }
-#   # Capture the response
-#   response_export_values = ["*"]
-# }
-# # Output to see what was actually set
-# output "cors_debug" {
-#   value = {
-#     for k, v in azapi_update_resource.WebApps : k => {
-#       resource_id = v.resource_id
-#       output      = v.output
-#     }
-#   }
-#   sensitive = false
-# }
+# Output to see what was actually set
+output "cors_debug" {
+  value = {
+    for k, v in azapi_update_resource.WebApps : k => {
+      resource_id = v.resource_id
+      output      = v.output
+    }
+  }
+  sensitive = false
+}
 
