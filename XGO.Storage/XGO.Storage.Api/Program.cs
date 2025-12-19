@@ -22,10 +22,13 @@ namespace XGO.Storage.api
             builder.Services.AddScoped<DbContext, XgoStorageDbContext>();
 
             builder.Services.AddControllers();
+#if DEBUG
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+#endif
             builder.Services.AddMediatR(cfg =>
             {
                 cfg.RegisterGenericHandlers = true;
@@ -58,7 +61,11 @@ namespace XGO.Storage.api
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<XgoStorageDbContext>();
                 await dbContext.Database.MigrateAsync();
+#if DEBUG
+
                 await XgoStorageDbInitializer.SeedDataAsync(dbContext);
+
+#endif
             }
             catch (Exception e)
             {
