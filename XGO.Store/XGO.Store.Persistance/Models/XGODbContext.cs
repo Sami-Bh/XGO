@@ -39,12 +39,12 @@ namespace XGO.Store.Persistance.Models
             if (!optionsBuilder.IsConfigured)
             {
                 var connectionString = string.Empty;
-#if DEBUG
-                connectionString = "Data Source=PHP287\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True";
-#else
-                        _configuration.GetConnectionString("azuredbConnectionstring");
+//#if DEBUG
+//                connectionString = "Data Source=PHP287\\SQLEXPRESS;Initial Catalog=XGO;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True";
+//#else
+//                        _configuration.GetConnectionString("azuredbConnectionstring");
 
-#endif
+//#endif
                 optionsBuilder.UseSqlServer(connectionString);
             }
         }

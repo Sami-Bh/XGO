@@ -35,14 +35,17 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+#if DEBUG
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
 });
+#endif
+
 
 var app = builder.Build();
 
-//app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -62,7 +65,10 @@ try
 {
     await using var dbContext = serviceProvider.GetRequiredService<XGODbContext>();
     await dbContext.Database.MigrateAsync();
+#if DEBUG
     await DBInitializer.SeedDataAsync(dbContext);
+#endif
+
 }
 catch (Exception e)
 {
