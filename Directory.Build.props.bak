@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+  </PropertyGroup>
+  <ItemGroup>
+		<PackageReference Include="coverlet.collector" Version="$(CoverletCollectorVersion)"/>
+		</ItemGroup>
+</Project>

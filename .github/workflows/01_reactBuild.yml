@@ -1,4 +1,4 @@
-name: reactBuildAndPublish
+name: react Build And Publish
 
 defaults:
   run:
@@ -42,5 +42,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-result
-          path: client/dist
+          path: client/wwwroot
           retention-days: 1
