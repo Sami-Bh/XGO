@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 jobs:
   call-Build-workflow:
-    uses: ./.github/workflows/RestoreAndBuildDotnetProjects.yml
+    uses: ./.github/workflows/02_dotnet_01_RestoreAndBuildDotnetProjects.yml
   run-test:
     runs-on: ubuntu-latest
     needs: call-Build-workflow
