@@ -1,4 +1,4 @@
-name: react Build And Publish
+name: 01_reactBuild
 
 defaults:
   run:

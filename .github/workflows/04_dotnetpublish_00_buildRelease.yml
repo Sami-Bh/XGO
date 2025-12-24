@@ -1,4 +1,4 @@
-name: build dotnet projects on release
+name: 04_dotnetpublish_00_buildRelease
 
 on:
     push:

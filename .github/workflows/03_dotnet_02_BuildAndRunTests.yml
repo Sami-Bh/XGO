@@ -1,4 +1,4 @@
-name: build and run tests
+name: 03_dotnet_02_BuildAndRunTests
 
 on:
   push:

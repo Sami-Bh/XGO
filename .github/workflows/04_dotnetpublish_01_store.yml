@@ -1,4 +1,4 @@
-name: publish store
+name: 04_dotnetpublish_01_store
 on:
     push:
         branches:
@@ -7,7 +7,6 @@ on:
     pull_request:
         branches:
             - "main"
-    workflow_dispatch:
 jobs:
     call-Build-workflow:
         uses: "./.github/workflows/04_dotnetpublish_00_buildRelease.yml"
