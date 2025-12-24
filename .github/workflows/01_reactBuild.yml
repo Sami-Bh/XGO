@@ -8,9 +8,12 @@ on:
   push:
     branches:
       - "main"
-      - "develop"
+      - "Develop"
+  pull_request:
+    branches:
+      - "main"
   workflow_dispatch:
-
+  workflow_call:
 jobs:
   build:
     runs-on: ubuntu-latest

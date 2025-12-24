@@ -1,9 +1,14 @@
 name: build dotnet projects on release
+
 on:
     push:
         branches:
             - "main"
-
+            - "Develop"
+    pull_request:
+        branches:
+            - "main"
+    workflow_call:
 jobs:
     call-Build-workflow:
         uses: "./.github/workflows/03_dotnet_02_BuildAndRunTests.yml"
