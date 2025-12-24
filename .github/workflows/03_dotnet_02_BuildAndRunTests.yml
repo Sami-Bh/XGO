@@ -1,13 +1,13 @@
 name: 03_dotnet_02_BuildAndRunTests
 
 on:
-  push:
-    branches:
-      - "main"
-      - "Develop"
-  pull_request:
-    branches:
-      - "main"
+  # push:
+  #   branches:
+  #     - "main"
+  #     - "Develop"
+  # pull_request:
+  #   branches:
+  #     - "main"
   workflow_dispatch:
   workflow_call:
 jobs:

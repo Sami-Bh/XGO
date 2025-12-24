@@ -5,13 +5,13 @@ defaults:
     working-directory: client
 
 on:
-  push:
-    branches:
-      - "main"
-      - "Develop"
-  pull_request:
-    branches:
-      - "main"
+  # push:
+  #   branches:
+  #     - "main"
+  #     - "Develop"
+  # pull_request:
+  #   branches:
+  #     - "main"
   workflow_dispatch:
   workflow_call:
 jobs:
