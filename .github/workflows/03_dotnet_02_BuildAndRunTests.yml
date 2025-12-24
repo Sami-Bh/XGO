@@ -9,6 +9,7 @@ on:
     branches:
       - "main"
   workflow_dispatch:
+  workflow_call:
 jobs:
   call-Build-workflow:
     uses: ./.github/workflows/02_dotnet_01_RestoreAndBuildDotnetProjects.yml
