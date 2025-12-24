@@ -28,11 +28,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-result
+          overwrite: true
           path: artifacts
-          retention-days: 1
-      - name: Archive store
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-result
-          path: artifacts/bin/XGO.Store.Api/release
           retention-days: 1

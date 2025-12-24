@@ -1,52 +1,55 @@
 name: 04_dotnetpublish_00_buildRelease
 
 on:
-    push:
-        branches:
-            - "main"
-            - "Develop"
-    pull_request:
-        branches:
-            - "main"
-    workflow_call:
+  push:
+    branches:
+      - "main"
+      - "Develop"
+  pull_request:
+    branches:
+      - "main"
+  workflow_call:
 jobs:
-    call-Build-workflow:
-        uses: "./.github/workflows/03_dotnet_02_BuildAndRunTests.yml"
-    build:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                dotnet-version: ["8.0.x"]
+  call-tests-workflow-from-build-release:
+    uses: "./.github/workflows/03_dotnet_02_BuildAndRunTests.yml"
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: ["8.0.x"]
 
-        steps:
-            - uses: actions/checkout@v5
-            - name: Setup dotnet ${{ matrix.dotnet-version }}
-              uses: actions/setup-dotnet@v4
-              with:
-                  dotnet-version: ${{ matrix.dotnet-version }}
-            # You can test your matrix by printing the current dotnet version
-            - name: Display dotnet version
-              run: dotnet --version
-            - name: Install dependencies
-              run: dotnet restore
-            - name: Build
-              run: dotnet build --no-restore --configuration Release
-            # Upload build result
-            - name: upload store artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: store-artifact
-                  path: artifacts\bin\XGO.Store.Api\release
-                  retention-days: 1
-            - name: Upload storage artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: storage-artifact
-                  path: artifacts/bin/XGO.Storage.Api/release
-                  retention-days: 1
-            - name: Upload proxy artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: storage-artifact
-                  path: artifacts/bin/XGO.ApiGateway/release
-                  retention-days: 1
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup dotnet ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      # You can test your matrix by printing the current dotnet version
+      - name: Display dotnet version
+        run: dotnet --version
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+      # Upload build result
+      - name: upload store artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: store-artifact
+          overwrite: true
+          path: artifacts\bin\XGO.Store.Api\release
+          retention-days: 1
+      - name: Upload storage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-artifact
+          overwrite: true
+          path: artifacts/bin/XGO.Storage.Api/release
+          retention-days: 1
+      - name: Upload proxy artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-artifact
+          overwrite: true
+          path: artifacts/bin/XGO.ApiGateway/release
+          retention-days: 1
