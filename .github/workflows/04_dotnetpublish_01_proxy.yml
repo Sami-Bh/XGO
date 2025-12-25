@@ -16,7 +16,7 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   name: proxy-artifact
-                  path: artifacts
+                  path: .
                   github-token: ${{ secrets.GITHUB_TOKEN }} # Auth to download from another workflow
                   run-id: ${{ github.event.workflow_run.id }} # Download from THAT specific build run
             - name: Download react artifact

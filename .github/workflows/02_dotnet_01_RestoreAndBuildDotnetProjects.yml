@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
       # You can test your matrix by printing the current dotnet version
       - name: Display dotnet version
         run: dotnet --version
