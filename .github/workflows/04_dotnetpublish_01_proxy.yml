@@ -10,6 +10,7 @@ jobs:
         uses: "./.github/workflows/01_reactBuild.yml"
     download-and-publish-proxy:
         if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only run if build succeeded
+        environment: Personal_Azure
 
         runs-on: ubuntu-latest
         needs: call-react-from-proxy-publish

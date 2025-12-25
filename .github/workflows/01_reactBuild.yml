@@ -15,7 +15,9 @@ on:
   workflow_dispatch:
   workflow_call:
 jobs:
-  build:
+  build-react:
+    environment: Personal_Azure
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
