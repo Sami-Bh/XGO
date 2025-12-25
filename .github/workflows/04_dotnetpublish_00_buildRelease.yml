@@ -1,6 +1,10 @@
 name: 04_dotnetpublish_00_buildRelease
 
 on:
+  push:
+    branches:
+      - "main"
+      - "Develop"
   # push:
   #   branches:
   #     - "main"
