@@ -4,7 +4,9 @@ on:
         workflows: ["04_dotnetpublish_00_buildRelease"] # Wait for this workflow by name
         types: [completed] # Trigger when it completes
         branches: ["main", "Develop"] # Only for these branches
-
+permissions:
+    id-token: write
+    contents: read
 jobs:
     download-and-publish-store:
         runs-on: ubuntu-latest
