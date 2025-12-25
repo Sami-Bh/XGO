@@ -48,7 +48,7 @@ namespace XGO.ApiGateway
 
             app.MapReverseProxy();
 
-
+            app.MapFallbackToController("Index", "Fallback");
             app.Run();
         }
     }
