@@ -1,16 +1,19 @@
-name: react Build And Publish
+name: 01_reactBuild
 
 defaults:
   run:
     working-directory: client
 
 on:
-  push:
-    branches:
-      - "main"
-      - "develop"
+  # push:
+  #   branches:
+  #     - "main"
+  #     - "Develop"
+  # pull_request:
+  #   branches:
+  #     - "main"
   workflow_dispatch:
-
+  workflow_call:
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -38,9 +41,9 @@ jobs:
         run: npm run build
       #upload build result
       - name: Archive production artifacts
-        if: github.ref == 'refs/heads/main'
+        # if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
-          name: build-result
+          name: react-artifact
           path: client/wwwroot
           retention-days: 1

@@ -1,0 +1,22 @@
+name: 04_dotnetpublish_01_storage
+on:
+    workflow_run:
+        workflows: ["04_dotnetpublish_00_buildRelease"] # Wait for this workflow by name
+        types: [completed] # Trigger when it completes
+        branches: ["main", "Develop"] # Only for these branches
+
+jobs:
+    download-and-publish-storage:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only run if build succeeded
+
+        steps:
+            - name: Download proxy artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: storage-artifact
+                  path: .
+                  github-token: ${{ secrets.GITHUB_TOKEN }} # Auth to download from another workflow
+                  run-id: ${{ github.event.workflow_run.id }} # Download from THAT specific build run
+            - name: Display structure of downloaded files
+              run: ls -R

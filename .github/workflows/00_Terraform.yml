@@ -1,4 +1,4 @@
-name: Run terraform
+name: 00_Terraform
 
 defaults:
   run:

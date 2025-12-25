@@ -1,4 +1,4 @@
-name: restore and build dotnet projects
+name: 02_dotnet_01_RestoreAndBuildDotnetProjects
 
 on:
   workflow_call:
@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
       # You can test your matrix by printing the current dotnet version
       - name: Display dotnet version
         run: dotnet --version
@@ -23,11 +25,11 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
-    #upload build result
+      #upload build result
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-result
-          path:
-            artifacts
+          overwrite: true
+          path: artifacts
           retention-days: 1

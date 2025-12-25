@@ -3,6 +3,6 @@
     <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
   </PropertyGroup>
   <ItemGroup>
-		<PackageReference Include="coverlet.collector" Version="$(CoverletCollectorVersion)"/>
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
 		</ItemGroup>
 </Project>

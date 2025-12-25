@@ -1,21 +1,22 @@
-name: publish store
+name: 04_dotnetpublish_01_store
 on:
-    push:
-        branches:
-            - "main"
-            - "develop"
-    workflow_dispatch:
+    workflow_run:
+        workflows: ["04_dotnetpublish_00_buildRelease"] # Wait for this workflow by name
+        types: [completed] # Trigger when it completes
+        branches: ["main", "Develop"] # Only for these branches
+
 jobs:
-    call-Build-workflow:
-        uses: "./.github/workflows/04_dotnetpublish_00_buildRelease.yml"
-    build:
+    download-and-publish-store:
         runs-on: ubuntu-latest
-        needs: call-Build-workflow
+        if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only run if build succeeded
+
         steps:
-            - name: Download a single artifact
-              uses: actions/download-artifact@v5
+            - name: Download proxy artifact
+              uses: actions/download-artifact@v4
               with:
                   name: store-artifact
-                  path: artifacts
+                  path: .
+                  github-token: ${{ secrets.GITHUB_TOKEN }} # Auth to download from another workflow
+                  run-id: ${{ github.event.workflow_run.id }} # Download from THAT specific build run
             - name: Display structure of downloaded files
               run: ls -R
