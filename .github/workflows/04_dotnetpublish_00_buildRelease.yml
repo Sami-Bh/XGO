@@ -36,7 +36,7 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
-      # Publish each project separately to ensure clean artifacts
+      # Publish each project separately
       - name: Publish Store API
         run: dotnet publish XGO.Store/XGO.Store.Api/XGO.Store.Api.csproj --no-build --configuration Release --output ./publish/store
 
