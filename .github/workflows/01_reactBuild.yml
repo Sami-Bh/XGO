@@ -36,7 +36,10 @@ jobs:
           export const MSAL_API_SCOPE = "${{ secrets.AZURE_REACT_APPREGISTRATION_SCOPE }}";
           export const MSAL_REDIRECT_URI = "${{ secrets.AZURE_REACT_APPREGISTRATION_REDIRECT_URI }}";
           EOF
-
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: display file content
+        run: cat src/msalKeys.ts
       - name: Install dependencies
         run: npm install
 
