@@ -34,6 +34,7 @@ jobs:
           export const MSAL_ClientId = "${{ secrets.AZURE_REACT_APPREGISTRATION_CLIENTID }}";
           export const MSAL_Authority = "${{ secrets.AZURE_REACT_APPREGISTRATION_TENANTID }}";
           export const MSAL_API_SCOPE = "${{ secrets.AZURE_REACT_APPREGISTRATION_SCOPE }}";
+          export const MSAL_REDIRECT_URI = "${{ secrets.AZURE_REACT_APPREGISTRATION_REDIRECT_URI }}";
           EOF
 
       - name: Install dependencies

@@ -1,11 +1,11 @@
 import { PublicClientApplication } from "@azure/msal-browser";
-import { MSAL_API_SCOPE, MSAL_Authority, MSAL_ClientId } from "./msalKeys";
+import { MSAL_API_SCOPE, MSAL_Authority, MSAL_ClientId, MSAL_REDIRECT_URI } from "./msalKeys";
 
 const MSAL_CONFIG = {
     auth: {
         clientId: MSAL_ClientId,
         authority: MSAL_Authority,
-        // redirectUri: "/",
+        redirectUri: MSAL_REDIRECT_URI,
     },
     cache: {
         cacheLocation: "localStorage",
