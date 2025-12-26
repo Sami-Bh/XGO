@@ -79,12 +79,11 @@ resource "azurerm_windows_web_app" "ProxyWebApp" {
           }
         }
       }
-    }),
-    AzureAd = jsonencode({
-      Instance = "https://login.microsoftonline.com/"
-      TenantId = var.Tenant_Id
-      ClientId = azuread_application_registration.XGOApi.client_id
     })
+    # AzureAd configuration using double underscore notation for nested config
+    "AzureAd__Instance" = "https://login.microsoftonline.com/"
+    "AzureAd__TenantId" = var.Tenant_Id
+    "AzureAd__ClientId" = azuread_application_registration.XGOApi.client_id
   }
 }
 
