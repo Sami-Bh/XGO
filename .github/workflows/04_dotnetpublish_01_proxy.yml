@@ -13,6 +13,7 @@ permissions:
 jobs:
     call-react-from-proxy-publish:
         uses: "./.github/workflows/01_reactBuild.yml"
+        secrets: inherit
     download-and-publish-proxy:
         if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only run if build succeeded
         environment: Personal_Azure
