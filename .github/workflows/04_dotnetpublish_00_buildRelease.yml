@@ -35,25 +35,38 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore --configuration Release
-      # Upload build result
+
+      # Publish each project separately to ensure clean artifacts
+      - name: Publish Store API
+        run: dotnet publish XGO.Store/XGO.Store.Api/XGO.Store.Api.csproj --no-build --configuration Release --output ./publish/store
+
+      - name: Publish Storage API
+        run: dotnet publish XGO.Storage/XGO.Storage.Api/XGO.Storage.Api.csproj --no-build --configuration Release --output ./publish/storage
+
+      - name: Publish Proxy API Gateway
+        run: dotnet publish XGO.ApiGateway/XGO.ApiGateway.csproj --no-build --configuration Release --output ./publish/proxy
+
+      # Upload publish result
       - name: upload store artifact
         uses: actions/upload-artifact@v4
         with:
           name: store-artifact
           overwrite: true
-          path: artifacts/bin/XGO.Store.Api/release
+          path: ./publish/store
           retention-days: 1
+
       - name: Upload storage artifact
         uses: actions/upload-artifact@v4
         with:
           name: storage-artifact
           overwrite: true
-          path: artifacts/bin/XGO.Storage.Api/release
+          path: ./publish/storage
           retention-days: 1
+
       - name: Upload proxy artifact
         uses: actions/upload-artifact@v4
         with:
           name: proxy-artifact
           overwrite: true
-          path: artifacts/bin/XGO.ApiGateway/release
+          path: ./publish/proxy
           retention-days: 1
