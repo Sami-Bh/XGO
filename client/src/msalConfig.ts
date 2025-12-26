@@ -5,7 +5,7 @@ const MSAL_CONFIG = {
     auth: {
         clientId: MSAL_ClientId,
         authority: MSAL_Authority,
-        redirectUri: "/",
+        // redirectUri: "/",
     },
     cache: {
         cacheLocation: "localStorage",
