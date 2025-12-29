@@ -17,6 +17,7 @@ jobs:
   call-tests-workflow-from-build-release:
     uses: "./.github/workflows/03_dotnet_02_BuildAndRunTests.yml"
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,6 +29,9 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
+
       # You can test your matrix by printing the current dotnet version
       - name: Display dotnet version
         run: dotnet --version
