@@ -370,3 +370,5 @@ IAC/00_GithubSetupLayer/emails.tf
 XGO.ApiGateway/wwwroot
 /IAC/01_ApplicationLayer/.terraform
 IAC/01_ApplicationLayer/terraform.tfvars
+/XGO.Store/XGO.Store.Api/appsettings.Development.json
+/XGO.Storage/XGO.Storage.Api/appsettings.Development.json
