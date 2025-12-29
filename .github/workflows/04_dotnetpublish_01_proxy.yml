@@ -3,8 +3,8 @@ on:
     workflow_run:
         workflows: ["04_dotnetpublish_00_buildRelease"] # Wait for this workflow by name
         types: [completed] # Trigger when it completes
-        branches: ["main", "Develop"] # Only for these branches
-
+        branches: ["main"] # Only for these branches
+# , "Develop"
 # Special permissions required for OIDC authentication
 permissions:
     id-token: write

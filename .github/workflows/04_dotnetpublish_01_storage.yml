@@ -1,39 +1,39 @@
 name: 04_dotnetpublish_01_storage
 on:
-    workflow_run:
-        workflows: ["04_dotnetpublish_00_buildRelease"] # Wait for this workflow by name
-        types: [completed] # Trigger when it completes
-        branches: ["main", "Develop"] # Only for these branches
+  workflow_run:
+    workflows: ["04_dotnetpublish_00_buildRelease"] # Wait for this workflow by name
+    types: [completed] # Trigger when it completes
+    branches: ["main"] # Only for these branches
 permissions:
-    id-token: write
-    contents: read
+  id-token: write
+  contents: read
 jobs:
-    download-and-publish-storage:
-        runs-on: ubuntu-latest
-        if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only run if build succeeded
-        environment: Personal_Azure
+  download-and-publish-storage:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only run if build succeeded
+    environment: Personal_Azure
 
-        steps:
-            - name: Download proxy artifact
-              uses: actions/download-artifact@v4
-              with:
-                  name: storage-artifact
-                  path: .
-                  github-token: ${{ secrets.GITHUB_TOKEN }} # Auth to download from another workflow
-                  run-id: ${{ github.event.workflow_run.id }} # Download from THAT specific build run
-            - name: Display structure of downloaded files
-              run: ls -R
-            - name: Login to Azure
-              uses: azure/login@v2
-              with:
-                  client-id: ${{ secrets.AZURE_CLIENT_ID }}
-                  tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-                  subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    steps:
+      - name: Download proxy artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: storage-artifact
+          path: .
+          github-token: ${{ secrets.GITHUB_TOKEN }} # Auth to download from another workflow
+          run-id: ${{ github.event.workflow_run.id }} # Download from THAT specific build run
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-            - name: Deploy to Azure Web App
-              id: deploy-to-webapp
-              uses: azure/webapps-deploy@v3
-              with:
-                  app-name: "WebAppsStorage"
-                  slot-name: "Production"
-                  package: .
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "WebAppsStorage"
+          slot-name: "Production"
+          package: .
