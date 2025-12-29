@@ -14,7 +14,8 @@ locals {
       connection_String_Type  = local.connection_String_Type
       connection_String_value = local.connection_String_value
     }
-    storageWebApp = { name = var.WebApps_Storage_Name,
+    storageWebApp = {
+      name                    = var.WebApps_Storage_Name,
       route_path              = "/Storage",
       cluster_id              = "Storage_Cluster"
       connection_String_name  = local.connection_String_name,

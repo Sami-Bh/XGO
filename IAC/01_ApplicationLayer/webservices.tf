@@ -36,6 +36,12 @@ resource "azurerm_windows_web_app" "WebApps" {
     type  = each.value.connection_String_Type
     value = each.value.connection_String_value
   }
+  app_settings = {
+    # AzureAd configuration using double underscore notation for nested config
+    "AzureAd__Instance" = "https://login.microsoftonline.com/"
+    "AzureAd__TenantId" = var.Tenant_Id
+    "AzureAd__ClientId" = azuread_application_registration.XGOApi.client_id
+  }
 }
 
 resource "azurerm_windows_web_app" "ProxyWebApp" {
@@ -52,34 +58,10 @@ resource "azurerm_windows_web_app" "ProxyWebApp" {
     # cors { allowed_origins = ["https://${azurerm_windows_web_app.ProxyWebApp.default_hostname}"] }
   }
   app_settings = {
-    ReverseProxy = jsonencode({
-      Routes = {
-        for key, config in local.web_apps :
-        "route_${key}" => merge(
-          {
-            ClusterId = config.cluster_id
-            Match = {
-              Path = "${config.route_path}/{**catch-all}"
-            }
-            Transforms = [
-              { PathPattern = "{**catch-all}" }
-            ]
-            AuthorizationPolicy = "customPolicy"
-          },
-        )
-      }
+    # optimize this with a foreach or something later
+    "ReverseProxy__Clusters__Store_Cluster__Destinations__destination1__Address"   = "https://${azurerm_windows_web_app.WebApps["storeWebApp"].default_hostname}"
+    "ReverseProxy__Clusters__Storage_Cluster__Destinations__destination1__Address" = "https://${azurerm_windows_web_app.WebApps["storageWebApp"].default_hostname}"
 
-      Clusters = {
-        for key, config in local.web_apps :
-        config.cluster_id => {
-          Destinations = {
-            destination1 = {
-              Address = "https://${azurerm_windows_web_app.WebApps[key].default_hostname}"
-            }
-          }
-        }
-      }
-    })
     # AzureAd configuration using double underscore notation for nested config
     "AzureAd__Instance" = "https://login.microsoftonline.com/"
     "AzureAd__TenantId" = var.Tenant_Id

@@ -11,6 +11,9 @@ using XGO.Store.Persistance.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddMicrosoftIdentityWebApi(builder.Configuration);
+
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
