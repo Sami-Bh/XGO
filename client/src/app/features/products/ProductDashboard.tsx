@@ -6,38 +6,58 @@ import ProductsActions from "./ProductsActions";
 import useProducts from "../../../lib/hooks/store/useProducts";
 
 export default function ProductDashboard() {
-    //use state
-    const [ProductsFilter, setProductsFilter] = useState({ categoryId: -1, subcategoryId: -1, textSearch: "", pageIndex: 1 } as ProductsFilter)
+  //use state
+  const [ProductsFilter, setProductsFilter] = useState({
+    categoryId: -1,
+    subcategoryId: -1,
+    textSearch: "",
+    pageIndex: 1,
+  } as ProductsFilter);
 
-    const { filteredProductsFromServer, isGetFilteredProductsPending } = useProducts(ProductsFilter);
-    const updatePageIndex = (newIndex: number) => {
-        setProductsFilter({ ...ProductsFilter, pageIndex: newIndex });
-    }
-    return (
+  const { filteredProductsFromServer, isGetFilteredProductsPending } =
+    useProducts(ProductsFilter);
+  const updatePageIndex = (newIndex: number) => {
+    setProductsFilter({ ...ProductsFilter, pageIndex: newIndex });
+  };
+  return (
+    <Grid2 container spacing={{ xs: 1, sm: 3 }}>
+      <Grid2 size={{ xs: 8, sm: 8 }}>
+        <Container>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              overflowY: "auto",
+              Height: 700,
+            }}
+          >
+            <ProductList
+              products={filteredProductsFromServer?.items ?? []}
+              isLoading={isGetFilteredProductsPending}
+            />
+            <Pagination
+              sx={{ alignSelf: "center", py: 1 }}
+              count={filteredProductsFromServer?.pageCount || 1}
+              color="primary"
+              page={ProductsFilter.pageIndex}
+              onChange={(_, value) => updatePageIndex(value)}
+            />
+          </Box>
+        </Container>
+      </Grid2>
+      <Grid2 size={{ xs: 4, sm: 4 }}>
+        <Box
+          sx={{
+            position: "sticky",
+            alignSelf: "flex-start",
+            top: 80,
+          }}
+        >
+          <ProductsActions />
 
-        <Grid2 container spacing={3}>
-            <Grid2 size={8}>
-                <Container >
-                    <Box sx={{ display: "flex", flexDirection: "column", overflowY: "auto", Height: 700 }}>
-                        <ProductList products={filteredProductsFromServer?.items ?? []} isLoading={isGetFilteredProductsPending} />
-                        <Pagination sx={{ alignSelf: "center", py: 1 }}
-                            count={filteredProductsFromServer?.pageCount || 1} color="primary"
-                            page={ProductsFilter.pageIndex}
-                            onChange={(_, value) => updatePageIndex(value)}
-                        />
-
-                    </Box>
-                </Container>
-            </Grid2>
-            <Grid2 size={4}>
-                <Box sx={{
-                    position: "sticky", alignSelf: "flex-start", top: 80
-                }}>
-                    <ProductsActions />
-
-                    <ProducstsFilter setFilter={setProductsFilter} />
-                </Box>
-            </Grid2>
-        </Grid2 >
-    )
+          <ProducstsFilter setFilter={setProductsFilter} />
+        </Box>
+      </Grid2>
+    </Grid2>
+  );
 }

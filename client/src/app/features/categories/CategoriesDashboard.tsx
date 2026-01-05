@@ -10,13 +10,13 @@ export default function CategoriesDashboard() {
     }
     return (
         <>
-            <Grid2 container spacing={3}>
-                <Grid2 size={7}>
+            <Grid2 container spacing={{ xs: 2, sm: 3 }}>
+                <Grid2 size={{ xs: 7, sm: 7 }}>
                     <Box sx={{ pb: 5, flexDirection: 'column', justifyContent: 'space-between', display: "flex" }}>
                         <CategoriesList />
                     </Box>
                 </Grid2>
-                <Grid2 size={5}>
+                <Grid2 size={{ xs: 5, sm: 5 }}>
                     <Box sx={{ position: "sticky", alignSelf: "flex-start", top: 80 }}>
                         <Button
                             sx={{ width: "fit-content", alignSelf: "end", mb: 2 }}

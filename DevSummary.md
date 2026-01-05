@@ -1,0 +1,23 @@
+# Development Summary
+
+## Recent Changes
+
+### Navbar Menu Items Styling Fix (2026-01-05)
+
+**Issue:** Menu items in the navbar were not responding to responsive font size styles.
+
+**Root Cause:** Incorrect `sx` prop syntax in MenuItem components. The code was using `sx={{ navBarMenuItemStyle }}` which creates an object literal with a property named `navBarMenuItemStyle`, instead of spreading the actual style object.
+
+**Solution:** Changed the syntax from `sx={{ navBarMenuItemStyle }}` to `sx={navBarMenuItemStyle}` to properly apply the style object.
+
+**Files Modified:**
+- `client/src/app/layout/Navbar.tsx` (lines 61, 69, 77)
+
+**Responsive Styles Applied:**
+- The `navBarMenuItemStyle` from `client/src/app/shared/actionStyles.ts` now properly applies:
+  - `xs` (extra small screens): `0.5rem` font size
+  - `sm` (small screens): `0.875rem` font size
+  - `md` (medium+ screens): `1rem` font size
+  - `whiteSpace: 'nowrap'` to prevent text wrapping
+
+**Result:** Menu items now properly shrink on smaller screens, improving mobile responsiveness.
