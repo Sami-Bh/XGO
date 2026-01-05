@@ -16,6 +16,11 @@ on:
 jobs:
   call-tests-workflow-from-build-release:
     uses: "./.github/workflows/03_dotnet_02_BuildAndRunTests.yml"
+  call-build-react:
+    # will only build the react project and check that everything is fine
+    if: github.ref == 'refs/heads/Develop'
+    uses: "./.github/workflows/01_reactBuild.yml"
+
   build:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

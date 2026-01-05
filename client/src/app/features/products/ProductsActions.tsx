@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { productsUri } from "../../routes/routesconsts";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
