@@ -76,7 +76,7 @@ export default function StorageTable() {
     {
       id: "productExpiryDate",
       label: "Expiry Date",
-      minWidth: 100,
+      minWidth: 80,
       align: "center",
     },
     { id: "quantity", label: "Quantity", minWidth: 60, align: "center" },
