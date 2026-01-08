@@ -21,6 +21,7 @@ export type StorageFilter = {
 type StorageLocation = {
     name: string,
     id: number,
+    hasChildren: boolean,
 }
 
 type StoredItemName = {

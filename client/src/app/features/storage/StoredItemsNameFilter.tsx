@@ -8,7 +8,10 @@ import { filterSelectStyle } from "../../shared/actionStyles";
 
 export default function StoredItemsNameFilter() {
   const [SeatchText, setSeatchText] = useState("");
+
+  // filter delay
   const [DebouncedSeatchText] = useDebounce(SeatchText, 1000);
+
   const [SelectedStoredItemName, setSelectedStoredItemName] =
     useState<StoredItemName | null>(null);
   const { ProductNames, isPending: isProductNamesPeding } =

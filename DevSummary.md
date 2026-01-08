@@ -21,3 +21,45 @@
   - `whiteSpace: 'nowrap'` to prevent text wrapping
 
 **Result:** Menu items now properly shrink on smaller screens, improving mobile responsiveness.
+
+---
+
+### Submit Button Not Working in LocationsDashboard Dialog (2026-01-08)
+
+**Issue:** Submit button in the "New location" dialog was not triggering form submission when clicked.
+
+**Root Cause:** The submit button with `type="submit"` was placed outside the `<form>` element. The form element was only wrapping the input field inside `DialogContent`, but the submit button was in `DialogActions` which was outside the form boundaries. HTML submit buttons only work when they're inside the form element they're meant to submit.
+
+**Solution:** Moved the form wrapper (`<Box component="form" onSubmit={...}>`) to wrap both `DialogContent` and `DialogActions`, so the submit button is now inside the form element.
+
+**Files Modified:**
+- `client/src/app/features/Locations/LocationsDashboard.tsx` (lines 175-197)
+
+**Code Structure Change:**
+```tsx
+// Before (broken):
+<Dialog>
+  <DialogContent>
+    <Box component="form">  {/* Form only wraps input */}
+      <TextInput />
+    </Box>
+  </DialogContent>
+  <DialogActions>
+    <Button type="submit">Submit</Button>  {/* Outside form! */}
+  </DialogActions>
+</Dialog>
+
+// After (fixed):
+<Dialog>
+  <Box component="form">  {/* Form wraps both sections */}
+    <DialogContent>
+      <TextInput />
+    </DialogContent>
+    <DialogActions>
+      <Button type="submit">Submit</Button>  {/* Inside form! */}
+    </DialogActions>
+  </Box>
+</Dialog>
+```
+
+**Result:** Submit button now properly triggers the form's `onSubmit` handler, calling `OnSubmitDialogue` function which adds the new location.

@@ -10,7 +10,12 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import StoreIcon from "@mui/icons-material/Store";
 import { NavLink } from "react-router";
-import { categoriesUri, productsUri, storageUri } from "../routes/routesconsts";
+import {
+  categoriesUri,
+  locationUri,
+  productsUri,
+  storageUri,
+} from "../routes/routesconsts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import useAuthentication from "../../lib/hooks/authentication/useAuthentication";
 import {
@@ -20,6 +25,15 @@ import {
 
 export default function Navbar() {
   const { LoggedInUser, handleSignOut } = useAuthentication();
+  const menuItems: {
+    uri: string;
+    label: string;
+  }[] = [
+    { label: "Categories", uri: categoriesUri },
+    { label: "Locations", uri: locationUri },
+    { label: "Products", uri: productsUri },
+    { label: "Storage", uri: storageUri },
+  ];
   return (
     <Box sx={{ flexGrow: 1, pb: 7 }}>
       <AppBar>
@@ -52,28 +66,17 @@ export default function Navbar() {
               </MenuItem>
             </Box>
             <Box sx={{ display: "flex", flexShrink: 1 }}>
-              <MenuItem
-                component={NavLink}
-                to={categoriesUri}
-                sx={navBarMenuItemStyle}
-              >
-                Categories
-              </MenuItem>
+              {menuItems.map((menuItem) => (
+                <MenuItem
+                  component={NavLink}
+                  to={menuItem.uri}
+                  sx={navBarMenuItemStyle}
+                  key={menuItem.label}
+                >
+                  {menuItem.label}
+                </MenuItem>
+              ))}
 
-              <MenuItem
-                component={NavLink}
-                to={productsUri}
-                sx={navBarMenuItemStyle}
-              >
-                Products
-              </MenuItem>
-              <MenuItem
-                component={NavLink}
-                to={storageUri}
-                sx={navBarMenuItemStyle}
-              >
-                Storage
-              </MenuItem>
               {/* <MenuItem component={NavLink} to="/categories">SubCategories</MenuItem>
                             <MenuItem component={NavLink} to="/categories">Products</MenuItem> */}
             </Box>

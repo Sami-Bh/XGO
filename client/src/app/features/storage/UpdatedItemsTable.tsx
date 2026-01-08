@@ -37,7 +37,7 @@ const UpdatedItemsTable = observer(() => {
     minWidth: number;
     align: "left" | "right" | "center";
   }[] = [
-    { id: "productName", label: "Product Name", minWidth: 200, align: "left" },
+    { id: "productName", label: "Product", minWidth: 100, align: "left" },
     {
       id: "productExpiryDate",
       label: "Expiry Date",
@@ -65,95 +65,93 @@ const UpdatedItemsTable = observer(() => {
     updatedStorageItemsStore.clearItems();
   };
 
-  if (items.length === 0) {
-    return (
-      <Paper sx={{ p: 3 }}>
-        <Typography variant="subtitle1" align="center">
-          No updated items
-        </Typography>
-      </Paper>
-    );
-  }
-
   return (
     <Box>
-      <Paper sx={{ p: 3 }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexDirection: "column",
-            mb: 2,
-          }}
-        >
-          <Typography variant="h6" color="primary">
-            Updated Items List
+      {items.length === 0 ? (
+        <Paper sx={{ p: 3 }}>
+          <Typography variant="subtitle1" align="center">
+            No updated items
           </Typography>
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <Button
-              sx={filterButtonStyle}
-              variant="contained"
-              color="primary"
-              startIcon={<SaveIcon />}
-              onClick={handleSubmit}
-              disabled={updateStoredItems.isPending}
-            >
-              Save
-            </Button>
-            <Button
-              sx={filterButtonStyle}
-              variant="outlined"
-              color="error"
-              startIcon={<ClearIcon />}
-              onClick={handleClear}
-            >
-              Clear
-            </Button>
+        </Paper>
+      ) : (
+        <Paper sx={{ p: 3 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "column",
+              mb: 2,
+            }}
+          >
+            <Typography variant="h6" color="primary">
+              Updated Items List
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Button
+                sx={filterButtonStyle}
+                variant="contained"
+                color="primary"
+                startIcon={<SaveIcon />}
+                onClick={handleSubmit}
+                disabled={updateStoredItems.isPending}
+              >
+                Save
+              </Button>
+              <Button
+                sx={filterButtonStyle}
+                variant="outlined"
+                color="error"
+                startIcon={<ClearIcon />}
+                onClick={handleClear}
+              >
+                Clear
+              </Button>
+            </Box>
           </Box>
-        </Box>
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader size="small">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {items.map((item) => (
-                <TableRow hover key={item.id}>
-                  <TableCell align="left">{item.productName}</TableCell>
-                  <TableCell align="center">
-                    {item.productExpiryDate
-                      ? dayjs(item.productExpiryDate).format("YYYY-MM-DD")
-                      : "-"}
-                  </TableCell>
-                  <TableCell align="center">{item.quantity}</TableCell>
-                  <TableCell align="center">
-                    <Button
-                      size="small"
-                      color="error"
-                      onClick={() =>
-                        updatedStorageItemsStore.removeItem(item.id)
-                      }
+          <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader size="small">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
                     >
-                      <DeleteIcon />
-                    </Button>
-                  </TableCell>
+                      {column.label}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
+              </TableHead>
+              <TableBody>
+                {items.map((item) => (
+                  <TableRow hover key={item.id}>
+                    <TableCell align="left">{item.productName}</TableCell>
+                    <TableCell align="center">
+                      {item.productExpiryDate
+                        ? dayjs(item.productExpiryDate).format("YYYY-MM-DD")
+                        : "-"}
+                    </TableCell>
+                    <TableCell align="center">{item.quantity}</TableCell>
+                    <TableCell align="center">
+                      <Button
+                        size="small"
+                        color="error"
+                        onClick={() =>
+                          updatedStorageItemsStore.removeItem(item.id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      )}
 
       <Snackbar
         open={showSuccess}
