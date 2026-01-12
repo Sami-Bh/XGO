@@ -23,7 +23,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
 } from "@mui/material";
 import { StorageLocation } from "../../../lib/types/storage";
 import { useForm } from "react-hook-form";
@@ -42,10 +41,26 @@ export default function LocationsDashboard() {
     updateLocation,
     addLocation,
   } = useLocations();
+  // this will probably change to a common schema between all objects
+  const { handleSubmit, reset, control } = useForm<CategorySchema>({
+    mode: "onTouched",
+    resolver: zodResolver(categorySchema),
+  });
+
+  const {
+    handleSubmit: handleSubmitUpdate,
+    reset: resetUpdate,
+    control: controlUpdate,
+    formState: updateformstate,
+  } = useForm<CategorySchema>({
+    mode: "onTouched",
+    resolver: zodResolver(categorySchema),
+  });
 
   const [SelectedLocationTableItem, setSelectedLocationTableItem] =
     useState<StorageLocation>();
 
+  // triggers the edit on table rows
   const [IsEditMode, setIsEditMode] = useState<boolean>(false);
 
   //handles opening the add popup
@@ -53,24 +68,35 @@ export default function LocationsDashboard() {
 
   const handleRowSelected = (selectedLocation: StorageLocation) => {
     setSelectedLocationTableItem(selectedLocation);
+
+    resetUpdate(selectedLocation);
+
+    //put this back to false to not trigger the input text on row change
+    setIsEditMode(false);
   };
 
   const handleDeleteLocation = async (idLocation: number) => {
     await deleteLocation.mutateAsync(idLocation);
   };
 
-  const handleUpdateLocation = async (location: StorageLocation) => {
-    await updateLocation.mutateAsync(location);
+  const handleUpdateLocation = async (location: CategorySchema) => {
+    const dataToSend = {
+      ...SelectedLocationTableItem,
+      ...location,
+    } as unknown as StorageLocation;
+    await updateLocation.mutateAsync(dataToSend);
+    setIsEditMode(false);
   };
 
-  // this will probably change to a common schema between all objects
-  const { handleSubmit, reset, control } = useForm<CategorySchema>({
-    mode: "onTouched",
-    resolver: zodResolver(categorySchema),
-  });
+  const handleEditButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.stopPropagation();
+    setIsEditMode(true);
+  };
 
-  const OnSubmitDialogue = async (schema: CategorySchema) => {
-    const dataToSend = { ...schema };
+  const OnSubmitDialogueAdd = async (schema: CategorySchema) => {
+    const dataToSend = { ...schema } as StorageLocation;
     await addLocation.mutateAsync(dataToSend as unknown as StorageLocation);
     handleDialogueClose();
   };
@@ -142,6 +168,7 @@ export default function LocationsDashboard() {
                   {locationsFromServer.map((locationFromServer) => {
                     const isrowSelected =
                       locationFromServer == SelectedLocationTableItem;
+                    const formId = `edit-form-${locationFromServer.id}`;
 
                     return (
                       <TableRow
@@ -155,22 +182,22 @@ export default function LocationsDashboard() {
                       >
                         <TableCell>
                           <Box
+                            component="form"
+                            id={formId}
                             display={"inline-flex"}
                             flexDirection={"row"}
-                            key={"EditLocation"}
-                            component="form"
                             gap={1}
-                            onSubmit={handleSubmit(OnSubmitDialogue)}
+                            onSubmit={handleSubmitUpdate(handleUpdateLocation)}
                           >
                             <Box
                               alignSelf={"center"}
                               justifyContent={"flex-start"}
                             >
-                              {!(IsEditMode || isrowSelected) ? (
+                              {!(IsEditMode && isrowSelected) ? (
                                 locationFromServer.name
                               ) : (
                                 <TextInput
-                                  control={control}
+                                  control={controlUpdate}
                                   autoFocus
                                   required
                                   margin="dense"
@@ -187,6 +214,7 @@ export default function LocationsDashboard() {
 
                         <TableCell>
                           <Box
+                            visibility={isrowSelected ? "inherit" : "collapse"}
                             display={"flex"}
                             justifyContent={"flex-end"}
                             flexDirection={"row"}
@@ -200,8 +228,8 @@ export default function LocationsDashboard() {
                               disabled={
                                 !SelectedLocationTableItem || !isrowSelected
                               }
-                              onClick={() => {
-                                setIsEditMode(true);
+                              onClick={(event) => {
+                                handleEditButtonClick(event);
                               }}
                             >
                               <ModeEditIcon />
@@ -209,9 +237,11 @@ export default function LocationsDashboard() {
                             <IconButton
                               size="small"
                               color="primary"
-                              disabled={!SelectedLocationTableItem}
-                              onClick={() => {
-                                setIsEditMode(true);
+                              type="submit"
+                              form={formId}
+                              disabled={!updateformstate.isDirty}
+                              onClick={(event) => {
+                                event.stopPropagation();
                               }}
                             >
                               <SaveIcon />
@@ -231,7 +261,7 @@ export default function LocationsDashboard() {
         <Box
           component="form"
           key={"AddLocation"}
-          onSubmit={handleSubmit(OnSubmitDialogue)}
+          onSubmit={handleSubmit(OnSubmitDialogueAdd)}
         >
           <DialogTitle>New location</DialogTitle>
           <DialogContent>
