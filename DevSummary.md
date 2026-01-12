@@ -63,3 +63,38 @@
 ```
 
 **Result:** Submit button now properly triggers the form's `onSubmit` handler, calling `OnSubmitDialogue` function which adds the new location.
+
+---
+
+### Edit Button Size Not Matching Small Icon (2026-01-12)
+
+**Issue:** The edit button (Fab component) on line 177 maintained its default "small" size even though the icon inside it was set to be smaller with `fontSize="inherit"`. The button didn't shrink to match the smaller icon, creating a visual imbalance.
+
+**Root Cause:** MUI's Fab component with `size="small"` has a fixed default size (~40x40 pixels). Using `fontSize="inherit"` on the icon makes the icon smaller, but doesn't affect the button's dimensions. The Fab component doesn't automatically adjust its size based on icon size.
+
+**Solution:** Added custom `sx` prop to override the Fab button dimensions and changed icon fontSize to be explicit.
+
+**Files Modified:**
+- `client/src/app/features/Locations/LocationsDashboard.tsx` (lines 174-181)
+
+**Changes Made:**
+```tsx
+// Added sx prop to Fab button
+sx={{
+  width: 32,
+  height: 32,
+  minHeight: 32,
+  minWidth: 32,
+}}
+// Changed icon fontSize from "inherit" to "small"
+<ModeEditIcon fontSize="small" />
+```
+
+**New CSS/Styling Technique:**
+- Using MUI's `sx` prop with explicit width/height dimensions to override default Fab button sizing
+- Custom dimensions (32x32px) to match small icon size, instead of relying on the default "small" size (~40x40px)
+- Setting both `width`/`height` and `minWidth`/`minHeight` ensures the button doesn't expand beyond desired size
+
+**Result:** Edit button now properly shrinks to match the smaller icon inside it, creating better visual proportion and consistency in the UI.
+
+---
