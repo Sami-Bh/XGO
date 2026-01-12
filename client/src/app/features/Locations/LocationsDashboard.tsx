@@ -3,6 +3,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AddIcon from "@mui/icons-material/Add";
 import useLocations from "../../../lib/hooks/store/useLocations";
+import SaveIcon from "@mui/icons-material/Save";
+
 import {
   Box,
   Button,
@@ -11,7 +13,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
   Fab,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -77,7 +81,6 @@ export default function LocationsDashboard() {
   if (isGettingLocationsPending) {
     return <div>Loading...</div>;
   }
-  console.log(locationsFromServer);
 
   return (
     <Box>
@@ -117,14 +120,7 @@ export default function LocationsDashboard() {
                         >
                           <AddIcon />
                         </Fab>
-                        <Fab
-                          size="small"
-                          color="primary"
-                          disabled={!SelectedLocationTableItem}
-                          onClick={() => {}}
-                        >
-                          <ModeEditIcon />
-                        </Fab>
+
                         <Fab
                           size="small"
                           color="error"
@@ -157,12 +153,70 @@ export default function LocationsDashboard() {
                         role="checkbox"
                         key={locationFromServer.id}
                       >
-                        <TableCell colSpan={2}>
-                          {!IsEditMode ? (
-                            locationFromServer.name
-                          ) : (
-                            <TextField />
-                          )}
+                        <TableCell>
+                          <Box
+                            display={"inline-flex"}
+                            flexDirection={"row"}
+                            key={"EditLocation"}
+                            component="form"
+                            gap={1}
+                            onSubmit={handleSubmit(OnSubmitDialogue)}
+                          >
+                            <Box
+                              alignSelf={"center"}
+                              justifyContent={"flex-start"}
+                            >
+                              {!(IsEditMode || isrowSelected) ? (
+                                locationFromServer.name
+                              ) : (
+                                <TextInput
+                                  control={control}
+                                  autoFocus
+                                  required
+                                  margin="dense"
+                                  name="name"
+                                  label="Location"
+                                  type="text"
+                                  fullWidth
+                                  variant="standard"
+                                />
+                              )}
+                            </Box>
+                          </Box>
+                        </TableCell>
+
+                        <TableCell>
+                          <Box
+                            display={"flex"}
+                            justifyContent={"flex-end"}
+                            flexDirection={"row"}
+                            gap={1}
+                          >
+                            <Divider orientation="vertical" flexItem />
+
+                            <IconButton
+                              size="small"
+                              color="primary"
+                              disabled={
+                                !SelectedLocationTableItem || !isrowSelected
+                              }
+                              onClick={() => {
+                                setIsEditMode(true);
+                              }}
+                            >
+                              <ModeEditIcon />
+                            </IconButton>
+                            <IconButton
+                              size="small"
+                              color="primary"
+                              disabled={!SelectedLocationTableItem}
+                              onClick={() => {
+                                setIsEditMode(true);
+                              }}
+                            >
+                              <SaveIcon />
+                            </IconButton>
+                          </Box>
                         </TableCell>
                       </TableRow>
                     );
@@ -174,7 +228,11 @@ export default function LocationsDashboard() {
         )}
       </Paper>
       <Dialog open={IsAddMode} onClose={handleDialogueClose}>
-        <Box component="form" onSubmit={handleSubmit(OnSubmitDialogue)}>
+        <Box
+          component="form"
+          key={"AddLocation"}
+          onSubmit={handleSubmit(OnSubmitDialogue)}
+        >
           <DialogTitle>New location</DialogTitle>
           <DialogContent>
             <DialogContentText>
