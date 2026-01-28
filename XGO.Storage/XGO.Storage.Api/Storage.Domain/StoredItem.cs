@@ -10,6 +10,7 @@ namespace XGO.Storage.Api.Storage.Domain
         public int Quantity { get; set; }
         public int StorageLocationId { get; set; }
         public StorageLocation? StorageLocation { get; set; }
-        
+        public bool IsExpiracyAcknowledged { get; set; }
+
     }
 }

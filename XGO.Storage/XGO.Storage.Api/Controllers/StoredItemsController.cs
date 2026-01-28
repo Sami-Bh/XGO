@@ -18,6 +18,12 @@ namespace XGO.Storage.Api.Controllers
             return await Task.Run(NoContent);
         }
 
+        [HttpGet("GetExpiringItems")]
+        public async Task<ActionResult> GetExpiringItems([FromQuery] ExpiringProductsFilter expiringProductsFilter)
+        {
+            return Ok(await Mediator.Send(new GetExpiringProducts.Query { Filter = expiringProductsFilter }));
+        }
+
         [HttpGet("GetFilteredStoredItems")]
         public async Task<ActionResult> GetFilteredStoredItem([FromQuery] ProductsFilter productsFilter)
         {
