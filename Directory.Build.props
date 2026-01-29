@@ -5,6 +5,10 @@
 	<PropertyGroup>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 	</PropertyGroup>
+	<PropertyGroup>
+		<!-- Centralized .NET version for all projects -->
+		<TargetFramework>net9.0</TargetFramework>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageVersion Include="Newtonsoft.Json" Version="13.0.3"/>
 	</ItemGroup>
