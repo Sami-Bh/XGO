@@ -1,18 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TestsBuildingBlocks\TestsBuildingBlocks.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <!--<Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />-->
+    <ProjectReference Include="..\..\XGO.Storage\XGO.Storage.Api\XGO.Storage.Api.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
   </ItemGroup>
 
 </Project>
