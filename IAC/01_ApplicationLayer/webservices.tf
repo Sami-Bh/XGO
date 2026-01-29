@@ -28,7 +28,7 @@ resource "azurerm_windows_web_app" "WebApps" {
   site_config {
     always_on = false
     application_stack {
-      dotnet_version = "v8.0"
+      dotnet_version = "v9.0"
     }
   }
   connection_string {
@@ -53,7 +53,7 @@ resource "azurerm_windows_web_app" "ProxyWebApp" {
   site_config {
     always_on = false
     application_stack {
-      dotnet_version = "v8.0"
+      dotnet_version = "v9.0"
     }
     # cors { allowed_origins = ["https://${azurerm_windows_web_app.ProxyWebApp.default_hostname}"] }
   }
