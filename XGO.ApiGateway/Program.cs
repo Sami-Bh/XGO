@@ -20,12 +20,26 @@ namespace XGO.ApiGateway
                 .AddPolicy("customPolicy", policy => policy.RequireAuthenticatedUser());
 
             builder.Services.AddControllers();
+            builder.Services.AddHttpClient();
+
+            // Add OpenAPI document generation with Swashbuckle (includes XML documentation)
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new()
+                {
+                    Title = "XGO Storage Functions API",
+                    Version = "v1.0.0",
+                    Description = "OpenAPI specification for XGroceries Optimizer storage management functions"
+                });
+
+                // Include XML documentation
+                var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+            });
 
 #if DEBUG
-
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
 #endif
             builder.Services.AddReverseProxy()
@@ -45,6 +59,9 @@ namespace XGO.ApiGateway
             app.UseStaticFiles();
 
             app.MapControllers();
+
+            // Enable Swagger middleware
+            app.UseSwagger();
 
             app.MapReverseProxy();
 
